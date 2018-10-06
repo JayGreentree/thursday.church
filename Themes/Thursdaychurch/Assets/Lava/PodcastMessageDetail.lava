@@ -20,9 +20,8 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">Downloads &amp; Resources</div>
 						<div class="list-group">
-							{% if TalkItOver != '' %}
-							{{ item | Attribute:'StudyNotes' }}<img src="/Assets/Images/global/SermonNotes.jpg" alt="Download & Print Study Notes" width="100%">
-<i class="fa fa-pencil-square-o"></i></a>
+							{% if StudyNotes != '' %}
+							<a href="{{ studynotes }}" class="list-group-item"><i class="fa fa-pencil-square-o"></i> Study Notes</a>
 						{% endif %}
 							{% if videoLink != '' %}
 							<a href="{{ videoLink }}" class="list-group-item"><i class="fa fa-film"></i> Video Download</a>
