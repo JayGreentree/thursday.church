@@ -1,0 +1,127 @@
+{% comment %} include... {% endcomment %}
+
+{% comment %} By default show the last item {% endcomment %}
+{% assign item = Items | Last %}
+
+{% comment %} Get the total number of items (used for calendar or display by page parameter) {% endcomment %}
+{% assign numberOfItems = Items | Size %}
+
+{% comment %} Check for Day page parameter exists {% endcomment %}
+{% if PageParameter.Day %}
+    {% comment %} Subtract 1 from page parameter to get the index {% endcomment %}
+    {% assign itemIndex = PageParameter.Day | Minus:1 %}
+    {% comment %} Ensure index exists and assign that to the item object {% endcomment %}
+    {% if itemIndex < numberOfItems %}
+        {% assign item = Items[itemIndex] %}
+    {% endif %}
+{% endif %}
+
+{% comment %} Render the item {% endcomment %}
+<div class="content">
+    <div class="content-item">
+    
+        {% if item.AudioFile != '' %}
+            <div><a href="{{ item.AudioFile }}"><i class="fa fa-play-circle content-icon"></i></a></div>
+        {% endif %}
+
+        <div class="item-title">
+            <h3 class="title-date">{{ item.StartDateTime | Date:'MMMM d' }}:</h3>
+            <h3 class="title-text">{{ item.Title }}</h3>
+        </div>
+        <div class="item-card">
+            <div id="desktopImage">{{ item | Attribute:'DesktopImage' }}</div>
+            <div id="mobileImage">{{ item | Attribute:'MobileImage' }}</div>
+            <h5 class="item-story">{{ item | Attribute:'Story' }}</h5>
+            <p class="item-content italic">{{ item | Attribute:'Scripture' }}</p>
+            <p class="item-content">{{ item | Attribute:'Conclusion' }}</p>
+            <h4 class="item-take-away">Take Away:</h4>
+            <p class="item-content">{{ item | Attribute:'TakeAway' }}</p>
+            <div class="item-share">
+                <p>Share this story:</p>
+                <span id="shareButton" class="mdi mdi-launch"></span>
+            </div>
+        </div>
+        <span id="calendarButton" class="previous-stories-button">See Previous Stories</span>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="shareModal" class="share-modal">
+    <div class="share-modal-content">
+        <div class="share-modal-header">
+            <h4>Share via</h4>
+        </div>
+        <div class="share-modal-body">
+            <a href="sms:&body=Check%20out%20this%20countdown%20to%20Christmas!%20It’s%20a%20fun%20way%20to%20use%20Christmas%20traditions%20to%20point%20back%20to%20what%20Christmas%20is%20really%20about.%20https%3A%2F%2Fccv%2Echurch%2Fadvent"><i class="fa fa-comment share-sms"></i></a>
+            <a href="mailto:?subject=Countdown%20to%20Christmas!&body=Check%20out%20this%20countdown%20to%20Christmas!%20It’s%20a%20fun%20way%20to%20use%20Christmas%20traditions%20to%20point%20back%20to%20what%20Christmas%20is%20really%20about.%20https%3A%2F%2Fccv%2Echurch%2Fadvent"><i class="fa fa-envelope share-email"></i></a>
+            <a href="https://www.facebook.com/dialog/share?app_id=495461873811179&display=page&href=https%3A%2F%2Fwww.ccv.church%2Fadvent&quote=Check%20out%20this%20countdown%20to%20Christmas!%20It%E2%80%99s%20a%20fun%20way%20to%20use%20Christmas%20traditions%20to%20point%20back%20to%20what%20Christmas%20is%20really%20about.%20"><i class="fa fa-facebook-square share-facebook"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.ccv.church%2Fadvent&text=Check%20out%20this%20countdown%20to%20Christmas!%20It’s%20a%20fun%20way%20to%20use%20Christmas%20traditions%20to%20point%20back%20to%20what%20Christmas%20is%20really%20about.%20"><i class="fa fa-twitter-square share-twitter"></i></a>
+        </div>
+    </div>
+</div>
+
+<div id="calendarModal" class="calendar-modal">
+    <div class="calendar-modal-content">
+        <div class="calendar-modal-header">
+        </div>
+        <div class="calendar-modal-body">
+            <div class="advent-calendar">
+                <div class="advent-calendar-header">
+                    <h4>December</h4>
+                </div>
+                <div class="advent-calendar-body">
+                    <div class="advent-calendar-days">
+                        {% for i in (1..25) %}
+                            {% if i <= numberOfItems %}
+                                <a href="/advent?Day={{ i }}" class="advent-calendar-day active-day">{{ i }}</a>
+                            {% else %}
+                                <span class="advent-calendar-day">{{ i }}</span>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="advent-calendar-day-spacer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Get the modals
+    var shareModal = document.getElementById('shareModal');
+    var calendarModal = document.getElementById('calendarModal');
+
+    // Get the buttons that opens the modals
+    var shareButton = document.getElementById('shareButton');
+    var calendarButton = document.getElementById('calendarButton')
+
+    // When the user clicks the button, open the modal 
+    shareButton.onclick = function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Advent | CCV',
+                text: 'Check out this countdown to Christmas! It’s a fun way to use Christmas traditions to point back to what Christmas is really about.',
+                url: 'https://ccv.church/advent',
+            })
+        } else {
+            shareModal.style.display = "block";
+        }
+    }
+
+    calendarButton.onclick = function() {
+        calendarModal.style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modals, close them
+    window.onclick = function(event) {
+        if (event.target == shareModal ) {
+            shareModal.style.display = "none";
+        }
+
+        if (event.target == calendarModal) {
+            calendarModal.style.display = "none";
+        }
+    }    
+    
+</script>

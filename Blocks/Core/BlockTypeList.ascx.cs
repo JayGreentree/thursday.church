@@ -34,7 +34,7 @@ namespace RockWeb.Blocks.Core
     [Description( "Lists all the block types registered in Rock." )]
 
     [LinkedPage("Detail Page")]
-    public partial class BlockTypeList : RockBlock
+    public partial class BlockTypeList : RockBlock, ICustomGridColumns
     {
 
         #region Base Control Methods
@@ -142,7 +142,6 @@ namespace RockWeb.Blocks.Core
 
                 blockTypeService.Delete( blockType );
                 rockContext.SaveChanges();
-                Rock.Web.Cache.BlockTypeCache.Flush( blockType.Id );
             }
 
             BindGrid();
@@ -280,7 +279,7 @@ namespace RockWeb.Blocks.Core
                 gBlockTypes.DataSource = selectQry.OrderBy( b => b.Name ).ToList();
             }
 
-            gBlockTypes.EntityTypeId = EntityTypeCache.Read<Rock.Model.BlockType>().Id;
+            gBlockTypes.EntityTypeId = EntityTypeCache.Get<Rock.Model.BlockType>().Id;
             gBlockTypes.DataBind();
         }
 

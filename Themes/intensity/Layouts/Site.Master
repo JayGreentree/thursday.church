@@ -99,7 +99,7 @@
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="header-login">
-              <!-- a class="login modal-form" data-target="#login-form" data-toggle="modal" href="#">Login / Sign Up</a -->
+              <a class="login modal-form" data-target="#login-form" data-toggle="modal" href="#">Login / Sign Up</a>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <Rock:Zone Name="Navigation" runat="server" />
-			<Rock:Zone Name="Login" runat="server" />
+			
         </div><!--/.nav-collapse -->
         <!-- a href="#" id="search-icon">
           <i class="fa fa-search">            

@@ -38,7 +38,7 @@ namespace RockWeb.Blocks.Cms
     [Description("Lists content channel types in the system.")]
 
     [LinkedPage("Detail Page")]
-    public partial class ContentChannelTypeList : RockBlock
+    public partial class ContentChannelTypeList : RockBlock, ICustomGridColumns
     {
         #region Control Methods
 
@@ -179,7 +179,7 @@ namespace RockWeb.Blocks.Cms
                 types = types.OrderBy( p => p.Name ).ToList();
             }
 
-            gContentChannelType.EntityTypeId = EntityTypeCache.Read<ContentChannelType>().Id;
+            gContentChannelType.EntityTypeId = EntityTypeCache.Get<ContentChannelType>().Id;
             gContentChannelType.DataSource = types;
             gContentChannelType.DataBind();
         }

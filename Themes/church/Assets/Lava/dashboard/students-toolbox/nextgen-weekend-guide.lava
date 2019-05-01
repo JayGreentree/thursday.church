@@ -1,0 +1,95 @@
+{% comment %}
+    include '~~/Assets/Lava/NextGenWeekendGuide.lava'
+
+    Required settings
+    // specify panel JH/HS
+    assign guidePanel = 'jhGuide'
+
+    // Show/Hide navigation buttons in coach guide
+    assign showNav = true
+
+{% endcomment %}
+
+{% comment %} Check if person is an editor/admin to show/hide Preview Guide Link {% endcomment %}
+{% assign isEditor = false %}
+
+{% assign editors = CurrentPerson | Group: "1760271" %}
+{% for editor in editors %}
+    {% if editor.Id %}
+        {% assign isEditor = true %}
+    {% endif %}
+{% endfor %}
+
+{% assign admins = CurrentPerson | Group: "2" %}
+{% for admin in admins %}
+    {% if admin.Id %}
+        {% assign isEditor = true %}
+    {% endif %}
+{% endfor %}
+
+<div class="admin-buttons">
+
+</div>
+
+{% for item in Items %}
+    <div id="{{ guidePanel }}{{ forloop.index }}" class="guide" {% if forloop.first %}style="display: block;"{% endif %}{% unless forloop.first %}style="display: none;"{% endunless %}>
+        
+        {% if showNav %}
+            <div class="nav-buttons">
+                {% if isEditor %}
+                    <a href="/student-toolbox/preview-coach-guide" class="btn btn-primary">Preview Coach Guide</a>
+                {% endif %}
+                {% unless forloop.last %}
+                    <div class="btn btn-primary" onClick="changeGuide('{{ guidePanel }}', {{ forloop.index }}, {{ forloop.index | Plus:1 }});">Older</div>
+                {% endunless %}
+
+                {% unless forloop.first %}
+                    <div class="btn btn-primary" onClick="changeGuide('{{ guidePanel }}', {{ forloop.index }}, {{ forloop.index | Minus:1 }});">Newer</div>
+                {% endunless %}
+            </div>
+        {% endif %}
+
+        <div class="guide-header">
+            {% case item.Grade %}
+                {% when 'JrHigh' %}
+                    <h2>Jr. High Coach Guide</h2>
+                {% when 'SrHigh' %}
+                    <h2>High School Coach Guide</h2>
+            {% endcase %}
+            <span class="text-muted">Published {{ item.StartDateTime | HumanizeDateTime }}</span>
+        </div>
+
+        <article class="text-responsive">
+
+                <h1 class="guide-item-title">{{ item.Title }}</h1>
+                {{ item.Content | FromMarkdown }}
+            
+                {% assign wistiaId = item | Attribute: 'WistiaId' %}
+                {% if wistiaId != empty %}
+                    <div class="guide-item-video">
+                        <script src="//fast.wistia.com/embed/medias/{{ wistiaId }}.jsonp" async></script><script src="//fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_{{ wistiaId }} videoFoam=true trackEmail={{ CurrentPerson.PrimaryAliasId }},{{ CurrentPerson.FullName | Replace: ' ', '' }}" style="height:100%;width:100%">&nbsp;</div></div></div>
+                    </div>
+                {% endif %}
+
+        </article>
+    </div>
+
+{% endfor %}
+
+<script>
+    var refTagger = {
+        settings: {
+        bibleVersion: "NIV",
+        roundCorners: true,
+        socialSharing: [],
+        tagChapters: true,
+        caseInsensitive: !false
+        }
+    };
+    (function(d, t) {
+        var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        g.src = "//api.reftagger.com/v2/RefTagger.js";
+        s.parentNode.insertBefore(g, s);
+    }(document, "script"));
+</script>
+

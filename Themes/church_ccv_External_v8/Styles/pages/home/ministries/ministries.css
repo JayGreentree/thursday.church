@@ -1,0 +1,43 @@
+.page-background {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-ministries.jpg");
+    background-color: #7A1315;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-ministries.jpg");
+    }
+}
+
+/* use the expanded main feature only for tablet and larger */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        height: 475px;
+        padding-top: 175px;
+    }
+}
+
+#section-a-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-kids.jpg");
+}
+
+#section-b-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-students.jpg");
+}
+
+#section-c-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-adults.jpg");
+}
+
+#section-d-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-special-needs.jpg");
+}
+
+#section-e-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-missions.jpg");
+}
+
+#section-f-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-ministries-stars.jpg");
+}

@@ -1,0 +1,36 @@
+.page-background {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-mobile-apps.jpg");
+ }
+ 
+ /* Mobile Background Image */
+ @media screen and (max-width: 500px) {
+     .page-background {
+         background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-mobile-mobile-apps.jpg");
+     }
+ }
+
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.app-store, .google-play {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.ccv-app-logo {
+    text-align: center;
+}
+
+@media screen and (min-width: 1000px) {
+    .logo-wrapper {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .app-store {
+        margin-right: 25px;
+    }
+}

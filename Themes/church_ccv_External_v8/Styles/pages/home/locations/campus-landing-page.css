@@ -1,0 +1,292 @@
+.page-background {   
+    background-color: #EBEBEB;
+}
+
+#section-a-bg {
+    background-color: #FFFFFF;
+}
+
+@media screen and (max-width: 768px) {
+    .infoSection {
+        min-height: unset;
+    }
+}
+
+@media screen and (max-width: 500px){
+    #zone-feature, #zone-sectiona, #zone-sectionb {
+        margin: 0 10px;
+    }
+}
+
+/* Campus Leader Section */
+
+.campus-header {
+    font-size: 64px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.campus-leader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.campus-leader img {
+    width: 180px;
+    height: 180px;
+}
+
+.campus-leader-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+}
+
+.campus-leader-email {
+    color: #7A1315;
+}
+
+@media screen and (max-width: 500px){
+    .campus-leader {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .campus-leader-details {
+        margin-left: 0;
+    }
+}
+
+/* Campus Info Section */
+
+.campus-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.campus-info-content {
+    margin-right: 150px;
+    width: 100%;
+}
+
+.campus-info-right {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+}
+
+.campus-info-card {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    /* width: 65%; */
+}
+
+.address, .phone {
+    display: flex;
+    padding-bottom: 20px;
+}
+
+.campus-info-icon {
+    font-size: 21px;
+    padding-right: 15px;
+    margin-top: 5px;
+}
+
+.address p, .phone a {
+    margin: unset;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.service-times {
+    color: #777777;
+    padding-bottom: 20px;
+}
+
+.service-times strong {
+    font-weight: 900;
+}
+
+.time-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #777777;
+
+    border-bottom: 1px solid #dddddd;
+    padding: 5px 0;
+}
+
+.time-entry-last {
+    border-bottom: unset;
+}
+
+.time-entry-label {
+    font-weight: 900;
+}
+
+.time-entry-details {
+    text-align: right;
+}
+
+.icon-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    max-width: 300px;
+    width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+    .campus-info {
+        padding: 20px 0;
+    }
+
+    .icon-details {
+        justify-content: flex-start;
+        max-width: unset;
+        width: unset;
+        margin-left: unset;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .campus-info {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    .campus-info-right {
+        width: 100%;
+    }
+
+    .campus-info-card {
+        width: 100%;
+        text-align: start;
+    }
+}
+
+/* Campus Tiles Section */
+
+.info-tile {
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clothing-info {
+    width: 40%;
+}
+
+.clothing-icons img {
+    margin-left: 25px;
+}
+
+.info-tile-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.parking-info, .attendance-info {
+    width: 49%;
+}
+
+/* Tablet Styling */
+@media screen and (max-width: 768px){
+    /* padding fix */
+    #section-a-bg {
+        padding-bottom: 1px;
+    }
+
+    .campus-info {
+        margin: 0;
+    }
+
+    .campus-info-content {
+        margin-right: 50px;
+        width: 100%;
+    }
+    
+    .campus-visit h3 {
+        margin: 0;
+    }
+
+    .info-tile-group {
+        margin-bottom: 0;
+        padding-bottom: 25px;
+    }
+
+    .directions-info {
+        margin-right: 100px;
+    }
+
+    .clothing-info {
+        width: 80%;
+        margin-right: 75px;
+    }
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px){
+    .campus-visit h3 {
+        margin-top: 0;
+    }
+
+    .info-tile {
+        flex-direction: column;
+    }
+
+    .info-tile.map {
+        padding: 0;
+    }
+
+    .info-tile-group {
+        flex-direction: column;
+    }
+
+    .directions-info {
+        margin-right: 0;
+    }
+
+    .clothing-info {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .clothing-icons {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .clothing-icons img {
+        margin-left: 0;
+        min-width: 80px;
+    }
+
+    .parking-info, .attendance-info {
+        width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .info-tile-group {
+        margin-bottom: 0;
+    }
+}
+
+

@@ -1,0 +1,122 @@
+.page-background {   
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/hero-serve.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/hero-mobile-serve.jpg");
+    }
+}
+
+/* use the expanded main feature only for tablet and larger */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        height: 350px;
+        padding-top: 125px;
+    }
+}
+
+.serve-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.serve-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px 0;
+    width: 31%;
+    min-height: 500px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    border: unset;
+    border-width: unset;
+    background-color: #FFFFFF; 
+}
+
+.serve-card:last-of-type {
+    margin: 10px 0 0 0;
+}
+
+/* Laptops */
+@media screen and (max-width: 1024px) {
+    .serve-card {
+        width: 48%;
+        padding-bottom: 15px;
+    }
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+    .serve-card {
+        width: 48%;
+        padding-bottom: 15px;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 500px) {
+    .serve-cards-row {
+        justify-content: center;
+    }
+
+    .serve-card {
+        width: 350px;
+        min-height: unset;
+        padding-bottom: 15px;
+    }
+}
+
+.serve-card .image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+ }
+
+ .serve-card .header {
+    display: flex; 
+    flex-direction: column; 
+    padding: 10px 16px; 
+    font-family: Akrobat; 
+    font-weight: bold; 
+    text-transform: uppercase;
+}
+
+.serve-card .header h4 {
+    font-size: 24px; 
+}
+
+.serve-card .content {
+    padding: 0 16px; 
+    font-size: 14px; 
+    color: rgba(0, 0, 0, 0.87); 
+    font-family: Heebo;
+}
+
+.serve-card .content p {
+    line-height: unset;
+    margin: unset;
+}
+
+ .stars-override {
+     min-height: 400px;
+ }
+
+ .stars-override .image img {
+     object-fit: contain;
+ }
+
+ .control-wrapper textarea {
+    background-color: #eeeeee;
+    border-bottom: unset;
+    border: 1px solid #dddddd;
+    color: #333333;
+}
+
+.area-of-interest {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

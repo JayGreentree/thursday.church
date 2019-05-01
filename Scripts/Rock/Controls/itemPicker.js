@@ -9,6 +9,7 @@
 
             // set a flag so that the picker only auto-scrolls to a selected item once. This prevents it from scrolling at unwanted times
             this.alreadyScrolledToSelected = false;
+            this.iScroll = null;
         },
             exports;
 
@@ -22,6 +23,7 @@
                         restUrl: this.options.restUrl,
                         restParams: this.options.restParams,
                         expandedIds: this.options.expandedIds,
+                        showSelectChildren: this.options.showSelectChildren,
                         id: this.options.startingId
                     },
                     $hfItemIds = $control.find('.js-item-id-value'),
@@ -40,8 +42,22 @@
                 }
                 $tree.empty();
 
-                $control.find('.scroll-container').tinyscrollbar({ size: 120, sizethumb: 20 });
-                // Since some hanlers are "live" events, they need to be bound before tree is initialized
+                var $scrollContainer = $control.find('.scroll-container .viewport');
+                var $scrollIndicator = $control.find('.track');
+                this.iScroll = new IScroll($scrollContainer[0], {
+                    mouseWheel: true,
+                    indicators: {
+                        el: $scrollIndicator[0],
+                        interactive: true,
+                        resize: false,
+                        listenY: true,
+                        listenX: false,
+                    },
+                    click: false,
+                    preventDefaultException: { tagName: /.*/ }
+                });
+
+                // Since some handlers are "live" events, they need to be bound before tree is initialized
                 this.initializeEventHandlers();
 
                 if ($hfItemIds.val() && $hfItemIds !== '0') {
@@ -83,15 +99,18 @@
 
                 $control.find('a.picker-label').click(function (e) {
                     e.preventDefault();
-                    $control.find('.picker-menu').first().toggle(function () {
+                    $(this).toggleClass("active");
+                    $control.find('.picker-menu').first().toggle(0, function () {
                         self.scrollToSelectedItem();
                     });
                 });
 
                 $control.find('.picker-cancel').click(function () {
-                    $(this).closest('.picker-menu').slideUp(function () {
+                    $(this).toggleClass("active");
+                    $(this).closest('.picker-menu').toggle(0, function () {
                         self.updateScrollbar();
                     });
+                    $(this).closest('a.picker-label').toggleClass("active");
                 });
 
                 // have the X appear on hover if something is selected
@@ -107,9 +126,10 @@
                             selectedIds = [],
                             selectedNames = [];
 
-                    $.each(selectedNodes, function (index, node) {
-                        selectedIds.push(node.id);
-                        selectedNames.push(node.name);
+                  $.each(selectedNodes, function (index, node) {
+                    var nodeName = $("<textarea/>").html(node.name).text();
+                    selectedNames.push(nodeName);
+                    selectedIds.push(node.id);
                     });
 
                     $hfItemIds.val(selectedIds.join(','));
@@ -120,8 +140,10 @@
                     $control.find('.picker-select-none').show();
 
                     $spanNames.text(selectedNames.join(', '));
-
-                    $(this).closest('.picker-menu').slideUp(function () {
+                    $spanNames.attr('title', $spanNames.text());
+                    
+                    $(this).closest('a.picker-label').toggleClass("active");
+                    $(this).closest('.picker-menu').toggle(0, function () {
                         self.updateScrollbar();
                     });
                     
@@ -148,17 +170,50 @@
                     $control.siblings('.js-hide-on-select-none').hide();
 
                     $spanNames.text(self.options.defaultText);
+                    $spanNames.attr('title', $spanNames.text());
+                });
+
+                // clicking on the 'select all' btn
+                $control.on('click', '.js-select-all', function (e)
+                {
+                  var rockTree = $control.find('.treeview').data('rockTree');
+
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  var $itemNameNodes = rockTree.$el.find('.rocktree-name');
+
+                  var allItemNodesAlreadySelected = true;
+                  $itemNameNodes.each(function (a)
+                  {
+                    if (!$(this).hasClass('selected')) {
+                      allItemNodesAlreadySelected = false;
+                    }
+                  });
+
+                  if (!allItemNodesAlreadySelected) {
+                    // mark them all as unselected (just in case some are selected already), then click them to select them 
+                    $itemNameNodes.removeClass('selected');
+                    $itemNameNodes.click();
+                  } else {
+                    // if all were already selected, toggle them to unselected
+                    rockTree.setSelected([]);
+                    $itemNameNodes.removeClass('selected');
+                  }
                 });
             },
             updateScrollbar: function (sPosition) {
+                var self = this;
                 // first, update this control's scrollbar, then the modal's
-                var $container = $('#' + this.options.controlId).find('.scroll-container')
+                var $container = $('#' + this.options.controlId).find('.scroll-container');
 
                 if ($container.is(':visible')) {
                     if (!sPosition) {
                         sPosition = 'relative'
                     }
-                    $container.tinyscrollbar_update(sPosition);
+                    if (self.iScroll) {
+                        self.iScroll.refresh();
+                    }
                 }
 
                 // update the outer modal  
@@ -201,7 +256,8 @@
                 allowMultiSelect: false,
                 defaultText: '',
                 selectedIds: null,
-                expandedIds: null
+                expandedIds: null,
+                showSelectChildren: false
             },
             controls: {},
             initialize: function (options) {

@@ -1,0 +1,56 @@
+﻿{% comment %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <h2>News</h2>
+
+            {% include '/Themes/NewSpring/Assets/Lava/StaffNewsList.lava' %}
+
+            <p class="flush">
+                <a class="btn btn-primary" href="#" role="button">View More News</a>
+            </p>
+
+        </div>
+    </div>
+
+{% endcomment %}
+{% for item in Items %}
+
+    <h3>{{ item.Title }}</h3>
+    {% assign contentLength = item.Summary | Size %}
+    {% if contentLength > 75 %}
+    <div class="content small content--small long">
+        <p>{{ item.Summary | Truncate:75 }}  <span class="link--arrow actions--expand flush">Read More</span></p>
+        <div class="actions actions--expand">
+        <i class="fa fa-chevron-down"></i>
+        </div>
+    </div>
+    <div class="content overflow content--overflow long">
+        <p>{{ item.Summary }}</p>
+        <div class="actions actions--collapse">
+        <i class="fa fa-chevron-up"></i>
+        </div>
+    </div>
+    {% else %}
+    <p>{{ item.Summary }}</p>
+    {% comment %}
+        <a href="{{ LinkedPages.DetailPage }}?Item={{ item.Id }}" class="link--arrow">Read More</a>
+    {% endcomment %}
+    {% endif %}
+    
+    <p class="content--time">{{ item.StartDateTime | Date:'h:mmtt - MMM d, yyyy' }}</p>
+
+    <hr>
+    
+{% endfor %}
+    
+<script>
+    $('.actions--expand').on('click', function() {
+        $(this).closest('.content--small').toggleClass('hidden');
+        $(this).closest('.content--small').next('.content--overflow').toggleClass('visible');
+    });
+    $('.actions--collapse').on('click', function() {
+        $(this).closest('.content--overflow').removeClass('visible');
+        $(this).closest('.content--overflow').prev('.content--small').removeClass('hidden');
+    });
+</script>

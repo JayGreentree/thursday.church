@@ -1,0 +1,15 @@
+<script>var googleApiKey = "{{ 'Global' | Attribute:'GoogleAPIKey' }}";</script>
+
+<div id="our-campuses-map-window" class="our-campuses-map-window">
+   <div id="our-campuses-map" class="our-campuses-map">Loading...</div>
+</div>
+
+{% include '~~/Assets/Lava/home/locations/script-campus-locations.lava' %}
+<script src="~~/Scripts/_map.js"></script>
+<script src="~~/Scripts/our-campuses-map.js?v=5"></script>
+
+{% comment %}	
+    Use this to iterate on the unminified versions
+    <script src="~~/Scripts/_map.js"></script>
+    <script src="~~/Scripts/our-campuses-map.js"></script>  
+{% endcomment %}

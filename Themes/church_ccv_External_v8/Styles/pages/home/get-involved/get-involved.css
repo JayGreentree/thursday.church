@@ -1,0 +1,23 @@
+
+.page-background {   
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/hero-get-involved.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/hero-mobile-get-involved.jpg");
+    }
+}
+
+/* use the expanded main feature only for tablet and larger */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        height: 475px;
+        padding-top: 175px;
+    }
+}
+
+#section-b-bg {
+    background: url("/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/background-get-involved-giving.jpg") no-repeat;
+}

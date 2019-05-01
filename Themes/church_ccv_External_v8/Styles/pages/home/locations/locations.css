@@ -1,0 +1,135 @@
+
+.page-background { 
+   background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/locations/hero-locations.jpg");
+   background-color: white;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/locations/hero-mobile-locations.jpg");
+    }
+}
+
+#subnavbar-bg {
+    display: none;
+}
+
+/* use the expanded main feature only for tablet and larger */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        height: 475px;
+        padding-top: 175px;
+    }
+}
+
+/*force section A (where the map is) to take the full width of the screen*/
+#section-a-bg {
+   padding: 0;
+}
+
+#zone-sectiona {
+   max-width: 100%;
+   margin: unset;
+}
+
+#section-b-bg {
+   background-color: #ffffff;
+}
+
+.our-campuses-map-window {
+   background: #777;
+}
+
+.our-campuses-map {
+   min-height: 550px;
+}
+
+.event-cards-row {
+   flex-wrap: wrap;
+   justify-content: space-between;
+   margin-bottom: 0;
+}
+
+.event-card {
+   width: 30%;
+   height: 525px;
+   margin-bottom: 20px;
+   justify-content: flex-start;
+}
+
+.event-card.our-campuses-card-override .image img {
+   object-fit: cover;
+}
+
+.event-card .content {
+   height: auto;
+}
+
+.event-card .link {
+   margin: auto 20px 20px 10px;
+}
+
+.event-card .link a {
+    height: unset;
+    line-height: unset;
+    color: #FFFFFF;
+}
+
+.event-card .location-contact {
+    display: flex;
+    flex-direction: column;   
+}
+
+@media screen and (min-width: 362px) {
+    .event-card .location-contact {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.event-card .content.service-times {
+    color: #777777;
+}
+
+.icon-details {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    max-width: 300px;
+    width: 300px;
+}
+
+/* Tablet Styling */
+@media screen and (max-width: 768px) {
+    .event-card {
+        max-width: unset;
+        width: 45%;
+    }
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .event-cards-row {
+        margin-bottom: 0;
+    }
+
+    .event-card {
+        width: 100%;
+    }
+
+    .event-card .link {
+        align-self: stretch;
+        margin: auto 10px 10px 10px;
+    }
+
+    .icon-details {
+        justify-content: flex-start;
+        max-width: unset;
+        width: unset;
+        margin-left: unset;
+        flex-direction: column;
+    }
+}
+
+

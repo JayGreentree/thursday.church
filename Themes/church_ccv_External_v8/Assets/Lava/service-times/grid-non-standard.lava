@@ -1,0 +1,154 @@
+{% comment %}
+
+Non Standard Service Times - Grid style (Christmas / Easter)
+{% assign season = 'christmas' %} 
+        or
+{% assign season = 'easter' %}
+{% include '~~/Assets/Lava/ServiceTimes/Grid.lava' %}
+
+{% endcomment %}
+
+{% capture deafIcon %}
+<span class="csi csi-slt"></span>
+{% endcapture %}
+
+{% capture specialNeedsIcon %}
+<span class="csi csi-special-needs"></span>
+{% endcapture %}
+
+{% comment %}
+    Is this campus coming soon?
+{% endcomment %}
+
+{% assign numTimes = campus.ServiceTimes | Size %}
+{% if numTimes == 1 %}
+    {% assign firstItem = campus.ServiceTimes | First %}
+    {% if firstItem.Day == 'Coming Soon' %}
+        {% assign isComingSoon = true %}
+    {% endif %}
+{% endif %}
+
+{% comment %} 
+    Get the service times for the season specified
+{% endcomment %}
+
+{% case season %}
+    {% when 'christmas' %}
+        {% assign times = campus | Attribute:'ChristmasServiceTimes' %}
+    {% when 'easter' %}
+        {% assign times = campus | Attribute:'EasterServiceTimes' %}
+{% endcase %}
+
+{% if isComingSoon == true %}
+    <strong>Service times coming soon</strong>
+    <div class="coming-soon-spacer"></div>
+{% else %}
+    {% comment %} 
+        Loop through the service times and build strings of times for each day
+    {% endcomment %}
+    {% assign mondayTimesString = '' %}
+    {% assign tuesdayTimesString = '' %}
+    {% assign wednesdayTimesString = '' %}
+    {% assign thursdayTimesString = '' %}
+    {% assign fridayTimesString = '' %}
+    {% assign saturdayTimesString = '' %}
+    {% assign sundayTimesString = '' %}	
+	
+
+	{% for time in times %}
+		{% assign timekv = time | PropertyToKeyValue %}
+
+		{% case timekv.Key %}
+			{% when 'Monday' %}
+				{% assign mondayTimesString = mondayTimesString | Append:timekv.Value | Append:';' %}
+			{% when 'Tuesday' %}
+				{% assign tuesdayTimesString = tuesdayTimesString | Append:timekv.Value | Append:';' %}
+            {% when 'Wednesday' %}
+                {% assign wednesdayTimesString = wednesdayTimesString | Append:timekv.Value | Append:';' %}
+			{% when 'Thursday' %}
+                {% assign thursdayTimesString = thursdayTimesString | Append:timekv.Value | Append:';' %}
+			{% when 'Friday' %}
+                {% assign fridayTimesString = fridayTimesString | Append:timekv.Value | Append:';' %}       
+			{% when 'Saturday' %}
+                {% assign saturdayTimesString = saturdayTimesString | Append:timekv.Value | Append:';' %}
+			{% when 'Sunday' %}
+                {% assign sundayTimesString = sundayTimesString | Append:timekv.Value | Append:';' %}
+        {% endcase %}
+    {% endfor %}
+
+    {% comment %} 
+        Render each day if its string has data
+    {% endcomment %}
+
+    {% if thursdayTimesString != '' %}
+        <strong>Thursday, 12/20</strong>
+        <ul class="list-inline">
+            {% assign thursdayTimes = thursdayTimesString | Split:';' %}
+            {% for thursdayTime in thursdayTimes %}
+                <li>{{ thursdayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if fridayTimesString != '' %}
+        <strong>Friday, 12/21</strong>
+        <ul class="list-inline">
+            {% assign fridayTimes = fridayTimesString | Split:';' %}
+            {% for fridayTime in fridayTimes %}
+                <li>{{ fridayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if saturdayTimesString != '' %}
+        <strong>Saturday, 12/22</strong>
+        <ul class="list-inline">
+            {% assign saturdayTimes = saturdayTimesString | Split:';' %}
+            {% for saturdayTime in saturdayTimes %}
+                <li>{{ saturdayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if sundayTimesString != '' %}
+        <strong>Sunday, 12/23</strong>
+        <ul class="list-inline">
+            {% assign sundayTimes = sundayTimesString | Split:';' %}
+            {% for sundayTime in sundayTimes %}
+                <li>{{ sundayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+        {% if mondayTimesString != '' %}
+        <strong>Monday, 12/24</strong>
+        <ul class="list-inline">
+            {% assign mondayTimes = mondayTimesString | Split:';' %}
+            {% for mondayTime in mondayTimes %}
+				<li>{{ mondayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if tuesdayTimesString != '' %}
+        <strong>Tuesday</strong>
+        <ul class="list-inline">
+            {% assign tuesdayTimes = tuesdayTimesString | Split:';' %}
+            {% for tuesdayTime in tuesdayTimes  %}
+                <li>{{ tuesdayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if wednesdayTimesString != '' %}
+        <strong>Wednesday</strong>
+        <ul class="list-inline">
+        {% assign wednesdayTimes = wednesdayTimesString | Split:';' %}
+            {% for wednesdayTime in wednesdayTimes %}
+                <li>{{ wednesdayTime | Remove: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endif %} 
+{% assign isComingSoon = false %}

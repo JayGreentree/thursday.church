@@ -1,0 +1,23 @@
+{% comment %} 
+{% include '~~/Assets/Lava/header/announcement-bar.lava' %}
+{% endcomment %}
+
+{% assign ccvLive = 'Global' | Attribute:'TCLive' %}
+{% if ccvLive == 'Yes' %}
+    {% if CurrentPerson %}
+        {% assign liveURL = '/sso/login' %}
+    {% else %}
+        {% assign liveURL = 'http://thursdaychurch.churchonline.org' %}
+    {% endif %}
+    <div class="announcement-bar">
+        <btn id="ccvlive" class="btn btn-default btn-live">Live</btn>Thursday CHURCH is live!<span> <a href="{{ liveURL }}">Tune into the sermon now ></a></span>
+    </div>
+{% else %}
+    {% assign upcomingMaintenance = 'Global' | Attribute:'UpcomingMaintenance' %}
+
+    {% unless upcomingMaintenance == '' %}
+        <div class="announcement-bar">
+            Website maintenance {{ upcomingMaintenance }}.
+        </div>
+    {% endunless %}
+{% endif %}

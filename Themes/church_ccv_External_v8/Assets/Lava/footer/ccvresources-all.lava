@@ -1,0 +1,15 @@
+<div id="previous-series" class="message">
+<div class="messages-list">
+   {% for item in Items %}
+        <div class="event-card" >
+            <div class="image">
+                {% assign imageGuid = item | Attribute:'Image', 'RawValue' %}
+                <a href="{{ LinkedPages.DetailPage }}?Item={{ item.Id }}">
+                    <img src="{{ item | Attribute: 'Image', 'Url' }}" alt="{{ item.Title }}">
+                    <p class="header">LEARN MORE</p>
+                </a>
+            </div>        
+        </div>
+   {% endfor %}
+</div>
+</div>

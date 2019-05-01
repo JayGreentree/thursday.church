@@ -1,23 +1,8 @@
-﻿// <copyright>
-// Copyright 2013 by the Spark Development Network
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// </copyright>
-//
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -28,6 +13,7 @@ using System.Web.UI.WebControls;
 using Rock;
 using Rock.Attribute;
 using Rock.CheckIn;
+using Rock.Constants;
 using Rock.Data;
 using Rock.Model;
 using Rock.Web.Cache;
@@ -48,12 +34,14 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
     [MemoField( "Test Label Content", "Enter the label content to use for test print jobs.  Press Ctrl + I on the Admin screen to send a test print.", true, @"﻿CT~~CD,~CC^~CT~^XA
         ^FO150,75^GFA,2546,2546,38,M07FF8,L0KF8,K07LF,J01MFE,J07NF8,J0OFE,I03PF,I07PF8,I0QFCL01FC0FE07IFC3F81FC1FC01FE007FFC007FFE003F83F01FC007FC,003RFL01FC0FE0JFC3FC3FC1FC07FF807IF807IF803F87F81FC01IF,007RFL01FE0FE0JFC1FC3FC1FC1IFC07IFC07IFE03F87FC1FC07IF8,007RF8K01FF0FE0JFC1FC3FE3FC1IFE07IFE07JF03F87FC1FC0JFC,00SFCK01FF0FE0JFC1FC3FE3F83IFE07JF07JF03F87FE1FC0JFE,01SFEK01FF8FE0JFC1FC7FE3F83FCFF07JF07JF83F87FF1FC1JFE,03TFK01FFCFE0FFJ0FE7FE3F83F87F07F07F87F07F83F87FF1FC1FE0FE,07TFK01FFCFE0FFJ0FE7FF3F83FCI07F07F87F03F83F87FF9FC1FC07F,07TF8J01FFEFE0JF00FE7FF3F03FF8007F03F87F03F83F87FFDFC3FC,0UF8J01JFE0JF80FEIF7F03IF807F07F87F03F83F87FFDFC3FC,0UFCJ01JFE0JF80FEFDF7F01IFE07F07F87F07F83F87JFC3FC3FF,1UFCJ01JFE0JF807FFDIF00JF07JF07JF83F87JFC3FC7FF,1JFL07JFCJ01JFE0JF807FF9IF007IF07JF07JF03F87JFC3FC7FF,3JFL01JFEJ01FDFFE0JF807FF9FFE001IF87IFE07JF03F87F7FFC3FC7FF,3JFM0JFEJ01FDFFE0FFJ07FF8FFEJ0FF87IFC07IFE03F87F3FFC3FC7FF,3JFM07IFEJ01FCFFE0FFJ03FF0FFE03F03F87IF807IFC03F87F9FFC1FC3FF,7JFM03JFJ01FCFFE0FFJ03FF0FFE03F83F87FFE007IFC03F87F9FFC1FE0FF,7JFM01JFJ01FC7FE0JFC03FF07FC03FC7F87FJ07F3FC03F87F8FFC1FF1FE,7JFM01JFJ01FC3FE0JFC03FF07FC03JF07FJ07F1FE03F87F8FFC0JFE,7JFN0JFJ01FC3FE0JFC01FE07FC01JF07FJ07F1FF03F87F87FC07IFC,KFI03EI0JFJ01FC1FE0JFC01FE07FC00IFE07FJ07F0FF03F87F83FC03IF8,KFI0FFI0JFJ01FC0FE0JFC01FE03F8007FF807FJ07F07F83F87F83FC01IF,KF001FF800JFJ01F807E07IF800FC03F8001FE007FJ07F07F83F83F01FC007F8,KF001FF800JF,::::::::7JF001FF800JFL0FFC00FE07F07F03F83IF8I0FFC00FE07F,7JF001FF800JFK03FFE00FE07F07F03F83IFE003IF00FE07F,7JF001FF800JFK07IF80FE07F07F03F83JF807IF80FE07F,7JF001FF800JFK0JF80FE07F07F03F83JF80JFC0FE07F,3JF001FF800JFJ01JFC0FE07F07F03F83JFC0JFE0FE07F,3JF001FF800JFJ01JFE0FE07F07F03F83JFC1JFE0FE07F,3JF001FF800JFJ03FC1FE0FE07F07F03F83FC1FE1FE0FE0FE07F,1JF001FF800JFJ03FC0FE0FE07F07F03F83FC1FE1FC07F0FE07F,1JF001FF800JFJ03F80FE0KF07F03F83FC0FE1FC07F0KF,1JF001FF800JFJ03F8J0KF07F03F83FC1FE1FCJ0KF,0VFJ03F8J0KF07F03F83FC1FE1FCJ0KF,0VFJ03F8J0KF07F03F83JFC1FCJ0KF,07UFJ03F8J0KF07F03F83JFC1FCJ0KF,03UFJ03F8J0KF07F03F83JF81FCJ0KF,03UFJ03F80FE0FE2FF07F03F83JF01FC07F0FF47F,01UFJ03FC0FE0FE07F07F03F83IFE01FC0FF0FE07F,00UFJ01FE1FE0FE07F07F87F83JF01FE1FE0FE07F,007TFJ01JFC0FE07F07JF83FCFF01JFE0FE07F,003TFJ01JFC0FE07F03JF03FC7F80JFC0FE07F,001TFK0JF80FE07F01JF03FC7FC07IFC0FE07F,I0TFK07IF00FE07F00IFE03FC3FC03IF80FE07F,I03SFK01FFE00FE07F007FF803FC3FE01FFE00FE07F,I01SFL07FQ0FEJ08002003F8,J07RF,K0RF,K01QF,M0PF,^FS
         ^PW609
-        ^FT30,230^A0N,30,30^FH\^FDThe only way to test is in production.^FS
-        ^FT400,275^A0N,25,25^FH\^FD- Frank Grand^FS
-        ^FO20,300^GB570,0,6^FS
-        ^FT20,350^A0N,30,30^FH\^FDDeviceName^FS
-        ^FT350,350^A0N,30,30^FH\^FDPrinterIP^FS
+        ^FT30,225^A0N,30,30^FH\^FDThe only way to test is in production.^FS
+        ^FT30,275^A0N,30,30^FH\^FDDate^FS
+        ^FT350,275^A0N,30,30^FH\^FD- Frank Grand^FS
+        ^FO30,300^GB550,0,6^FS
+        ^FT30,350^A0N,30,30^FH\^FDDeviceName^FS
+        ^FT420,350^A0N,30,30^FH\^FDPrinterIP^FS
         ^XZ", order: 3 )]
+    [BooleanField( "Allow Manual Setup", "By default, the block only allows known devices to access Attended Check-in.  Toggle this to allow manual device configuration.  You should also set Site security to require authenticated devices or users.", false, "", 4 )]
     public partial class Admin : CheckInBlock
     {
         #region Control Methods
@@ -67,7 +55,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
             if ( !Page.IsPostBack )
             {
                 // Set the check-in state from values passed on query string
-                bool themeRedirect = PageParameter( "ThemeRedirect" ).AsBoolean( false );
+                var themeRedirect = PageParameter( "ThemeRedirect" ).AsBoolean( false );
 
                 var preferredKioskId = PageParameter( "KioskId" ).AsIntegerOrNull();
                 if ( preferredKioskId != null )
@@ -99,6 +87,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                     CurrentCheckInState = null;
                     CurrentWorkflow = null;
 
+                    // If checkin type not set, try to calculate it from the group types.
                     if ( !CurrentCheckinTypeId.HasValue )
                     {
                         foreach ( int groupTypeId in CurrentGroupTypeIds )
@@ -120,16 +109,18 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                 }
                 else
                 {
-                    bool useGeoLocationService = GetAttributeValue( "EnableLocationSharing" ).AsBoolean();
-
-                    // Inject script used for geo location determiniation
-                    if ( !useGeoLocationService )
+                    if ( GetAttributeValue( "AllowManualSetup" ).AsBoolean() )
+                    {
+                        ddlKiosk.Visible = true;
+                    }
+                    else if ( !GetAttributeValue( "EnableLocationSharing" ).AsBoolean() )
                     {
                         lbOk.Visible = true;
                         AttemptKioskMatchByIpOrName();
                     }
                     else
                     {
+                        // Inject script used for geo location determination
                         RockPage.AddScriptLink( "~/Blocks/CheckIn/Scripts/geo-min.js" );
                         lbRefresh.Visible = true;
                         AddGeoLocationScript();
@@ -137,24 +128,72 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
 
                     AttemptKioskMatchByIpOrName();
 
-                    string script = string.Format( @"<script>
+                    var script = string.Format( @"<script>
                         $(document).ready(function (e) {{
                             if (localStorage) {{
                                 if (localStorage.checkInKiosk) {{
                                     $('[id$=""hfKiosk""]').val(localStorage.checkInKiosk);
+                                    if (localStorage.theme) {{
+                                        $('[id$=""hfTheme""]').val(localStorage.theme);
+                                    }}
                                     if (localStorage.checkInType) {{
                                         $('[id$=""hfCheckinType""]').val(localStorage.checkInType);
                                     }}
                                     if (localStorage.checkInGroupTypes) {{
-                                        $('[id$=""hfGroupTypes""]').val(localStorage.checkInGroupTypes);
+                                        $('[id$=""hfGroupTypes""]').val(localStorage.checkInGroupTypes + ',');
                                     }}
                                 }}
-                                {0};
+                                window.location = ""javascript:{0}"";
                             }}
                         }});
                         </script>", this.Page.ClientScript.GetPostBackEventReference( lbRefresh, "" )
                     );
-                    phScript.Controls.Add( new LiteralControl( script ) );
+                    using ( var literalControl = new LiteralControl( script ) )
+                    {
+                        phScript.Controls.Add( literalControl );
+                    }
+
+                    if ( GetAttributeValue( "AllowManualSetup" ).AsBoolean() )
+                    {
+                        ddlTheme.Items.Clear();
+                        var di = new DirectoryInfo( this.Page.Request.MapPath( ResolveRockUrl( "~~" ) ) );
+                        foreach ( var themeDir in di.Parent.EnumerateDirectories().OrderBy( a => a.Name ) )
+                        {
+                            ddlTheme.Items.Add( new ListItem( themeDir.Name, themeDir.Name.ToLower() ) );
+                        }
+
+                        if ( !string.IsNullOrWhiteSpace( CurrentTheme ) )
+                        {
+                            ddlTheme.SetValue( CurrentTheme );
+                        }
+                        else
+                        {
+                            ddlTheme.SetValue( RockPage.Site.Theme.ToLower() );
+                        }
+
+                        ddlKiosk.Items.Clear();
+                        var kioskDeviceType = Rock.SystemGuid.DefinedValue.DEVICE_TYPE_CHECKIN_KIOSK.AsGuid();
+                        using ( var rockContext = new RockContext() )
+                        {
+                            ddlKiosk.DataSource = new DeviceService( rockContext )
+                                .Queryable().AsNoTracking()
+                                .Where( d => d.DeviceType.Guid.Equals( kioskDeviceType ) )
+                                .OrderBy( d => d.Name )
+                                .Select( d => new
+                                {
+                                    d.Id,
+                                    d.Name
+                                } )
+                                .ToList();
+                        }
+                        ddlKiosk.DataBind();
+                        ddlKiosk.Items.Insert( 0, new ListItem( None.Text, None.IdValue ) );
+
+                        if ( CurrentKioskId.HasValue )
+                        {
+                            ddlKiosk.SetValue( CurrentKioskId );
+                        }
+                    }
 
                     // Initiate the check-in variables
                     lbOk.Focus();
@@ -177,46 +216,45 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         private void AttemptKioskMatchByIpOrName()
         {
             // match kiosk by ip/name.
-            string ipAddress = RockPage.GetClientIpAddress();
-            bool lookupKioskName = GetAttributeValue( "EnableReverseLookup" ).AsBoolean( false );
+            var ipAddress = RockPage.GetClientIpAddress();
+            var lookupKioskName = GetAttributeValue( "EnableReverseLookup" ).AsBoolean( false );
 
             var rockContext = new RockContext();
-            var checkInDeviceTypeId = DefinedValueCache.Read( Rock.SystemGuid.DefinedValue.DEVICE_TYPE_CHECKIN_KIOSK ).Id;
+            var checkInDeviceTypeId = DefinedValueCache.Get( Rock.SystemGuid.DefinedValue.DEVICE_TYPE_CHECKIN_KIOSK ).Id;
             var device = new DeviceService( rockContext ).GetByIPAddress( ipAddress, checkInDeviceTypeId, lookupKioskName );
 
-            string hostName = string.Empty;
-            string deviceLocation = string.Empty;
+            var hostName = string.Empty;
+            var deviceLocation = string.Empty;
 
             try
             {
                 hostName = Dns.GetHostEntry( ipAddress ).HostName;
             }
-            catch ( System.Net.Sockets.SocketException )
+            catch ( SocketException )
             {
                 hostName = "Unknown";
             }
 
             if ( device != null )
             {
+                ClearMobileCookie();
+                CurrentKioskId = device.Id;
+
                 var location = device.Locations.FirstOrDefault();
                 if ( location != null )
                 {
                     deviceLocation = location.Name;
                 }
-
-                ClearMobileCookie();
-                CurrentKioskId = device.Id;
             }
-            else
+            else if ( !GetAttributeValue( "AllowManualSetup" ).AsBoolean() )
             {
-                maAlert.Show( "This device has not been set up for check-in.", ModalAlertType.Alert );
+                maAlert.Show( "This device does not match a known check-in station.", ModalAlertType.Alert );
                 lbOk.Text = @"<span class='fa fa-refresh' />";
                 lbOk.Enabled = false;
             }
 
             lblInfo.Text = string.Format( "Device IP: {0} &nbsp;&nbsp;&nbsp;&nbsp; Name: {1} &nbsp;&nbsp;&nbsp;&nbsp; Location: {2}", ipAddress, hostName, deviceLocation );
             pnlContent.Update();
-            pnlHeader.Update();
         }
 
         #endregion Control Methods
@@ -230,11 +268,21 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void lbOk_Click( object sender, EventArgs e )
         {
-            if ( CurrentCheckInState == null )
+            if ( ddlKiosk.Visible && ddlKiosk.SelectedValue == None.IdValue )
             {
-                maAlert.Show( "Check-in state timed out.  Please refresh the page.", ModalAlertType.Warning );
+                // reset client state to match server cache
+                hfGroupTypes.Value = ViewState["hfGroupTypes"] as string;
+                maAlert.Show( "Please select a check-in device and area.", ModalAlertType.Warning );
                 pnlContent.Update();
-                Response.Redirect( Request.Path, false );
+                return;
+            }
+
+            var selectedGroupTypes = hfGroupTypes.Value.SplitDelimitedValues().Select( int.Parse ).ToList();
+            if ( !selectedGroupTypes.Any() )
+            {
+                hfGroupTypes.Value = ViewState["hfGroupTypes"] as string;
+                maAlert.Show( "Please select at least one check-in area.", ModalAlertType.Warning );
+                pnlContent.Update();
                 return;
             }
 
@@ -243,21 +291,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                 CurrentKioskId = hfKiosk.ValueAsInt();
             }
 
-            var selectedGroupTypes = hfGroupTypes.Value.SplitDelimitedValues().Select( int.Parse ).Distinct().ToList();
-            if ( !selectedGroupTypes.Any() )
-            {
-                foreach ( DataListItem item in dlMinistry.Items )
-                {
-                    ( (Button)item.FindControl( "lbMinistry" ) ).RemoveCssClass( "active" );
-                }
-
-                hfGroupTypes.Value = string.Empty;
-                maAlert.Show( "Please select at least one check-in type.", ModalAlertType.Warning );
-                pnlContent.Update();
-                return;
-            }
-
-            // If Kiosk and GroupTypes were passed, but not a checkin type, try to calculate it from the group types.
+            // calculate checkin type from the group types if Kiosk and GroupTypes were passed
             if ( CurrentKioskId.HasValue && selectedGroupTypes.Any() && !CurrentCheckinTypeId.HasValue )
             {
                 if ( !CurrentCheckinTypeId.HasValue )
@@ -277,6 +311,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
             // return if kiosk isn't active
             if ( !CurrentCheckInState.Kiosk.HasActiveLocations( selectedGroupTypes ) )
             {
+                hfGroupTypes.Value = ViewState["hfGroupTypes"] as string;
                 maAlert.Show( "There are no active schedules for the selected grouptypes.", ModalAlertType.Information );
                 pnlContent.Update();
                 return;
@@ -326,11 +361,11 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         }
 
         /// <summary>
-        /// Handles the ItemDataBound event of the dlMinistry control.
+        /// Handles the ItemDataBound event of the ddlGroupTypes control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RepeaterItemEventArgs"/> instance containing the event data.</param>
-        protected void dlMinistry_ItemDataBound( object sender, DataListItemEventArgs e )
+        protected void ddlGroupTypes_ItemDataBound( object sender, DataListItemEventArgs e )
         {
             var selectedGroupTypes = hfGroupTypes.Value.SplitDelimitedValues().Select( int.Parse ).ToList();
             if ( selectedGroupTypes.Count > 0 )
@@ -339,10 +374,43 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                 {
                     if ( selectedGroupTypes.Contains( ( (GroupType)e.Item.DataItem ).Id ) )
                     {
-                        ( (Button)e.Item.FindControl( "lbMinistry" ) ).AddCssClass( "active" );
+                        ( (Button)e.Item.FindControl( "btnGroupType" ) ).AddCssClass( "active" );
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlTheme control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void ddlTheme_SelectedIndexChanged( object sender, EventArgs e )
+        {
+            CurrentTheme = ddlTheme.SelectedValue;
+            RedirectToNewTheme( ddlTheme.SelectedValue );
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlKiosk control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void ddlKiosk_SelectedIndexChanged( object sender, EventArgs e )
+        {
+            var selectedKioskId = ddlKiosk.SelectedValueAsInt();
+            if ( selectedKioskId != None.Id )
+            {
+                CurrentKioskId = selectedKioskId;
+                hfKiosk.Value = selectedKioskId.ToString();
+            }
+
+            CurrentCheckInState = null;
+            CurrentWorkflow = null;
+            hfGroupTypes.Value = string.Empty;
+            BindGroupTypes();
+            SaveState();
+            pnlContent.Update();
         }
 
         #endregion Events
@@ -356,7 +424,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// </summary>
         private void AddGeoLocationScript()
         {
-            string geoScript = string.Format( @"
+            var geoScript = string.Format( @"
             <script>
                 $(document).ready(function (e) {{
                     tryGeoLocation();
@@ -380,7 +448,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                         $(""div.checkin-header h1"").html( 'Checking Your Location...' );
                         $(""div.checkin-header"").append( ""<p class='muted'>"" + latitude + "" "" + longitude + ""</p>"" );
                         // now perform a postback to fire the check geo location
-                        {0};
+                        window.location = ""javascript:{0}"";
                     }}
 
                     function error_callback( p ) {{
@@ -390,7 +458,10 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                 }});
             </script>
             ", this.Page.ClientScript.GetPostBackEventReference( lbCheckGeoLocation, "" ) );
-            phScript.Controls.Add( new LiteralControl( geoScript ) );
+            using ( var literalControl = new LiteralControl( geoScript ) )
+            {
+                phScript.Controls.Add( literalControl );
+            }
         }
 
         /// <summary>
@@ -401,14 +472,14 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// <returns></returns>
         public static Device GetCurrentKioskByGeoFencing( string sLatitude, string sLongitude )
         {
-            double latitude = double.Parse( sLatitude );
-            double longitude = double.Parse( sLongitude );
-            var checkInDeviceTypeId = DefinedValueCache.Read( Rock.SystemGuid.DefinedValue.DEVICE_TYPE_CHECKIN_KIOSK ).Id;
+            var latitude = double.Parse( sLatitude );
+            var longitude = double.Parse( sLongitude );
+            var checkInDeviceTypeId = DefinedValueCache.Get( Rock.SystemGuid.DefinedValue.DEVICE_TYPE_CHECKIN_KIOSK ).Id;
 
             // We need to use the DeviceService until we can get the GeoFence to JSON Serialize/Deserialize.
             using ( var rockContext = new RockContext() )
             {
-                Device kiosk = new DeviceService( rockContext ).GetByGeocode( latitude, longitude, checkInDeviceTypeId );
+                var kiosk = new DeviceService( rockContext ).GetByGeocode( latitude, longitude, checkInDeviceTypeId );
                 return kiosk;
             }
         }
@@ -425,9 +496,9 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         private void SetDeviceIdCookie( Device kiosk )
         {
             // set an expiration cookie for these coordinates.
-            double timeCacheMinutes = double.Parse( GetAttributeValue( "TimetoCacheKioskGeoLocation" ) ?? "0" );
+            var timeCacheMinutes = double.Parse( GetAttributeValue( "TimetoCacheKioskGeoLocation" ) ?? "0" );
 
-            HttpCookie deviceCookie = Request.Cookies[CheckInCookie.DEVICEID];
+            var deviceCookie = Request.Cookies[CheckInCookie.DEVICEID];
             if ( deviceCookie == null )
             {
                 deviceCookie = new HttpCookie( CheckInCookie.DEVICEID, kiosk.Id.ToString() );
@@ -436,7 +507,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
             deviceCookie.Expires = ( timeCacheMinutes == 0 ) ? DateTime.MaxValue : RockDateTime.Now.AddMinutes( timeCacheMinutes );
             Response.Cookies.Set( deviceCookie );
 
-            HttpCookie isMobileCookie = new HttpCookie( CheckInCookie.ISMOBILE, "true" );
+            var isMobileCookie = new HttpCookie( CheckInCookie.ISMOBILE, "true" );
             Response.Cookies.Set( isMobileCookie );
         }
 
@@ -445,8 +516,10 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// </summary>
         private void ClearMobileCookie()
         {
-            HttpCookie isMobileCookie = new HttpCookie( CheckInCookie.ISMOBILE );
-            isMobileCookie.Expires = RockDateTime.Now.AddDays( -1d );
+            var isMobileCookie = new HttpCookie( CheckInCookie.ISMOBILE )
+            {
+                Expires = RockDateTime.Now.AddDays( -1d )
+            };
             Response.Cookies.Set( isMobileCookie );
         }
 
@@ -461,11 +534,11 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// <returns></returns>
         private GroupTypeCache GetCheckinType( int? groupTypeId )
         {
-            Guid templateTypeGuid = Rock.SystemGuid.DefinedValue.GROUPTYPE_PURPOSE_CHECKIN_TEMPLATE.AsGuid();
-            var templateType = DefinedValueCache.Read( templateTypeGuid );
+            var templateTypeGuid = Rock.SystemGuid.DefinedValue.GROUPTYPE_PURPOSE_CHECKIN_TEMPLATE.AsGuid();
+            var templateType = DefinedValueCache.Get( templateTypeGuid );
             if ( templateType != null )
             {
-                return GetCheckinType( GroupTypeCache.Read( groupTypeId.Value ), templateType.Id );
+                return GetCheckinType( GroupTypeCache.Get( groupTypeId.Value ), templateType.Id );
             }
 
             return null;
@@ -508,21 +581,28 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
         /// <summary>
         /// Binds the group types.
         /// </summary>
-        /// <param name="selectedValues">The selected values.</param>
+        /// <param name="rockContext">The rock context.</param>
         private void BindGroupTypes( RockContext rockContext = null )
         {
+            var groupTypes = new List<GroupType>();
             if ( CurrentKioskId > 0 )
             {
-                dlMinistry.DataSource = GetDeviceGroupTypes( (int)CurrentKioskId, rockContext );
-                dlMinistry.DataBind();
-                lblHeader.Visible = true;
+                groupTypes = GetDeviceGroupTypes( (int)CurrentKioskId, rockContext );
             }
+
+            lblHeader.Visible = groupTypes.Any();
+            ddlGroupTypes.DataSource = groupTypes;
+            ddlGroupTypes.DataBind();
+
+            // store server side selections
+            ViewState["hfGroupTypes"] = hfGroupTypes.Value;
         }
 
         /// <summary>
         /// Gets the device group types.
         /// </summary>
         /// <param name="deviceId">The device identifier.</param>
+        /// <param name="rockContext">The rock context.</param>
         /// <returns></returns>
         private List<GroupType> GetDeviceGroupTypes( int deviceId, RockContext rockContext = null )
         {
@@ -608,6 +688,7 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                 var labelContent = GetAttributeValue( "TestLabelContent" );
                 labelContent = Regex.Replace( labelContent, string.Format( @"(?<=\^FD){0}(?=\^FS)", "DeviceName" ), device.Name );
                 labelContent = Regex.Replace( labelContent, string.Format( @"(?<=\^FD){0}(?=\^FS)", "PrinterIP" ), printerAddress );
+                labelContent = Regex.Replace( labelContent, string.Format( @"(?<=\^FD){0}(?=\^FS)", "Date" ), RockDateTime.Now.ToString("MM/dd/yy HH:mm tt") );
 
                 // try printing the label
                 if ( !string.IsNullOrWhiteSpace( labelContent ) && !string.IsNullOrWhiteSpace( printerAddress ) )
@@ -615,13 +696,15 @@ namespace RockWeb.Plugins.cc_newspring.AttendedCheckin
                     var socket = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
                     var printerIpEndPoint = new IPEndPoint( IPAddress.Parse( printerAddress ), 9100 );
                     var result = socket.BeginConnect( printerIpEndPoint, null, null );
-                    bool success = result.AsyncWaitHandle.WaitOne( 5000, true );
+                    var success = result.AsyncWaitHandle.WaitOne( 5000, true );
 
                     if ( socket.Connected )
                     {
-                        var ns = new NetworkStream( socket );
-                        byte[] toSend = System.Text.Encoding.ASCII.GetBytes( labelContent.ToString() );
-                        ns.Write( toSend, 0, toSend.Length );
+                        var labelToSend = System.Text.Encoding.ASCII.GetBytes( labelContent.ToString() );
+                        using ( var networkStream = new NetworkStream( socket ) )
+                        {
+                            networkStream.Write( labelToSend, 0, labelToSend.Length );
+                        }
                     }
                     else
                     {

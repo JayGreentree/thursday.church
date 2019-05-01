@@ -1,0 +1,420 @@
+.page-background {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-christmas.jpg") !important;
+}
+
+#subnavbar-bg {
+    display: none;
+}
+
+.main-feature {
+    padding-top: 100px;
+}
+
+#zone-feature {
+    margin: 0 auto;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-christmas.jpg") !important;
+    }
+
+    .main-feature {
+        height: unset !important;
+        padding-top: 75px !important;
+    }
+}
+
+/* Feature Title Section */
+
+.title {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.title img {
+    margin: 0 auto;
+    width: unset;
+    width: 80%;
+}
+
+.title h3 {
+    font-size: 36px;
+    line-height: 38px;
+}
+
+.title-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding-bottom: 20px;
+}
+
+.title-button {
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #bb191f;
+    font-family: Akrobat;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    text-transform: uppercase;
+    width: 253.53px;
+    max-width: unset;
+    height: 53.03px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5.64px;
+    margin: 0 20px;
+}
+
+.title-button:hover {
+    text-decoration: none;
+    background-color: #bb191f;
+    border-color: #bb191f;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 768px) {
+    .title-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title-button {
+        margin: 10px 20px;
+    }
+
+    .title img {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .title-button {
+        width: 100%;
+    }
+
+    .title h3 {
+        font-size: 26px;
+        line-height: 28px;
+    }
+}
+
+/* End Feature Title Section */
+
+/* video promo section */
+#section-a-bg {
+    background-color: #FFFFFF;
+}
+
+/* End video promo Section */
+
+/* Map Section */
+
+#section-b-bg {
+    padding: 0;
+}
+
+#zone-sectionb {
+    max-width: 100%;
+    margin: unset;
+}
+
+.our-campuses-map-window {
+    background: #777;
+}
+ 
+.our-campuses-map {
+    min-height: 550px;
+}
+
+/* End Map Section */
+
+/* Campus Card Section */
+#zone-sectionc {
+    margin: 0 auto;
+}
+
+.service-times-title {
+    color: #bb191f;
+    font-family: Akrobat;
+    font-weight: bold;
+    text-align: center;
+}
+
+.campus-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.campus-card {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px 20px 10px;
+    width: 345px;
+    min-width: 345px;
+    max-width: 345px;
+    height: 375px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    border-radius: 5px;
+    border: unset;
+    border-width: unset;
+    background-color: #FFFFFF;
+    z-index: 1;
+    overflow: hidden;
+}
+ 
+ 
+.campus-card .image img {
+    object-fit: cover;
+    width: 100%;
+    height: 200px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 10px 16px;
+}
+ 
+.campus-card .content {
+    height: auto;
+}
+
+.campus-card .header {
+    display: flex;
+    flex-direction: column;
+}
+ 
+.campus-card .link {
+    /* padding: 0 16px 20px 16px; */
+    align-self: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ 
+.campus-card .link a {
+    height: unset;
+    line-height: unset;
+    color: #FFFFFF;
+    margin: unset;
+}
+
+.contact-phone {
+    color: #bb191f !important;
+    background-color: unset !important;
+    border-color: unset !important;
+}
+ 
+.campus-card .service-times {
+    color: #777777;
+}
+
+.icon-details {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.icon-desc p {
+    font-size: 12px;
+    line-height: 14px;
+    color: #777777;
+}
+
+/* Campus Card Responsive Styling */
+@media screen and (max-width: 760px) {
+    .campus-cards-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .campus-card {
+        height: 400px;
+    }
+
+    .campus-card .link {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .contact-phone {
+        margin-bottom: 10px !important;
+    }
+
+    .icon-details {
+        margin-top: 5px;
+    }
+
+    .btn-primary {
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .campus-card {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+    }
+}
+
+
+/* End Campus Card Section */
+
+/* Countdown section */
+#section-d-bg {
+    background-color: #FFFFFF;
+}
+
+/* End countdown Section */
+
+/* Christmas Advent Section */
+
+#section-e-bg {
+    background: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/background-christmas-advent.jpg");
+}
+
+.advent-logo {
+	width: 350px;
+    	margin-bottom: 20px;
+}
+/* End Advent Section */
+
+/* Shirt Section */
+
+#section-f-bg {
+    background-color: #FFFFFF;
+}
+
+/* End Shirt Section */
+
+ /* Overrides */
+ h2, h3, h4 {
+     color: #bb191f;
+}
+
+a:focus {
+    outline: none;
+}
+
+.btn-primary, .contextsetter-campus .dropdown {
+    background-color: #bb191f;
+    border-color: #bb191f;
+    border-radius: 5px;
+} 
+
+@media screen and (max-width: 768px) {
+    .btn {
+        width: unset;
+        max-width: 200px;
+        margin: 5px 0;
+    }
+}
+
+/* Event Scroller Overrides */
+#zone-sectiong {
+    margin: 0 auto;
+    width: 1075px;
+}
+
+.events-row {
+    width: 1075px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.event-cards-header {
+    margin-left: 0;
+    padding-top: 20px;
+}
+
+.contextsetter {
+    margin-right: 0;
+}
+
+.contextsetter-campus .dropdown {
+    margin-right: 0;
+}
+
+.event-cards-header h3, .event-cards-header .nav-button, .event-card .link a i {
+    color: #bb191f;
+}
+
+.contextsetter-campus .dropdown a:hover {
+    background-color: #bb191f;
+}
+
+.slick-list {
+    width: 1075px;
+    margin: 0 auto;
+}
+
+.event-card {
+    width: 345px;
+    margin: 5px 10px;
+}
+
+.event-card .link a {
+    color: #bb191f;
+}
+
+@media screen and (max-width: 1124px) {
+    #zone-sectiong, .events-row, .slick-list {
+        width: 710px;
+    }
+}
+
+
+@media screen and (max-width: 760px) {
+    #zone-sectiong, .slick-list {
+        width: 345px;
+        padding: 0;
+    }
+
+    .events-row {
+        width: 345px;
+    }
+
+    .event-card {
+        margin: 5px 0;
+    }
+
+    .event-campus-setter {
+        float: unset;
+        padding: 10px 0;
+    }
+
+    .contextsetter {
+        margin: 7.5px 0;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    #zone-sectiong, .slick-list {
+        width: 300px;
+    }
+
+    .events-row {
+        width: 300px;
+    }
+
+    .event-card {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+    }
+}
+
+/* End Events Scroller overrides */
+
+/* End Overrides */

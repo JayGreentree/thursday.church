@@ -1,0 +1,102 @@
+<div class="neighborhood-groups-card">
+    <div class="title">
+        <h4>Life Training Courses</h4>
+    </div>
+    <div class="content">
+        <div>               
+            {% for group in Groups %}
+                {% assign personIndex = forloop.index %}               
+                <a type="button" data-toggle="collapse" data-target="#personDetails{{ personIndex }}" class="person-details-toggle">
+                    <div class="person-row">
+                        <div class="profile-picture">
+                            {% assign familyPicture = group | Attribute: 'FamilyPicture', 'RawValue' %}
+                            {% if familyPicture != empty %}
+                                    <img class="pull-left margin-r-sm margin-b-sm" src="/GetImage.ashx?guid={{ familyPicture }}"/>
+                            {% else %}
+                                    <img class="pull-left margin-r-sm margin-b-sm" src="/Themes/church_ccv_External_v8/Assets/Images/home/get-involved/icon-connect.png"/>
+                            {% endif %}
+                        </div>
+                        <div class="person-info">       
+                            {% for attribute in group.AttributeValues %}
+                                {% if attribute.Value != empty %}
+                                    {% if attribute.AttributeName == "Course Title" %}
+                                         <h5>{{ attribute.ValueFormatted }}</h5>
+                                         <p>{{ group.Schedule.FriendlyScheduleText }}</p>
+                                    {% endif %}     
+                                {% endif %}
+                            {% endfor %}
+                        {% for attribute in group.AttributeValues %}
+                            {% if attribute.Value != empty %}
+                                {% if attribute.AttributeName == "Course Topic" %}
+                                    <div class="registrationDiv">  
+                                        <h5>Topic: </h5>
+                                        <p>{{ attribute.ValueFormatted }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </a> 
+                <div id="personDetails{{ personIndex }}" class="collapse">
+                    <div class="details-container">
+                        <div class="person-row-details">
+                        {% for groupdistancelist in GroupDistanceList %}
+                                {% if groupdistancelist.GroupId == group.Id %}
+                                    <p>Distance: {{ groupdistancelist.Distance }} miles away</p>                                      
+                                {% endif %} 
+                            {% endfor %}
+                            {% if LinkedPages.RegisterPage and LinkedPages.RegisterPage != '' %}
+                                {% if LinkedPages.RegisterPage contains '?' %}
+                                    <a class="btn btn-primary" href='{{ LinkedPages.RegisterPage }}&GroupId={{ group.Id }}'>Register</a>
+                                {% else %}
+                                    <a class="btn btn-primary" href='{{ LinkedPages.RegisterPage }}?GroupId={{ group.Id }}'>Register</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        {% for attribute in group.AttributeValues %}
+                            {% if attribute.Value != empty %}
+                                {% if attribute.AttributeName == "Course Description" %}
+                                    <div class="details-right-card">
+                                        <h5>Description</h5>
+                                        {{ attribute.ValueFormatted }}
+                                        <div class="moreInfoContainer">  
+                                {% elseif attribute.AttributeName == "Registration Start Date" %}
+                                    <div class="registrationDiv">  
+                                        <h5>Registration Starts: </h5>
+                                        <p>{{ attribute.ValueFormatted }}</p>
+                                    </div>  
+                                {% elseif attribute.AttributeName == "Course Duration" %}
+                                    <div class="classDurationDiv">     
+                                        <h5>Course Duration: </h5>
+                                        <p> {{ attribute.ValueFormatted }}</p>
+                                    </div>     
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <script>
+
+                // on details collapse change toggle icon
+                $('#personDetails{{ personIndex }}').on('shown.bs.collapse', function() {
+                    toggleChevron('#personDetailsToggle{{ personIndex }}');
+                });
+                $('#personDetails{{ personIndex }}').on('hidden.bs.collapse', function() {
+                    toggleChevron('#personDetailsToggle{{ personIndex }}');
+                });
+
+                toggleChevron = function(element) {
+                    $(element).toggleClass('mdi-chevron-down mdi-chevron-up');
+                }
+
+                activatePopOver('.tooltip-person-details', 'Person Details');
+            </script>    
+ 
+            {% endfor %}
+        </div>
+    </div>
+

@@ -1,0 +1,86 @@
+﻿.talentlms {
+    margin-bottom: 20px;
+}
+
+.talentlms-navigation {
+    display: flex;
+}
+
+.navigation-item {
+    padding: 5px 10px;
+    margin: 0 10px 0 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    border: 1px solid #d8d1c8;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.navigation-item:hover {
+    cursor: pointer;
+}
+
+.navigation-item.selected {
+    background-color: #ee7624;
+    color: #FFFFFF;
+}
+
+.course-name {
+    display: flex;
+}
+
+.expires, .expired {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #FFFFFF;
+    margin: 0 10px;
+    font-size: 12px;
+    padding: 0 5px;
+}
+
+.expires {
+    background-color: #ecc759;
+    border-color: #ecc759;
+}
+
+.expired {
+    background-color: #A71315;
+    border-color: #A71315;
+}
+
+.progress-completed {
+    background-color: #0DA100;
+    border-color: #0DA100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.progress {
+    min-width: 100px;
+    margin: 0;
+}
+
+.course-action {
+    display: flex !important;
+    justify-content: flex-end;
+}
+
+.btn-talentlms {
+    padding: 0 12px;
+    min-width: 100px;
+    margin: 0 10px;
+}
+
+/* Rock Theme overrides*/
+#myCourses .table-bordered>tbody>tr>td, #myCourses .table-bordered>thead>tr>th, #allCourses .table-bordered>tbody>tr>td, #allCourses .table-bordered>thead>tr>th  {
+    border: unset;
+}

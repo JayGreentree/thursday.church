@@ -1,0 +1,149 @@
+<!--LIVE EVENT COUNTER-->
+<div id="live-wrapper">
+<div class="inner">
+<a id="live-btn" href="http://live.thursdaychurch.org"><div id="left">Next Online Experience In:</div><!-- #left -->
+<div id="right">
+<div id="churchonline_counter">
+  <div class="live">Live Now!</div>
+  <ul class="time">
+    <li><span class="days"></span> <br /><span class="label">days</span></li>
+    <li><span class="hours"></span> <br /><span class="label">hrs</span></li>
+    <li><span class="minutes"></span> <br /><span class="label">mins</span></li>
+    <li><span class="seconds"></span> <br /><span class="label">secs</span></li>
+  </ul>
+</div><!-- #churchonline_counter -->
+</div><!-- #right -->
+</a>
+</div><!-- .inner -->
+</div><!-- #live-wrapper-->
+
+  <!--LIVE EVENT COUNTER JS-->
+<style type="text/css">
+#live-wrapper {
+	position: relative;
+	float:left;
+	width: 100%;
+	height: auto;
+	//background: #666;
+	color:#fff;
+	font-size:.7em;
+	line-height:1em;
+	border-top:0px solid #666;
+}
+#live-wrapper .inner{
+	width:100%;
+	max-width:990px;
+	margin:0 auto;
+	text-align:center;
+	float:none;
+	display:block;
+}
+#live-btn{
+	display:block;
+	-webkit-transition: all 300ms ease-in-out;
+	-moz-transition: all 300ms ease-in-out;
+	-ms-transition: all 300ms ease-in-out;
+	-o-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+	//background: #666;
+	color:#fff;
+	padding:8px 1%;
+	text-shadow:1px 2px 0px rgba(0,0,0,.3);
+}
+#live-btn:hover {
+	text-decoration:none;
+	//background:#333;
+}
+#live-wrapper .inner #left,
+#live-wrapper .inner #right{
+	vertical-align:middle;
+	float:inherit;
+	text-align:center;
+	display:block;
+	width:auto;
+}
+#live-wrapper .inner #left{
+	text-transform:uppercase;
+	font-size:1.2em;
+	margin:0 0px 5px 0;
+}
+	#churchonline_counter { overflow: visible; width: 100%; padding: 0px; display: none; }
+	#churchonline_counter .description, #churchonline_counter .time li .label { font-size: 0.5em; text-transform:uppercase;}
+	#churchonline_counter .time { list-style: none; padding: 0; margin: 0px 0 0 0; display:inline-block;}
+	#churchonline_counter .time li { 
+		float: none;
+		padding: 14px 5px 12px!important;
+		width: auto;
+		text-align: center;
+		background: rgba(0,0,0,.3);
+		margin: 0 5px 0 0;
+		display: inline-block;
+		border-radius: 5px;
+		line-height:0em;
+		box-shadow:inset 1px 1px 1px rgba(0,0,0,1), 1px 1px 0px rgba(255,255,255,.2);
+		-webkit-box-shadow:inset 1px 1px 1px rgba(0,0,0,1), 1px 1px 0px rgba(255,255,255,.2);
+		position:relative;
+		font-size:1.5em;
+	}
+#churchonline_counter .time li:before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAGCAYAAAAL+1RLAAAAHElEQVQIW2NkwAIYcQnORJdg/P//vzGGINFmAgD0EQPQwICdMQAAAABJRU5ErkJggg==);
+	background-repeat: repeat-x;
+	background-position: 0 50%;
+}
+
+  #churchonline_counter .time li:first-child { padding-left: 0; }
+  #churchonline_counter .time li span { font-size: 1.2em; }
+  #churchonline_counter .time li br { display:none; }
+  #churchonline_counter .live { display: none; font-weight: bold; text-transform:uppercase;font-size:1.3em;line-height:1em;	color: #fdc010;}
+	.days, .hours, .minutes, .seconds {
+		color: #ffffff;
+		font-size: 1.3em!important;
+		font-weight: bold;
+	}
+.nav_container{
+	border-bottom:1px solid #000;
+}
+
+@media screen and (min-width:481px){
+#live-wrapper .inner #left,
+#live-wrapper .inner #right{
+	display:inline-block;
+}
+#live-wrapper .inner #left{
+	font-size:1.1em;
+	margin:0 5px 0 0;
+}
+}
+@media screen and (min-width:769px){
+#live-wrapper {
+	position:absolute;
+	top:0px;
+	right:160px;
+	z-index:0;
+	font-size:.8em;
+	background:none;
+	border-top:none;
+}
+#live-wrapper .inner {
+	float:none;
+	text-align:right;
+}
+#live-btn{
+	display:inline-block;
+	/*border-radius:0 0 10px 10px;
+	-webkit-border-radius:0 0 10px 10px;
+	box-shadow:inset 3px 0px 0px rgba(0,0,0,.2), 2px 2px 0px rgba(255,255,255,1);
+	-webkit-box-shadow:inset 3px 0px 0px rgba(0,0,0,.2), 2px 2px 0px rgba(255,255,255,1);
+	*/
+}
+#live-wrapper .inner #left,
+#live-wrapper .inner #right{
+	float:none;
+}
+</style>

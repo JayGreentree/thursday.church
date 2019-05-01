@@ -1,4 +1,4 @@
-﻿/*
+/*
 
   Used to provide extensible classes for plugin developers to use to help them match the themes they are running in
 
@@ -162,10 +162,38 @@
   background-color: @body-bg;
 }
 
+// font weights
 .text-color {
   color: @text-color;
 }
 
+.text-normal {
+  font-weight: normal;
+}
+
+.text-light {
+  font-weight: @font-weight-light;
+}
+
+.text-semibold {
+  font-weight: @font-weight-semibold;
+}
+
+.text-bold {
+  font-weight: @font-weight-bold;
+}
+
+.text-light {
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+}
+
+.text-shadow {
+  text-shadow: -1px -1px 0 #777, 1px -1px 0 #777, -1px 1px 0 #777, 1px 1px 0 #777;
+}
+
+.text-shadow-dark {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
 
 .is-inactive {
   opacity: .6;
@@ -433,6 +461,8 @@
 // 3. Even Height Columns - provides classes for making columns even heights
 // -------------------------
 
+// usage row row-eq-height
+
 .row-eq-height {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -503,3 +533,30 @@
 
 // 5. Utilities
 // -------------------------
+.width-full {
+  width: 100%;
+}
+
+.width-half {
+  width: 50%;
+}
+
+.width-quarter {
+  width: 25%;
+}
+
+.width-third {
+  width: 33.33333%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}

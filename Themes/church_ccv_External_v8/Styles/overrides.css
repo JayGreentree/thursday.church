@@ -1,0 +1,14 @@
+.mt-25
+{
+    margin-top: 25px !important;
+}
+
+.btn-white {
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    color: #490b4d;
+}
+
+/* .btn-white:hover {
+TODO: 50% opacity #7a1315 background color
+} */

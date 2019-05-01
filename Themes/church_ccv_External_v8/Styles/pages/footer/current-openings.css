@@ -1,0 +1,34 @@
+
+.page-background {   
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-careers-current-openings.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-mobile-careers-current-openings.jpg");
+    }
+}
+
+#ternavbar-bg {
+    display: flex;
+}
+
+.navigation-tertiary-items {
+    align-items: flex-start;
+}
+
+.openings {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+@media screen and (max-width: 927px) { 
+    .navigation-tertiary-items-slick {
+        padding-left: 50px;
+    }
+}
+

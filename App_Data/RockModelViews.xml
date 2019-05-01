@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <views>
-  <mapping-views hash="dce3df900e85ec7a0161918cd99b152287c7119ef07dbc5c8bebd462b7b254cf" conceptual-container="RockContext" store-container="CodeFirstDatabase">
+  <mapping-views hash="5377bf31271f7b55db037fd47e2ae29a37cd38a44633c75ad44d33dfe60aa6e0" conceptual-container="RockContext" store-container="CodeFirstDatabase">
     <view extent="CodeFirstDatabase.AttendanceCode"><![CDATA[
     SELECT VALUE -- Constructing AttendanceCode
         [CodeFirstDatabaseSchema.AttendanceCode](T1.AttendanceCode_Id, T1.AttendanceCode_IssueDateTime, T1.AttendanceCode_Code, T1.AttendanceCode_Guid, T1.AttendanceCode_ForeignId, T1.AttendanceCode_ForeignGuid, T1.AttendanceCode_ForeignKey)
@@ -3693,54 +3693,6 @@
             T.ForeignKey AS WorkflowTrigger_ForeignKey, 
             True AS _from0
         FROM RockContext.WorkflowTriggers AS T
-    ) AS T1]]></view>
-    <view extent="CodeFirstDatabase.PCOAccountPerson"><![CDATA[
-    SELECT VALUE -- Constructing PCOAccountPerson
-        [CodeFirstDatabaseSchema.PCOAccountPerson](T1.PCOAccountPerson_Id, T1.PCOAccountPerson_PersonAliasId, T1.PCOAccountPerson_AccountId, T1.PCOAccountPerson_PCOId, T1.PCOAccountPerson_RockSyncState, T1.PCOAccountPerson_PCOSyncState, T1.PCOAccountPerson_CreatedDateTime, T1.PCOAccountPerson_ModifiedDateTime, T1.PCOAccountPerson_CreatedByPersonAliasId, T1.PCOAccountPerson_ModifiedByPersonAliasId, T1.PCOAccountPerson_Guid, T1.PCOAccountPerson_ForeignId, T1.PCOAccountPerson_ForeignGuid, T1.PCOAccountPerson_ForeignKey)
-    FROM (
-        SELECT 
-            T.Id AS PCOAccountPerson_Id, 
-            T.PersonAliasId AS PCOAccountPerson_PersonAliasId, 
-            T.AccountId AS PCOAccountPerson_AccountId, 
-            T.PCOId AS PCOAccountPerson_PCOId, 
-            T.RockSyncState AS PCOAccountPerson_RockSyncState, 
-            T.PCOSyncState AS PCOAccountPerson_PCOSyncState, 
-            T.CreatedDateTime AS PCOAccountPerson_CreatedDateTime, 
-            T.ModifiedDateTime AS PCOAccountPerson_ModifiedDateTime, 
-            T.CreatedByPersonAliasId AS PCOAccountPerson_CreatedByPersonAliasId, 
-            T.ModifiedByPersonAliasId AS PCOAccountPerson_ModifiedByPersonAliasId, 
-            T.Guid AS PCOAccountPerson_Guid, 
-            T.ForeignId AS PCOAccountPerson_ForeignId, 
-            T.ForeignGuid AS PCOAccountPerson_ForeignGuid, 
-            T.ForeignKey AS PCOAccountPerson_ForeignKey, 
-            True AS _from0
-        FROM RockContext.PCOAccountPersons AS T
-    ) AS T1]]></view>
-    <view extent="CodeFirstDatabase.PCOAccount"><![CDATA[
-    SELECT VALUE -- Constructing PCOAccount
-        [CodeFirstDatabaseSchema.PCOAccount](T1.PCOAccount_Id, T1.PCOAccount_Name, T1.PCOAccount_ApplicationId, T1.PCOAccount_Secret, T1.PCOAccount_AllowPermissionDowngrade, T1.PCOAccount_AdministratorGroupId, T1.PCOAccount_EditorGroupId, T1.PCOAccount_SchedulerGroupId, T1.PCOAccount_ScheduledViewerGroupId, T1.PCOAccount_ViewerGroupId, T1.PCOAccount_CreatedDateTime, T1.PCOAccount_ModifiedDateTime, T1.PCOAccount_CreatedByPersonAliasId, T1.PCOAccount_ModifiedByPersonAliasId, T1.PCOAccount_Guid, T1.PCOAccount_ForeignId, T1.PCOAccount_ForeignGuid, T1.PCOAccount_ForeignKey)
-    FROM (
-        SELECT 
-            T.Id AS PCOAccount_Id, 
-            T.Name AS PCOAccount_Name, 
-            T.ApplicationId AS PCOAccount_ApplicationId, 
-            T.Secret AS PCOAccount_Secret, 
-            T.AllowPermissionDowngrade AS PCOAccount_AllowPermissionDowngrade, 
-            T.AdministratorGroupId AS PCOAccount_AdministratorGroupId, 
-            T.EditorGroupId AS PCOAccount_EditorGroupId, 
-            T.SchedulerGroupId AS PCOAccount_SchedulerGroupId, 
-            T.ScheduledViewerGroupId AS PCOAccount_ScheduledViewerGroupId, 
-            T.ViewerGroupId AS PCOAccount_ViewerGroupId, 
-            T.CreatedDateTime AS PCOAccount_CreatedDateTime, 
-            T.ModifiedDateTime AS PCOAccount_ModifiedDateTime, 
-            T.CreatedByPersonAliasId AS PCOAccount_CreatedByPersonAliasId, 
-            T.ModifiedByPersonAliasId AS PCOAccount_ModifiedByPersonAliasId, 
-            T.Guid AS PCOAccount_Guid, 
-            T.ForeignId AS PCOAccount_ForeignId, 
-            T.ForeignGuid AS PCOAccount_ForeignGuid, 
-            T.ForeignKey AS PCOAccount_ForeignKey, 
-            True AS _from0
-        FROM RockContext.PCOAccounts AS T
     ) AS T1]]></view>
     <view extent="CodeFirstDatabase.DeviceLocation"><![CDATA[
     SELECT VALUE -- Constructing DeviceLocation
@@ -7484,54 +7436,6 @@
             T.ForeignKey AS WorkflowTrigger_ForeignKey, 
             True AS _from0
         FROM CodeFirstDatabase.WorkflowTrigger AS T
-    ) AS T1]]></view>
-    <view extent="RockContext.PCOAccountPersons"><![CDATA[
-    SELECT VALUE -- Constructing PCOAccountPersons
-        [Rock.Data.PCOAccountPerson](T1.PCOAccountPerson_Id, T1.PCOAccountPerson_PersonAliasId, T1.PCOAccountPerson_AccountId, T1.PCOAccountPerson_PCOId, T1.PCOAccountPerson_RockSyncState, T1.PCOAccountPerson_PCOSyncState, T1.PCOAccountPerson_CreatedDateTime, T1.PCOAccountPerson_ModifiedDateTime, T1.PCOAccountPerson_CreatedByPersonAliasId, T1.PCOAccountPerson_ModifiedByPersonAliasId, T1.PCOAccountPerson_Guid, T1.PCOAccountPerson_ForeignId, T1.PCOAccountPerson_ForeignGuid, T1.PCOAccountPerson_ForeignKey)
-    FROM (
-        SELECT 
-            T.Id AS PCOAccountPerson_Id, 
-            T.PersonAliasId AS PCOAccountPerson_PersonAliasId, 
-            T.AccountId AS PCOAccountPerson_AccountId, 
-            T.PCOId AS PCOAccountPerson_PCOId, 
-            T.RockSyncState AS PCOAccountPerson_RockSyncState, 
-            T.PCOSyncState AS PCOAccountPerson_PCOSyncState, 
-            T.CreatedDateTime AS PCOAccountPerson_CreatedDateTime, 
-            T.ModifiedDateTime AS PCOAccountPerson_ModifiedDateTime, 
-            T.CreatedByPersonAliasId AS PCOAccountPerson_CreatedByPersonAliasId, 
-            T.ModifiedByPersonAliasId AS PCOAccountPerson_ModifiedByPersonAliasId, 
-            T.Guid AS PCOAccountPerson_Guid, 
-            T.ForeignId AS PCOAccountPerson_ForeignId, 
-            T.ForeignGuid AS PCOAccountPerson_ForeignGuid, 
-            T.ForeignKey AS PCOAccountPerson_ForeignKey, 
-            True AS _from0
-        FROM CodeFirstDatabase.PCOAccountPerson AS T
-    ) AS T1]]></view>
-    <view extent="RockContext.PCOAccounts"><![CDATA[
-    SELECT VALUE -- Constructing PCOAccounts
-        [Rock.Data.PCOAccount](T1.PCOAccount_Id, T1.PCOAccount_Name, T1.PCOAccount_ApplicationId, T1.PCOAccount_Secret, T1.PCOAccount_AllowPermissionDowngrade, T1.PCOAccount_AdministratorGroupId, T1.PCOAccount_EditorGroupId, T1.PCOAccount_SchedulerGroupId, T1.PCOAccount_ScheduledViewerGroupId, T1.PCOAccount_ViewerGroupId, T1.PCOAccount_CreatedDateTime, T1.PCOAccount_ModifiedDateTime, T1.PCOAccount_CreatedByPersonAliasId, T1.PCOAccount_ModifiedByPersonAliasId, T1.PCOAccount_Guid, T1.PCOAccount_ForeignId, T1.PCOAccount_ForeignGuid, T1.PCOAccount_ForeignKey)
-    FROM (
-        SELECT 
-            T.Id AS PCOAccount_Id, 
-            T.Name AS PCOAccount_Name, 
-            T.ApplicationId AS PCOAccount_ApplicationId, 
-            T.Secret AS PCOAccount_Secret, 
-            T.AllowPermissionDowngrade AS PCOAccount_AllowPermissionDowngrade, 
-            T.AdministratorGroupId AS PCOAccount_AdministratorGroupId, 
-            T.EditorGroupId AS PCOAccount_EditorGroupId, 
-            T.SchedulerGroupId AS PCOAccount_SchedulerGroupId, 
-            T.ScheduledViewerGroupId AS PCOAccount_ScheduledViewerGroupId, 
-            T.ViewerGroupId AS PCOAccount_ViewerGroupId, 
-            T.CreatedDateTime AS PCOAccount_CreatedDateTime, 
-            T.ModifiedDateTime AS PCOAccount_ModifiedDateTime, 
-            T.CreatedByPersonAliasId AS PCOAccount_CreatedByPersonAliasId, 
-            T.ModifiedByPersonAliasId AS PCOAccount_ModifiedByPersonAliasId, 
-            T.Guid AS PCOAccount_Guid, 
-            T.ForeignId AS PCOAccount_ForeignId, 
-            T.ForeignGuid AS PCOAccount_ForeignGuid, 
-            T.ForeignKey AS PCOAccount_ForeignKey, 
-            True AS _from0
-        FROM CodeFirstDatabase.PCOAccount AS T
     ) AS T1]]></view>
     <view extent="RockContext.Device_Locations"><![CDATA[
     SELECT VALUE -- Constructing Device_Locations

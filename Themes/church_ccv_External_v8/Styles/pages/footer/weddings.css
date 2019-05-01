@@ -1,0 +1,165 @@
+.page-background {   
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-weddings.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-mobile-weddings.jpg");
+    }
+}
+
+.weddings-section {
+    padding: 10px 0;
+}
+
+.weddings-section:first-of-type {
+    border-bottom: 2px solid #DDDDDD;
+}
+
+.weddings-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.weddings-header .event-campus-setter {
+    margin-left: 100px;
+}
+
+.weddings-section p {
+    font-family: heebo;
+    font-size: 14px;
+    line-height: 26px;
+    color: #707270;
+}
+
+.weddings-contact {
+    display: flex;
+}
+
+.contact-name p {
+    font-size: 16px;
+    font-weight: 900;
+    color: #000;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 80px;
+    margin-bottom: 20px;
+}
+
+.weddings-card {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.weddings-card:first-of-type {
+    margin-bottom: 20px;
+}
+
+.workflow-entry-panel {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.control-wrapper textarea {
+    background-color: #eeeeee;
+    border-bottom: unset;
+    border: 1px solid #777777;
+    color: #333333;
+}
+
+.control-wrapper textarea::placeholder { 
+    color: #333333;
+}
+
+.workflow-entry-panel {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px; 
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.name-fields, .info-fields {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.first-name, .last-name, .email-address, .phone-number {
+    width: 45%;
+}
+
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.btn-primary {
+    margin-top: 50px;
+}
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .weddings {
+        margin: 0;
+    }
+
+    .weddings-policy {
+        margin: 0;
+    }
+
+    .weddings-section h3 {
+        margin-top: 0;
+    }
+
+    .weddings-contact {
+        flex-direction: column;
+    }
+
+    .contact-info {
+        margin-left: 0;
+    }
+    
+    .weddings-header {
+        justify-content: space-between;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .weddings-header .event-campus-setter {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .weddings-header .navbar-nav>li>a {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .weddings-card {
+        padding: 10px;
+    }
+
+    .first-name, .last-name, .email-address, .phone-number {
+        width: 100%;
+    }
+
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+}

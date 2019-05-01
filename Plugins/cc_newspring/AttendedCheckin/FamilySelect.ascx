@@ -7,7 +7,7 @@
 
         <asp:Panel ID="pnlSelections" runat="server" CssClass="attended">
 
-            <asp:HiddenField ID="newPersonType" runat="server" />
+            <asp:HiddenField ID="hfNewPersonType" runat="server" />
 
             <div class="row checkin-header">
                 <div class="col-xs-2 checkin-actions">
@@ -37,7 +37,7 @@
                             <asp:ListView ID="lvFamily" runat="server" OnPagePropertiesChanging="lvFamily_PagePropertiesChanging"
                                 OnItemCommand="lvFamily_ItemCommand" OnItemDataBound="lvFamily_ItemDataBound">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lbSelectFamily" runat="server" CausesValidation="false" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select family" />
+                                    <asp:LinkButton ID="lbSelectFamily" runat="server" CausesValidation="false" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select family" OnClientClick="toggleFamily(this);" />
                                 </ItemTemplate>
                             </asp:ListView>
                             <asp:DataPager ID="dpFamilyPager" runat="server" PageSize="4" PagedControlID="lvFamily">
@@ -52,13 +52,14 @@
                 <div class="col-xs-3">
                     <asp:UpdatePanel ID="pnlPerson" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:HiddenField ID="hfSelectedPerson" runat="server" ClientIDMode="Static" />
 
                             <h3 class="text-center">People</h3>
+                            <asp:HiddenField ID="hfPersonIds" runat="server" />
 
-                            <asp:ListView ID="lvPerson" runat="server" OnItemDataBound="lvPeople_ItemDataBound" OnPagePropertiesChanging="lvPerson_PagePropertiesChanging">
+                            <asp:ListView ID="lvPerson" runat="server" OnItemDataBound="lvPeople_ItemDataBound"
+                                OnPagePropertiesChanging="lvPerson_PagePropertiesChanging">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lbSelectPerson" runat="server" data-id='<%# Eval("Person.Id") %>' CssClass="btn btn-primary btn-lg btn-block btn-checkin-select person" />
+                                    <asp:LinkButton ID="lbSelectPerson" runat="server" data-id='<%# Eval("Person.Id") %>' CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClientClick="togglePerson(this); return false;" />
                                 </ItemTemplate>
                                 <EmptyDataTemplate>
                                     <div class="text-center large-font">
@@ -78,13 +79,12 @@
                 <div class="col-xs-3">
                     <asp:UpdatePanel ID="pnlVisitor" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:HiddenField ID="hfSelectedVisitor" runat="server" ClientIDMode="Static" />
 
                             <h3 class="text-center">Visitors</h3>
 
                             <asp:ListView ID="lvVisitor" runat="server" OnItemDataBound="lvPeople_ItemDataBound" OnPagePropertiesChanging="lvVisitor_PagePropertiesChanging">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lbSelectPerson" runat="server" data-id='<%# Eval("Person.Id") %>' CssClass="btn btn-primary btn-lg btn-block btn-checkin-select visitor" />
+                                    <asp:LinkButton ID="lbSelectPerson" runat="server" data-id='<%# Eval("Person.Id") %>' CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClientClick="togglePerson(this); return false;" />
                                 </ItemTemplate>
                                 <EmptyDataTemplate>
                                     <div class="text-center large-font">
@@ -112,7 +112,8 @@
 
                     <asp:LinkButton ID="lbAddVisitor" runat="server" Text="Add Visitor" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClick="lbAddVisitor_Click" CausesValidation="false" EnableViewState="false" />
                     <asp:LinkButton ID="lbAddFamilyMember" runat="server" Text="Add Person" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClick="lbAddFamilyMember_Click" CausesValidation="false" EnableViewState="false" />
-                    <asp:LinkButton ID="lbNewFamily" runat="server" Text="New Family" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClick="lbNewFamily_Click" CausesValidation="false" EnableViewState="false" />
+                    <asp:LinkButton ID="lbNewFamily" runat="server" Text="Add Family" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClick="lbNewFamily_Click" CausesValidation="false" EnableViewState="false" />
+                    <asp:LinkButton ID="lbOverride" runat="server" Text="Override" CssClass="btn btn-primary btn-lg btn-block btn-checkin-select" OnClick="lbOverride_Click" CausesValidation="false" EnableViewState="false" />
                 </div>
             </div>
         </asp:Panel>
@@ -142,26 +143,61 @@
                     <!-- Modal Body -->
                     <div class="checkin-body">
                         <div class="row">
-                            <div class="col-xs-2">
-                                <Rock:RockTextBox ID="tbPersonFirstName" runat="server" CssClass="col-xs-12" Label="First Name" ValidationGroup="Person" />
+                            <div class="col-xs-2 text-center hard-right" id="hdrFirstName" runat="server">
+                                <label>First Name</label>
                             </div>
-                            <div class="col-xs-2">
-                                <Rock:RockTextBox ID="tbPersonLastName" runat="server" CssClass="col-xs-12" Label="Last Name" ValidationGroup="Person" />
+                            <div class="col-xs-2 text-center hard-right" id="hdrLastName" runat="server">
+                                <label>Last Name</label>
                             </div>
-                            <div class="col-xs-1">
-                                <Rock:RockDropDownList ID="ddlPersonSuffix" runat="server" CssClass="col-xs-12" Label="Suffix" />
+                            <div class="col-xs-1 text-center hard-right">
+                                <label>Suffix</label>
                             </div>
-                            <div class="col-xs-2">
-                                <Rock:DatePicker ID="dpPersonDOB" runat="server" Label="Date of Birth" CssClass="col-xs-12 date-picker" ValidationGroup="Person" data-show-age="true" />
+                            <div class="col-xs-2 text-center hard-right">
+                                <label>Date of Birth</label>
                             </div>
-                            <div class="col-xs-2">
-                                <Rock:RockDropDownList ID="ddlPersonGender" runat="server" Label="Gender" CssClass="col-xs-12" ValidationGroup="Person" />
+                            <div class="col-xs-2 text-center hard-right" id="hdrGender" runat="server">
+                                <label>Gender</label>
                             </div>
-                            <div class="col-xs-2">
-                                <Rock:RockDropDownList ID="ddlPersonAbilityGrade" runat="server" Label="Ability/Grade" CssClass="col-xs-12" />
+                            <div class="col-xs-2 text-center hard-right" id="hdrAbilityGrade" runat="server">
+                                <label id="famAbilityGrade" runat="server">Ability/Grade</label>
                             </div>
-                            <div class="col-xs-1 shift-up centered">
-                                <Rock:RockCheckBox ID="cbPersonSpecialNeeds" Label="Special Needs" runat="server" CssClass="" />
+                            <div class="col-xs-2 text-center hard-right" id="hdrPhoneNumber" runat="server" visible="false">
+                                <label>Phone #</label>
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="hdrEmail" runat="server" visible="false">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-xs-1 text-center" id="hdrSpecialNeeds" runat="server">
+                                <label>Special Needs</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 text-center hard-right" id="divFirstName" runat="server">
+                                <Rock:RockTextBox ID="tbFirstName" runat="server" ValidationGroup="Person" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="divLastName" runat="server">
+                                <Rock:RockTextBox ID="tbLastName" runat="server" ValidationGroup="Person" />
+                            </div>
+                            <div class="col-xs-1 text-center hard-right">
+                                <Rock:RockDropDownList ID="ddlPersonSuffix" runat="server" CssClass="hard-sides" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right">
+                                <Rock:DatePicker ID="dpPersonDOB" runat="server" CssClass="date-picker hard-sides" ValidationGroup="Person" data-show-age="true" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="divGender" runat="server">
+                                <Rock:RockDropDownList ID="ddlPersonGender" runat="server" CssClass="hard-sides" ValidationGroup="Person" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="divAbilityGrade" runat="server">
+                                <Rock:RockDropDownList ID="ddlPersonAbilityGrade" runat="server" CssClass="hard-sides" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="divPhoneNumber" runat="server" visible="false">
+                                <Rock:RockTextBox ID="tbPhone" runat="server" CssClass="hard-sides" />
+                            </div>
+                            <div class="col-xs-2 text-center hard-right" id="divEmail" runat="server" visible="false">
+                                <Rock:RockTextBox ID="tbEmail" runat="server" CssClass="hard-sides" />
+                            </div>
+                            <div class="col-xs-1 hard-right" id="divSpecialNeeds" runat="server">
+                                <Rock:RockCheckBox ID="cbPersonSpecialNeeds" runat="server" CssClass="hard-sides" />
                             </div>
 
                             <div class="row flush-sides">
@@ -174,8 +210,10 @@
                                             <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="Suffix" DataField="SuffixValue" SortExpression="SuffixValue" />
                                             <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="DOB" DataField="BirthDate" DataFormatString="{0:MM/dd/yy}" HtmlEncode="false" SortExpression="BirthDate" />
                                             <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="Age" DataField="Age" SortExpression="Age" />
-                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-2" ItemStyle-CssClass="col-xs-2" HeaderText="Gender" DataField="Gender" SortExpression="Gender" />
-                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-2" ItemStyle-CssClass="col-xs-2" HeaderText="Ability/Grade" DataField="Attribute" SortExpression="Attribute" />
+                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="Gender" DataField="Gender" SortExpression="Gender" />
+                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="Ability/Grade" DataField="Attribute" SortExpression="Attribute" />
+                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-2" ItemStyle-CssClass="col-xs-2" HeaderText="Phone" DataField="Phone" SortExpression="Phone" />
+                                            <Rock:RockBoundField HeaderStyle-CssClass="col-xs-2" ItemStyle-CssClass="col-xs-2" HeaderText="Email" DataField="Email" SortExpression="Email" />
                                             <Rock:RockBoundField HeaderStyle-CssClass="col-xs-1" ItemStyle-CssClass="col-xs-1" HeaderText="Special Needs" DataField="HasSpecialNeeds" SortExpression="HasSpecialNeeds" />
                                             <asp:TemplateField>
                                                 <ItemTemplate>
@@ -207,7 +245,7 @@
         <!-- ADD FAMILY MODAL -->
         <Rock:ModalDialog ID="mdlNewFamily" runat="server" Content-DefaultButton="lbSaveFamily">
             <Content>
-                <div class="soft-quarter-ends">
+                <div class="soft-quarter-top">
                     <!-- Modal Header -->
                     <div class="row checkin-header">
                         <div class="col-xs-3 checkin-actions">
@@ -225,28 +263,34 @@
 
                     <!-- Modal Body -->
                     <div class="checkin-body">
-                        <asp:ListView ID="lvNewFamily" runat="server" OnPagePropertiesChanging="lvNewFamily_PagePropertiesChanging" OnItemDataBound="lvNewFamily_ItemDataBound">
+                        <asp:ListView ID="lvNewFamily" runat="server" OnLayoutCreated="lvNewFamily_LayoutCreated" OnPagePropertiesChanging="lvNewFamily_PagePropertiesChanging" OnItemDataBound="lvNewFamily_ItemDataBound">
                             <LayoutTemplate>
-                                <div class="row large-font">
-                                    <div class="col-xs-2">
+                                <div class="row">
+                                    <div class="col-xs-2 text-center hard-right" id="hdrFirstName" runat="server">
                                         <label>First Name</label>
                                     </div>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-2 text-center hard-right" id="hdrLastName" runat="server">
                                         <label>Last Name</label>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-1 text-center hard-right">
                                         <label>Suffix</label>
                                     </div>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-2 text-center hard-right">
                                         <label>Date of Birth</label>
                                     </div>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-2 text-center hard-right" id="hdrGender" runat="server">
                                         <label>Gender</label>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <label ID="famAbilityGrade" runat="server">Ability/Grade</label>
+                                    <div class="col-xs-2 text-center hard-right" id="hdrAbilityGrade" runat="server">
+                                        <label id="famAbilityGrade" runat="server">Ability/Grade</label>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-2 text-center hard-right" id="hdrPhoneNumber" runat="server" visible="false">
+                                        <label>Phone #</label>
+                                    </div>
+                                    <div class="col-xs-2 text-center hard-right" id="hdrEmail" runat="server" visible="false">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-xs-1 text-center" id="hdrSpecialNeeds" runat="server">
                                         <label>Special Needs</label>
                                     </div>
                                 </div>
@@ -254,33 +298,44 @@
                             </LayoutTemplate>
                             <ItemTemplate>
                                 <div class="row expanded">
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-2 hard-right" id="divFirstName" runat="server">
                                         <Rock:RockTextBox ID="tbFirstName" runat="server" Text='<%# ((SerializedPerson)Container.DataItem).FirstName %>' ValidationGroup="Family" />
                                     </div>
-                                    <div class="col-xs-2">
-                                        <Rock:RockTextBox ID="tbLastName" runat="server" Text='<%# ((SerializedPerson)Container.DataItem).LastName %>' ValidationGroup="Family" />
+                                    <div class="col-xs-2 hard-right"  id="divLastName" runat="server">
+                                        <Rock:RockTextBox ID="tbLastName" runat="server" Text='<%# ((SerializedPerson)Container.DataItem).LastName %>' ValidationGroup="Family" CssClass="fill-lastname" />
                                     </div>
-                                    <div class="col-xs-1">
-                                        <Rock:RockDropDownList ID="ddlSuffix" runat="server" />
+                                    <div class="col-xs-1 hard-right">
+                                        <Rock:RockDropDownList ID="ddlSuffix" runat="server" CssClass="hard-sides" />
                                     </div>
-                                    <div class="col-xs-2">
-                                        <Rock:DatePicker ID="dpBirthDate" runat="server" SelectedDate='<%# ((SerializedPerson)Container.DataItem).BirthDate %>' ValidationGroup="Family" CssClass="date-picker" data-show-age="true" />
+                                    <div class="col-xs-2 hard-right">
+                                        <Rock:DatePicker ID="dpBirthDate" runat="server" SelectedDate='<%# ((SerializedPerson)Container.DataItem).BirthDate %>' ValidationGroup="Family" CssClass="date-picker hard-sides" data-show-age="true" />
                                     </div>
-                                    <div class="col-xs-2">
-                                        <Rock:RockDropDownList ID="ddlGender" runat="server" ValidationGroup="Family" />
+                                    <div class="col-xs-2 hard-right" id="divGender" runat="server">
+                                        <Rock:RockDropDownList ID="ddlGender" runat="server" ValidationGroup="Family" CssClass="hard-sides" />
                                     </div>
-                                    <div class="col-xs-2">
-                                        <Rock:RockDropDownList ID="ddlAbilityGrade" runat="server" />
+                                    <div class="col-xs-2 hard-right" id="divAbilityGrade" runat="server">
+                                        <Rock:RockDropDownList ID="ddlAbilityGrade" runat="server" CssClass="hard-sides" />
                                     </div>
-                                    <div class="col-xs-1">
-                                        <Rock:RockCheckBox ID="cbSpecialNeeds" runat="server" />
+                                    <div class="col-xs-2 hard-right" id="divPhoneNumber" runat="server" visible="false" disabled="true">
+                                        <Rock:RockTextBox ID="tbPhone" runat="server" ValidationGroup="Family" CssClass="hard-sides" />
+                                    </div>
+                                    <div class="col-xs-2 hard-right" id="divEmail" runat="server" visible="false" disabled="true">
+                                        <Rock:RockTextBox ID="tbEmail" runat="server" ValidationGroup="Family" CssClass="hard-sides" />
+                                    </div>
+                                    <div class="col-xs-1 hard-right" id="divSpecialNeeds" runat="server">
+                                        <Rock:RockCheckBox ID="cbSpecialNeeds" runat="server" CssClass="hard-sides" />
                                     </div>
                                 </div>
                             </ItemTemplate>
                         </asp:ListView>
 
-                        <div class="row">
-                            <div class="col-xs-offset-9 col-xs-3 text-right">
+
+                        <div class="row push-quarter-top">
+                            <div class="col-xs-5">
+                                <Rock:RockTextBox ID="tbBarcodes" runat="server" Label="Family Barcode" Placeholder="Enter a comma separated list of barcodes" />
+                            </div>
+                            
+                            <div class="col-xs-offset-4 col-xs-3 text-right push-quarter-top">
                                 <asp:DataPager ID="dpNewFamily" runat="server" PageSize="4" PagedControlID="lvNewFamily">
                                     <Fields>
                                         <asp:NextPreviousPagerField ButtonType="Button" ButtonCssClass="pagination btn btn-lg btn-primary btn-checkin-select" />
@@ -297,42 +352,31 @@
 
 <script type="text/javascript">
 
-    var setClickEvents = function () {
+    function toggleFamily(e) {
+        $(e).toggleClass('active');
+        $(e).siblings('.family').removeClass('active');
+    }
 
-        $('.family').unbind('click').on('click', function () {
-            $(this).toggleClass('active');
-            $(this).siblings('.family').removeClass('active');
-            if (!$(this).hasClass('btn-loading')) {
-                $(this).addClass('btn-loading');
-            }
-        });
+    function togglePerson(e) {
+        $(e).toggleClass('active').blur();
+        var selectedIds = $("input[id$='hfPersonIds']").val();
+        var personId = e.getAttribute('data-id');
+        if (selectedIds.indexOf(personId) >= 0) { // already selected, remove id
+            var selectedIdRegex = new RegExp(personId + ',', "g");
+            $("input[id$='hfPersonIds']").val(selectedIds.replace(selectedIdRegex, ''));
+        } else { // newly selected, add id
+            $("input[id$='hfPersonIds']").val(personId + ',' + selectedIds);
+        }
+    }
 
-        $('.person').unbind('click').on('click', function (event) {
-            event.stopPropagation();
-            $(this).toggleClass('active');
-            var selectedIds = $('#hfSelectedPerson').val();
-            var buttonId = this.getAttribute('data-id');
-            if (selectedIds.indexOf(buttonId) >= 0) {
-                var buttonIdRegex = new RegExp(buttonId + ',*', "g");
-                $('#hfSelectedPerson').val(selectedIds.replace(buttonIdRegex, ''));
-            } else {
-                $('#hfSelectedPerson').val(buttonId + ',' + selectedIds);
-            }
-            return false;
-        });
+    var setModalEvents = function () {
 
-        $('.visitor').unbind('click').on('click', function (event) {
-            event.stopPropagation();
-            $(this).toggleClass('active');
-            var selectedIds = $('#hfSelectedVisitor').val();
-            var buttonId = this.getAttribute('data-id');
-            if (selectedIds.indexOf(buttonId) >= 0) {
-                var buttonIdRegex = new RegExp(buttonId + ',*', "g");
-                $('#hfSelectedPerson').val(selectedIds.replace(buttonIdRegex, ''));
-            } else {
-                $('#hfSelectedVisitor').val(buttonId + ',' + selectedIds);
+        $('.fill-lastname').blur(function () {
+            var lastname = $(this).val();
+            if (lastname !== "") {
+                var elIndex = $(".fill-lastname").index($(this));
+                $(".fill-lastname:gt(" + elIndex + ")").val(lastname);
             }
-            return false;
         });
 
         // begin standard modal input functions
@@ -380,7 +424,8 @@
     };
 
     $(document).ready(function () {
-        setClickEvents();
+        setModalEvents();
     });
-    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(setClickEvents);
+
+    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(setModalEvents);
 </script>

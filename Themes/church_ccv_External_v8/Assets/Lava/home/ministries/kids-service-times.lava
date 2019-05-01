@@ -1,0 +1,42 @@
+{% assign email = "ccvkids@ccv.church" %}
+
+{% for campusItem in Campuses %}
+    {% if campusItem.Id == Context.Campus.Id %}
+        {% assign campus = campusItem %}
+    {% endif %}
+{% endfor %}
+
+{% assign comingSoonUntil = campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
+{% assign today = 'Now' | Date: 'yyyyMMdd' %}
+    
+{% if today < comingSoonUntil %}
+    {% assign isComingSoon = true %}
+{% endif %}
+
+{% unless isComingSoon %}
+    <div class="kids-service-detail">
+        <p class="kids-service-detail-label">Who</p>
+        <p>Infants - 6th Grade</p>
+    </div>
+
+    <div class="kids-details">
+        <div class="kids-service-times">
+            <div class="kids-service-detail">
+                <p class="kids-service-detail-label">When: </p>
+                <div class="service-times">
+                    {% assign times = campus.ServiceTimes %}
+                    {% assign useLightIcon = true %}
+                    {% include '~~/Assets/Lava/service-times/Grid.lava' %}
+                </div>
+            </div>
+        </div>
+        <div class="kids-service-detail">
+            <p class="kids-service-detail-label">Contact: </p>
+            <div> <i class="fa fa-fw fa-phone"></i> {{ campus.PhoneNumber }}<br/> 
+                <fa class="fa fa-fw fa-envelope"></fa> <a href="mailto:{{ email }}?subject=Kids">{{ email }}</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h2>Coming Soon!</h2>
+{% endunless %}  

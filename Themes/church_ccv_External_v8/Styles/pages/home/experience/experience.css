@@ -1,0 +1,52 @@
+.page-background {
+   background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/experience/hero-experience.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/experience/hero-mobile-experience.jpg");
+    }
+}
+
+/* use the expanded main feature only for tablet and larger */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        height: 475px;
+        padding-top: 175px;
+    }
+}
+
+#section-b-bg {
+   background: url("/Themes/church_ccv_External_v8/Assets/Images/home/experience/background-experience-music.jpg");
+}
+
+#section-d-bg {
+   background: url("/Themes/church_ccv_External_v8/Assets/Images/home/experience/background-experience-grass.jpg");
+}
+
+#section-e-bg {
+   display: none;
+}
+
+.graphicSection.bottom {
+    align-items: center;
+}
+
+.graphicSection.bottom p {
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 36px;
+    font-family: DinWebCondensed;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    margin: 0 auto;
+    line-height: 1.21;
+    padding: 100px 0;
+}
+
+@media screen and (max-width: 500px) {
+    .graphicSection.bottom {
+        min-height: 300px;
+    }
+}

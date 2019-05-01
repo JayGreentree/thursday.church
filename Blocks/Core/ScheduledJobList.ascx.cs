@@ -36,7 +36,7 @@ namespace RockWeb.Blocks.Administration
     [Description( "Lists all scheduled jobs." )]
 
     [LinkedPage("Detail Page")]
-    public partial class ScheduledJobList : RockBlock
+    public partial class ScheduledJobList : RockBlock, ICustomGridColumns
     {
         #region Control Methods
 
@@ -92,7 +92,7 @@ namespace RockWeb.Blocks.Administration
                 if ( jobGuid.HasValue && jobGuid.Value.Equals( Rock.SystemGuid.ServiceJob.JOB_PULSE.AsGuid() ))
                 {
                     var runNowColumn = gScheduledJobs.ColumnsOfType<EditField>().Where( a => a.HeaderText == "Run Now" ).FirstOrDefault();
-                    e.Row.Cells[gScheduledJobs.Columns.IndexOf(runNowColumn)].Text = string.Empty;
+                    e.Row.Cells[gScheduledJobs.GetColumnIndex( runNowColumn)].Text = string.Empty;
                 }
                 
                 // format duration
@@ -255,7 +255,7 @@ namespace RockWeb.Blocks.Administration
             }
             else
             {
-                gScheduledJobs.DataSource = jobService.GetAllJobs().OrderByDescending( a => a.LastRunDateTime ).ToList();
+                gScheduledJobs.DataSource = jobService.GetAllJobs().OrderByDescending( a => a.LastRunDateTime ).ThenBy( a => a.Name ).ToList();
             }
             
             gScheduledJobs.DataBind();

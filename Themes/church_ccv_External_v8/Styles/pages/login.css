@@ -1,0 +1,35 @@
+.main-feature {
+    background-color: black;
+}
+
+#subnavbar-bg { 
+    display: none;
+}
+
+#orDiv {
+    display: block !important;
+    text-align: center;	
+}
+
+/* Register Page Styling */
+@media screen and (min-width: 501px) {
+    .main-feature {
+        padding-top: 125px;
+        height: 350px;
+    }
+
+    .background-card {
+        padding-top: 75px;
+        padding-bottom: 75px;
+    }
+
+    #orDiv {
+        display: none !important;
+    }
+}
+
+.facebook, .facebook:hover, .facebook:focus, .facebook:active {
+    color: #FFFFFF;
+    background-color: #3B5998;
+    border-color: #3B5998;
+}

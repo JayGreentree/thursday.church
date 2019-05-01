@@ -1,0 +1,43 @@
+ <style>
+			.extra-padding {
+				background-color: #fff;
+				padding: 5px;
+				margin:0px, 5px 10px, 5px;
+				box-shadow: 1px 1px 10px #888888;
+				min-height: 715px;
+				}
+			.extra-padding:hover {
+				background-color: #Dcdcdc;
+				padding: 5px;
+				box-shadow: 1px 1px 12px #888888;
+
+
+		</style>
+<div class="block-content">
+	<div>
+       
+       
+	<div class=" row announcement-list">
+		{% for item in Items %}
+			<div class="col-md-4 col-sm-12 ">
+				<div class="panel">
+					<div class="extra-padding ">	
+<a href="{{ LinkedPages.DetailPage }}?Item={{ item.Id }}"><img class="img-responsive" {{ item.Image | Remove:'<img' }}</a>
+								<h2 class="announcement-title">{{ item.Title }}</h2>
+								<p><strong>Title:</strong> {{ item.JobTitle }}</p>	
+						<i class="fa-envelope-alt"> </i> <p ><strong>E-mail:</strong> {{ item.E-mailAddress }}</p>
+						</div>
+							<p>{{ item.Content | Truncate:200,'...' }}</p>
+							<a class="btn btn-default" href="{{ LinkedPages.DetailPage }}?Item={{ item.Id }}">  Read More </a>
+					</div>
+				</div>
+			</div>
+			{% capture breakNow %}{{ forloop.index  }}{% endcapture %}
+			{% if breakNow == 0 -%}
+				</div>
+				<div class="row announcement-list">
+			{% endif -%}
+		{% endfor -%}
+	</div>
+	</div>
+</div>

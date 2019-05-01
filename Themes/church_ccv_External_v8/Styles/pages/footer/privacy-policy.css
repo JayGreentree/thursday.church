@@ -1,0 +1,39 @@
+.page-background {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-privacy-policy.jpg");
+ }
+ 
+ /* Mobile Background Image */
+ @media screen and (max-width: 500px) {
+     .page-background {
+         background-image: url("/Themes/church_ccv_External_v8/Assets/Images/footer/hero-mobile-privacy-policy.jpg");
+     }
+ }
+
+.privacy-policy {
+    margin: 0;
+}
+
+.privacy-policy h2 {
+    font-size: 42px;
+    line-height: 50px;
+    font-weight: 400;
+}
+
+.privacy-policy-section {
+    border-bottom: 2px solid #EEEEEE;
+    padding: 10px 0;
+}
+
+.privacy-policy-section p,.privacy-policy-section li {
+    font-family: heebo;
+    font-size: 14px;
+    line-height: 26px;
+    color: #707270;
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .privacy-policy {
+        margin: 0;
+    }
+}

@@ -1,0 +1,11 @@
+.main-feature {
+    background-color: black;
+}
+
+#subnavbar-bg { 
+    display: none;
+}
+
+.workflow-entry-panel {
+    display: none;
+}

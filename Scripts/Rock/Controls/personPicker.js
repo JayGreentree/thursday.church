@@ -9,6 +9,7 @@
             this.restUrl = options.restUrl;
             this.restDetailUrl = options.restDetailUrl;
             this.defaultText = options.defaultText || '';
+            this.iScroll = null;
         };
 
         PersonPicker.prototype.initializeEventHandlers = function () {
@@ -20,6 +21,7 @@
             var includeBusinesses = $('#' + controlId).find('.js-include-businesses').val() == '1' ? 'true' : 'false';
 
             var promise = null;
+            var lastSelectedPersonId = null;
 
             $('#' + controlId + '_personPicker').autocomplete({
                 source: function (request, response) {
@@ -59,38 +61,125 @@
                     noResults: function () { },
                     results: function () { }
                 }
-            });
+            }).data('ui-autocomplete')._renderItem = function ($ul, item) {
+                if (this.options.html) {
+                    // override jQueryUI autocomplete's _renderItem so that we can do Html for the listitems
+                    // derived from http://github.com/scottgonzalez/jquery-ui-extensions
+
+                    var inactiveWarning = "";
+
+                    if (!item.IsActive && item.RecordStatus) {
+                        inactiveWarning = " <small>(" + item.RecordStatus + ")</small>";
+                    }
+
+                    var quickSummaryInfo = "";
+                    if (item.FormattedAge || item.SpouseName) {
+                        quickSummaryInfo = " <small class='rollover-item text-muted'>";
+                        if (item.FormattedAge) {
+                            quickSummaryInfo += "Age: " + item.FormattedAge;
+                        }
+
+                        if (item.SpouseName) {
+                            if (item.FormattedAge) {
+                                quickSummaryInfo += "; ";
+                            }
+
+                            quickSummaryInfo += "Spouse: " + item.SpouseName;
+                        }
+
+                        quickSummaryInfo += "</small>";
+                    }
+
+                    var $div = $('<div/>').attr('class', 'radio'),
+
+                        $label = $('<label/>')
+                            .html('<span class="label-text">' + item.Name + inactiveWarning + quickSummaryInfo + '</span><i class="fa fa-refresh fa-spin margin-l-md loading-notification" style="display: none; opacity: .4;"></i>')
+                            .prependTo($div),
+
+                        $radio = $('<input type="radio" name="person-id" />')
+                            .attr('id', item.Id)
+                            .attr('value', item.Id)
+                            .prependTo($label),
+
+                        $li = $('<li/>')
+                            .addClass('picker-select-item')
+                            .attr('data-person-id', item.Id)
+                            .attr('data-person-name', item.Name)
+                            .html($div),
+
+                        $resultSection = $(this.options.appendTo);
+
+                    if (item.PickerItemDetailsHtml) {
+                        $(item.PickerItemDetailsHtml).appendTo($li);
+                    }
+                    else {
+                        var $itemDetailsDiv = $('<div/>')
+                            .addClass('picker-select-item-details clearfix')
+                            .attr('data-has-details', false)
+                            .hide();
+
+                        $itemDetailsDiv.appendTo($li);
+                    }
+
+                    if (!item.IsActive) {
+                        $li.addClass('is-inactive');
+                    }
+
+                    return $resultSection.append($li);
+                }
+                else {
+                    return $('<li></li>')
+                        .data('item.autocomplete', item)
+                        .append($('<a></a>').text(item.label))
+                        .appendTo($ul);
+                }
+            };
 
             $('#' + controlId + ' a.picker-label').click(function (e) {
                 e.preventDefault();
-                $('#' + controlId).find('.picker-menu').first().slideToggle(function () {
+                $(this).toggleClass("active");
+                $('#' + controlId).find('.picker-menu').first().toggle(0, function () {
                     exports.personPickers[controlId].updateScrollbar();
                     $(this).find('.picker-search').focus();
                 });
             });
 
-            $('#' + controlId + ' .picker-select').on('click', '.picker-select-item :input', function (e) {
+            $('#' + controlId + ' .picker-select').on('click', '.picker-select-item', function (e) {
+                if (e.type == 'click' && $(e.target).is(':input') == false) {
+                    // only process the click event if it has bubbled up to the input tag
+                    return;
+                }
+
                 e.stopPropagation();
 
                 var $selectedItem = $(this).closest('.picker-select-item');
+                var $itemDetails = $selectedItem.find('.picker-select-item-details');
 
                 var selectedPersonId = $selectedItem.attr('data-person-id');
-                var alreadySelected = $selectedItem.find('.picker-select-item-details').is(':visible');
-                if (alreadySelected) {
-                    $('#' + controlId + '_btnSelect').get(0).click();
+
+                if ($itemDetails.is(':visible')) {
+
+                    if (selectedPersonId == lastSelectedPersonId && e.type == 'click') {
+                        // if they are clicking the same person twice in a row (and the details are done expanding), assume that's the one they want to pick
+                        $('#' + controlId + '_btnSelect').get(0).click();
+                    } else {
+
+                        // if it is already visible but isn't the same one twice, just leave it open
+                    }
                 }
 
                 // hide other open details
-                $('#' + controlId + ' .picker-select-item-details').each(function () {
+                $('#' + controlId + ' .picker-select-item-details').filter(':visible').each(function () {
                     var $el = $(this),
-                       currentPersonId = $el.closest('.picker-select-item').attr('data-person-id');
+                        currentPersonId = $el.closest('.picker-select-item').attr('data-person-id');
 
                     if (currentPersonId != selectedPersonId) {
                         $el.slideUp();
+                        exports.personPickers[controlId].updateScrollbar();
                     }
                 });
 
-                var $itemDetails = $selectedItem.find('.picker-select-item-details');
+                lastSelectedPersonId = selectedPersonId;
 
                 if ($itemDetails.attr('data-has-details') == 'false') {
                     // add a spinner in case we have to wait on the server for a little bit
@@ -103,18 +192,22 @@
 
                         // hide then set the html so that we can get the slideDown effect
                         $itemDetails.stop().hide().html(responseText);
-                        $itemDetails.slideDown(function () {
-                            exports.personPickers[controlId].updateScrollbar();
-                        });
+                        showItemDetails($itemDetails);
 
                         $spinner.stop().fadeOut(200);
                     });
                 } else {
-                    $selectedItem.find('.picker-select-item-details:hidden').slideDown(function () {
+                    showItemDetails($selectedItem.find('.picker-select-item-details:hidden'));
+                }
+            });
+
+            var showItemDetails = function ($itemDetails) {
+                if ($itemDetails.length) {
+                    $itemDetails.slideDown(function () {
                         exports.personPickers[controlId].updateScrollbar();
                     });
                 }
-            });
+            }
 
             $('#' + controlId).hover(
                 function () {
@@ -165,7 +258,7 @@
             $('#' + controlId + '_btnSelect').click(function () {
                 var radInput = $('#' + controlId).find('input:checked'),
                     selectedValue = radInput.val(),
-                    selectedText = radInput.closest('.picker-select-item').find('label').text();
+                    selectedText = radInput.closest('.picker-select-item').attr('data-person-name');
 
                 setSelectedPerson(selectedValue, selectedText);
             });
@@ -185,66 +278,34 @@
         };
 
         PersonPicker.prototype.updateScrollbar = function () {
+            var self = this;
+
+            // first, update this control's scrollbar, then the modal's
+            var $container = $('#' + this.controlId).find('.scroll-container')
+
+            if ($container.is(':visible')) {
+                if (self.iScroll) {
+                    self.iScroll.refresh();
+                }
+            }
+
             // update the outer modal scrollbar
             Rock.dialogs.updateModalScrollBar(this.controlId);
         }
 
         PersonPicker.prototype.initialize = function () {
-            $.extend($.ui.autocomplete.prototype, {
-                _renderItem: function ($ul, item) {
-                    if (this.options.html) {
-                        // override jQueryUI autocomplete's _renderItem so that we can do Html for the listitems
-                        // derived from http://github.com/scottgonzalez/jquery-ui-extensions
 
-                        var inactiveWarning = "";
-
-                        if (!item.IsActive) {
-                            inactiveWarning = " <small>(Inactive)</small>";
-                        }
-
-                        var $div = $('<div/>').attr('class', 'radio'),
-
-                            $label = $('<label/>')
-                                .html(item.Name + inactiveWarning +  ' <i class="fa fa-refresh fa-spin margin-l-md loading-notification" style="display: none; opacity: .4;"></i>')
-                                .prependTo($div),
-
-                            $radio = $('<input type="radio" name="person-id" />')
-                                .attr('id', item.Id)
-                                .attr('value', item.Id)
-                                .prependTo($label),
-
-                            $li = $('<li/>')
-                                .addClass('picker-select-item')
-                                .attr('data-person-id', item.Id)
-                                .html($div),
-
-                            $resultSection = $(this.options.appendTo);
-
-                        if (item.PickerItemDetailsHtml) {
-                            $(item.PickerItemDetailsHtml).appendTo($li);
-                        }
-                        else {
-                            var $itemDetailsDiv = $('<div/>')
-                                .addClass('picker-select-item-details clearfix')
-                                .attr('data-has-details', false)
-                                .hide();
-
-                            $itemDetailsDiv.appendTo($li);
-                        }
-
-                        if (!item.IsActive) {
-                            $li.addClass('is-inactive');
-                        }
-
-                        return $resultSection.append($li);
-                    }
-                    else {
-                        return $('<li></li>')
-                            .data('item.autocomplete', item)
-                            .append($('<a></a>').text(item.label))
-                            .appendTo($ul);
-                    }
-                }
+            this.iScroll = new IScroll('#personpicker-scroll-container_' + this.controlId + ' .viewport', {
+                mouseWheel: true,
+                indicators: {
+                    el: '#personpicker-scroll-container_' + this.controlId + ' .track',
+                    interactive: true,
+                    resize: false,
+                    listenY: true,
+                    listenX: false,
+                },
+                click: false,
+                preventDefaultException: { tagName: /.*/ }
             });
 
             this.initializeEventHandlers();

@@ -25,8 +25,44 @@
             padding: 0 0 0 0;
             vertical-align: top;
         }
+		
+		
+
+		strike {
+			text-decoration: none;
+			display: inline-table;
+			color: transparent;
+		}
+		
+		strike:after {
+			content: "";
+			border-bottom: 0.1em solid #000;
+			display: table-caption;
+			caption-side: bottom;
+			position: relative;
+			margin-top: -0.15em;
+		}
+		
     </style>
 
+	
+	
+	
+	<script>
+
+
+       $(document).ready(function(){
+            $('strike').on('click', function(){
+                $(this).css('color', '#000')
+            });
+        });
+
+
+    </script>
+
+ 
+	
+	
 </head>
 
 <body class="rock-blank">

@@ -1,0 +1,41 @@
+<div class="row">
+<div class="panel-group featurelist" id="accordion">
+{% for item in Items -%}
+ <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{item.LifegroupID}}">
+                <i class="fa fa-user"></i> {{item.Title}}
+            </a>
+            </h4>
+        </div>
+        <div id="collapse{{item.LifegroupID}}" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>
+    <strong>When:</strong> {{item.LGWhen }} {{item.LGWTime }}
+  </p>
+  {% if item.Location != '' %}
+  <p>
+    <strong>Location:</strong> {{item.Location}}
+  </p>
+  {% endif %}
+  <p>{{item.Content}}</p>
+  {% if item.RegistrationLink != '' %}
+    <p>
+      <a href="{{ item.RegistrationLink | 'StripHtml' }}" class="btn btn-newpointe">REGISTER NOW</a>
+    </p>
+  {% endif %}
+                  </div>
+        </div>
+  </div>
+{% endfor %}
+
+{% if arraysize == 0 %}
+  <p>
+    There are no LIFE Groups at this time. <a href="/moreinfo/?topic=Discover Groups" class="btn btn-newpointe">REQUEST MORE INFO</a>
+  </p>
+	</div>
+{% endif %}
+</div>
+</div>

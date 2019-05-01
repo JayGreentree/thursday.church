@@ -1,0 +1,10 @@
+<script>var googleApiKey = "{{ 'Global' | Attribute:'GoogleAPIKey' }}";</script>
+
+<div id="our-campuses-map-window" class="our-campuses-map-window">
+   <div id="our-campuses-map" class="our-campuses-map">Loading...</div>
+</div>
+
+{% include '~~/Assets/Lava/stand-alone/2018/script-campus-locations-christmas.lava' %}
+
+<script src="~~/Scripts/pages/stand-alone/2018/_map-christmas.js"></script>
+<script src="~~/Scripts/pages/stand-alone/2018/our-campuses-map-christmas.js"></script>  

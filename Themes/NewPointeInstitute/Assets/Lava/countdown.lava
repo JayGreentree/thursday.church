@@ -1,0 +1,19 @@
+<!--LIVE EVENT COUNTER-->
+<div id="live-wrapper">
+<div class="inner">
+<a id="live-btn" href="http://thursdaychurch.churchonline.org">
+<div id="left">Next Online Experience In:</div><!-- #left -->
+<div id="right">
+<div id="churchonline_counter">
+  <div class="live" style="display:none;">Live Now!</div>
+  <ul class="time">
+    <li><span class="days"></span> <br /><span class="label">days</span></li>
+    <li><span class="hours"></span> <br /><span class="label">hrs</span></li>
+    <li><span class="minutes"></span> <br /><span class="label">mins</span></li>
+    <li><span class="seconds"></span> <br /><span class="label">secs</span></li>
+  </ul>
+</div><!-- #churchonline_counter -->
+</div><!-- #right -->
+</a>
+<!--/div--><!-- .inner -->
+</div><!-- #live-wrapper-->

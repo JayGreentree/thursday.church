@@ -36,88 +36,8 @@
 
     <script src="<%# ResolveRockUrl("~/Scripts/modernizr.js", true) %>"></script>
     <script src="<%# ResolveRockUrl("~/Scripts/jquery-1.10.2.min.js", true) %>"></script>
-    <script src="<%# ResolveRockUrl("~/Scripts/date.js", true) %>"></script>
-    <%--<script src="<%# ResolveRockUrl("~/Scripts/core.js", true) %>"></script>--%>
-    <%--<script src="<%# ResolveRockUrl("~/Scripts/sugarpak.js", true) %>"></script>--%>
-    <script src="<%# ResolveRockUrl("~/Scripts/jquery.fullscreen-popup.min.js", true) %>"></script>
-    <script type="text/javascript">
-  jQuery(function() {
-    var days, goLive, hours, intervalId, minutes, seconds;
+    <script src="<%# ResolveRockUrl("~/Scripts/HotJar.js", true) %>"></script>
 
-    // Your churchonline.org url
-    var churchUrl = "//thursdaychurch.churchonline.org"
-
-    goLive = function() {
-      $("#churchonline_counter .time").hide();
-      $("#churchonline_counter .live").show();
-    };
-    loadCountdown = function(data){
-      var seconds_till;
-      $("#churchonline_counter").show();
-      if (data.response.item.isLive) {
-        return goLive();
-      } else {
-        // Parse ISO 8601 date string
-        date = data.response.item.eventStartTime.match(/^(\d{4})-0?(\d+)-0?(\d+)[T ]0?(\d+):0?(\d+):0?(\d+)Z$/)
-        dateString = date[2] + "/" + date[3] + "/" + date[1] + " " + date[4] + ":" + date[5] + ":" + date[6] + " +0000"
-        seconds_till = ((new Date(dateString)) - (new Date())) / 1000;
-        days = Math.floor(seconds_till / 86400);
-        hours = Math.floor((seconds_till % 86400) / 3600);
-        minutes = Math.floor((seconds_till % 3600) / 60);
-        seconds = Math.floor(seconds_till % 60);
-        return intervalId = setInterval(function() {
-          if (--seconds < 0) {
-            seconds = 59;
-            if (--minutes < 0) {
-              minutes = 59;
-              if (--hours < 0) {
-                hours = 23;
-                if (--days < 0) {
-                  days = 0;
-                }
-              }
-            }
-          }
-          $("#churchonline_counter .days").html((days.toString().length < 2) ? "0" + days : days);
-          $("#churchonline_counter .hours").html((hours.toString().length < 2 ? "0" + hours : hours));
-          $("#churchonline_counter .minutes").html((minutes.toString().length < 2 ? "0" + minutes : minutes));
-          $("#churchonline_counter .seconds").html((seconds.toString().length < 2 ? "0" + seconds : seconds));
-          if (seconds === 0 && minutes === 0 && hours === 0 && days === 0) {
-            goLive();
-            return clearInterval(intervalId);
-          }
-        }, 1000);
-      }
-    }
-    days = void 0;
-    hours = void 0;
-    minutes = void 0;
-    seconds = void 0;
-    intervalId = void 0;
-    eventUrl = churchUrl + "/api/v1/events/current"
-    msie = /msie/.test(navigator.userAgent.toLowerCase())
-    if (msie && window.XDomainRequest) {
-        var xdr = new XDomainRequest();
-        xdr.open("get", eventUrl);
-        xdr.onload = function() {
-          loadCountdown(jQuery.parseJSON(xdr.responseText))
-        };
-        xdr.send();
-    } else {
-      $.ajax({
-        url: eventUrl,
-        dataType: "json",
-        crossDomain: true,
-        success: function(data) {
-          loadCountdown(data);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          return console.log(thrownError);
-        }
-      });
-    }
-  });
-</script>
 
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -131,37 +51,8 @@
 
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 
-    <!-- Icons -->
-    <link rel="shortcut icon" href="<%# ResolveRockUrl("~/Assets/Icons/favicon.ico", true) %>">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<%# ResolveRockUrl("~/Assets/Icons/touch-icon-ipad-retina.png", true) %>">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<%# ResolveRockUrl("~/Assets/Icons/touch-icon-iphone-retina.png", true) %>">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%# ResolveRockUrl("~/Assets/Icons/touch-icon-ipad.png", true) %>">
-    <link rel="apple-touch-icon-precomposed" href="<%# ResolveRockUrl("~/Assets/Icons/touch-icon-iphone.png", true) %>">
-
     <!-- Android URL Bar Color -->
     <meta name="theme-color" content="#8BC540">
-
-
-    <!-- Facebook Pixel Code -->
-    <script>
-        !function (f, b, e, v, n, t, s)
-        {
-            if (f.fbq) return; n = f.fbq = function ()
-            {
-                n.callMethod ?
-                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            }; if (!f._fbq) f._fbq = n;
-            n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
-        }(window,
-        document, 'script', '//connect.facebook.net/en_US/fbevents.js');
-
-        fbq('init', '446368618902373');
-        fbq('track', "PageView");</script>
-    <noscript>
-        <img height="1" width="1" style="display: none"
-            src="https://www.facebook.com/tr?id=446368618902373&ev=PageView&noscript=1" />
-    </noscript>
 
 </head>
 <body>
@@ -181,12 +72,19 @@
 
                     <button class="navbar-toggle" type="button" onclick="location.href='/GiveNow';"><i class="fa fa-usd"></i></button>
 
+                    <asp:PlaceHolder runat="server">
+                        <% if ( Rock.Web.Cache.GlobalAttributesCache.Value( "LiveService" ).ToLower() == "true" )
+                            { %>
+                        <button class="navbar-toggle" type="button" onclick="location.href='http://live.newpointe.org';"><i class="fa fa-video-camera"></i></button>
+                        <% } %>
+                    </asp:PlaceHolder>
+
                     <%--<Rock:Zone Name="Header" runat="server" />--%>
                     <div class="brand-logo pull-left">
-                            <a href="/home">
-                                <asp:Image ImageUrl="~/Assets/Images/NPCC_Logo_Full_green.svg" runat="server" />
-                            </a>
-                        </div>
+                        <a href="/home">
+                            <asp:Image ImageUrl="~/Assets/Images/NPCC_Logo_Full_green.svg" runat="server" />
+                        </a>
+                    </div>
                 </div>
                 <div id="LoginCollapse" class="navbar-collapse collapse">
                     <!-- Main Navigation -->
@@ -212,10 +110,10 @@
 
         <asp:ContentPlaceHolder ID="main" runat="server"></asp:ContentPlaceHolder>
 
-        <footer class="container">
+        <footer class="container hidden-print">
 
 
-            <!--div class="footer-box">
+            <div class="footer-box">
                 <div class="row give-row">
                     <div class="col-xs-12 col-sm-1 col-md-3 text-transform">
                         <h2 class="give">GIVE</h2>
@@ -242,8 +140,7 @@
                         </a>
                     </div>
                 </div>
-            </div -->
-
+            </div>
             <div class="footer-box">
                 <div class="row">
                     <div class="col-md-12">
@@ -252,20 +149,20 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6 text-xs-center text-sm-left">
-                        <a href="https://www.facebook.com/thursdaychurch2008">
+                        <a href="https://www.facebook.com/newpointecommunitychurch">
                             <div class="social-circle"><i class="fa fa-facebook"></i></div>
                         </a>
-                        <a href="https://twitter.com/thursdaychurch">
+                        <a href="https://twitter.com/newpointechurch">
                             <div class="social-circle"><i class="fa fa-twitter"></i></div>
                         </a>
-                        <a href="http://instagram.com/thursday_church/">
+                        <a href="http://instagram.com/newpointechurch">
                             <div class="social-circle"><i class="fa fa-instagram"></i></div>
                         </a>
                     </div>
                     <div class="col-sm-6 text-xs-center text-sm-right">
-                        Main Campuss:
-                            <address>218 Main | Vincennes, IN 47591</address>
-                        Tel: <a href="tel:8128822737">812.882.2737</a> | 
+                        Central Operations:
+                            <address>3950 SR 39 NW | Dover, OH 44622</address>
+                        Tel: <a href="tel:3306025600">330.602.5600</a> | Fax: 330.602.5636
                     </div>
                 </div>
                 <hr class="np-hr-small row">
@@ -274,10 +171,10 @@
                     </div>--%>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 text-xs-center text-sm-left">
-                        <a href="/jobs">EMPLOYMENT</a> | <a href="/contactus">CONTACT US</a>
+                        <a href="https://newpointe.org/jobs">EMPLOYMENT</a> | <a href="https://newpointe.org/contact">CONTACT US</a>
                     </div>
                     <div class="col-xs-12 col-sm-6 text-xs-center text-sm-right">
-                        <div class="copyright">&copy; 2016 Thursday Church | All Rights Reserved</div>
+                        <div class="copyright">&copy; 2017 NewPointe Community Church | All Rights Reserved</div>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,34 @@
+<!--{%- if Page.DisplayChildPages == 'true' and Page.Pages != empty -%}-->
+    <ul class="nav nav-stacked navbar-side">
+		{%- for childPage in Page.Pages -%}
+            {%- if childPage.IsParentOfCurrent == 'true' -%}
+				<li class="current">
+			{%- else -%}
+				<li>
+			{%- endif -%}
+				<i class="{{ childPage.IconCssClass }}"></i> {{ childPage.Title }}
+
+				{%- if childPage.DisplayChildPages == 'true' and childPage.Pages != empty -%}
+                    <ul class="nav nav-childpages">
+                        <li class="title">{{ childPage.Title }}</li>
+						{%- for grandchildPage in childPage.Pages -%}
+                            <li class="header"><a href="{{ grandchildPage.Url }}">{{ grandchildPage.Title }}</a></li>
+                            {%- if grandchildPage.DisplayChildPages == 'true' -%}
+                                {%- for greatgrandchildPage in grandchildPage.Pages -%}
+                                    {%- if greatgrandchildPage.IsParentOfCurrent == 'true' or greatgrandchildPage.Current == 'true' -%}
+                                        <li class="current">
+                                    {%- else -%}
+                                        <li>
+                                    {%- endif -%}
+                                        <a role="menu-item" href="{{ greatgrandchildPage.Url }}">{{ greatgrandchildPage.Title }}</a>
+                                    </li>
+                                {%- endfor -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    </ul>
+                {%- endif -%}
+
+            </li>
+        {%- endfor -%}
+    </ul>
+{%- endif -%}

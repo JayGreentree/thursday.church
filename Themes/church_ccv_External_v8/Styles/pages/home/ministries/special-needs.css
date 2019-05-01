@@ -1,0 +1,83 @@
+.page-background {   
+    background-color: #EBEBEB;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-special-needs.jpg");
+}
+
+.btn-row-sn-event {
+    margin-top: 10px;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-special-needs.jpg");
+    }
+
+    .btn-row-sn-event {
+        margin-top: 0px;
+    }
+}
+
+#section-c-bg {
+    background-color: #FFFFFF;
+}
+
+#section-d-bg, #section-e-bg {
+    display: none;
+}
+
+.special-needs-service-times {
+    display: flex;
+    flex-direction: column;
+}
+
+.special-needs-service-times .dropdown {
+    background-color: rgb(122, 19, 21);
+    border-radius: 10px;
+    transition: unset;
+    height: 36px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.special-needs-service-times .dropdown a {
+    color: #FFFFFF;
+    padding-top: unset;
+    padding-bottom: unset;
+    display: flex;
+    align-items: center;
+}
+
+.special-needs-service-times .dropdown .dropdown-menu {
+    width: 100%;
+}
+
+.special-needs-service-times {
+    display: flex;
+    flex-direction: column;
+}
+
+.special-needs-service-detail {
+    display: flex;
+    margin: 5px 0;
+}
+
+.special-needs-service-detail-label {
+    min-width: 100px;
+    color: #838383;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: bold;
+}
+
+.contextsetter-campus .dropdown {
+    margin-bottom: 35px;
+}
+
+@media screen and (min-width: 992px) {
+   .sn-times-header-wrapper {
+      margin-top: 0px;
+   }
+}

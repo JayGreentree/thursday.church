@@ -1,0 +1,31 @@
+{% for item in Items %}
+
+<script type="text/javascript">
+    $(window).load(function(){
+        $('#alertModal').modal('show');
+    });
+    
+</script>
+<div id="updatePanelDialog">
+<!-- Modal -->
+<div id="alertModal" class="modal fade" role="dialog">
+
+    <!--div class="modal-content">
+      <div class="modal-header"-->
+	<div class="modal-content">
+                    <div class="modal-header">
+        
+        <h3 class="modal-title">{{item.Title}}</h3>
+      </div>
+      <div class="modal-body">
+        {{item.Content}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+
+</div>
+</div>
+{% endfor %}

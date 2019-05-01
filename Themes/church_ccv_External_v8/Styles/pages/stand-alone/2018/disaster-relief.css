@@ -1,0 +1,16 @@
+.page-background {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-disaster-relief.jpg") !important;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-mobile-disaster-relief.jpg") !important;
+    }
+
+    .main-feature {
+        height: 240px !important;
+        padding-top: 90px !important;
+    }
+}
+

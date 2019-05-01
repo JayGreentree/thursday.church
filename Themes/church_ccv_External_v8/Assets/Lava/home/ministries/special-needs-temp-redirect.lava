@@ -1,0 +1,17 @@
+
+{% assign campus = Context.Campus.Name %}
+<div class="btn-row-sn-event">
+    {% if campus == 'Avondale'  %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3324">Parents Night Out!</a>
+    {% elseif campus == 'Chandler' %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3325">Parents Night Out!</a>
+    {% elseif campus == 'North Phoenix' %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3326">Parents Night Out!</a>
+    {% elseif campus == 'Scottsdale' %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3327">Parents Night Out!</a>
+    {% elseif campus == 'Surprise' %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3328">Parents Night Out!</a>
+    {% elseif campus == 'Midtown' %}
+        <a class="btn btn-primary" href="/get-involved/events/detail?EventOccurrenceId=3329">Parents Night Out!</a>
+    {% endif %} 
+</div>

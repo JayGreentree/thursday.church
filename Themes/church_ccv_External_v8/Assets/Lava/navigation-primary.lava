@@ -1,0 +1,36 @@
+{% comment %} 
+    {% include '~~/Assets/Lava/navigation-primary.lava' %} 
+{% endcomment %}
+
+{% assign urlSegs = 'Global' | Page:'Url' | Url:'segments' %}
+{% assign urlSegsSize = urlSegs | Size %}
+{% if urlSegsSize > 1 %}
+    {% assign navSection = urlSegs[1] | Downcase %}
+    {% assign navSection = navSection | Replace:'/', '' %}
+{% else %}
+    {% assign navSection = 'home' %}
+{% endif %}
+
+{% if Page.DisplayChildPages == 'true' and Page.Pages != empty %}
+
+    <ul class="navigation-primary-items">
+        {% for childPage in Page.Pages %}
+            {% assign activeClass = '' %}
+            {% assign childPageTitle = childPage.Title | Downcase %}
+            <li class="navigation-primary-item {{ activeClass }}">
+               <a class="navigation-primary-item-button" href="{{ childPage.Url }}">{{ childPage.Title }}</a>
+                <div class="navigation-primary-dropdown-content-wrapper">
+                 <div class="navigation-primary-dropdown-content">
+                   <!--a class="navigation-primary-item-a dropdown-content-item" href="{{ childPage.Url }}">{{ childPage.Title }}</a-->
+                                {% for dropdownPage in childPage.Pages  %}
+                                    <a class="navigation-primary-item-a dropdown-content-item" href="{{ dropdownPage.Url }}">{{ dropdownPage.Title }}</a>
+                                {% endfor %}
+
+                        </div>
+                    </div>
+            </li>
+            {% assign activeClass = '' %}
+        {% endfor %}
+        <a class="navigation-primary-item search-item" href="/search"><span class="mdi mdi-magnify">&nbsp;</span></a>
+    
+{% endif %}

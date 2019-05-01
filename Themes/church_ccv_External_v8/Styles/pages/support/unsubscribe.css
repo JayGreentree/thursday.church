@@ -1,0 +1,44 @@
+﻿.main-feature {
+    background-color: black;
+}
+
+#subnavbar-bg { 
+    display: none;
+}
+
+.grid {
+    display: block;
+}
+    
+.grid-mobile {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .grid {
+        display: none;
+    }
+    
+    .grid-mobile {
+        display: block;
+        margin-bottom: 25px;
+    }
+    
+    .mobile-duplicates-item {
+        display: flex;
+    }
+    
+    .mobile-duplicates-item .person-info {
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .mobile-duplicates-item .person-info .bday {
+        margin-left: 15px;
+    }
+    
+    .not-me {
+        margin-left: 0;
+    }
+}

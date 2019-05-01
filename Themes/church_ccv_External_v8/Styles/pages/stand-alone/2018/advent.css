@@ -1,0 +1,546 @@
+.page-background {
+    background-image: url("https://staging.ccv.church/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-advent.jpg") !important;
+}
+
+/* Mobile */
+@media screen and (max-width: 900px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-mobile-advent.jpg") !important;
+    }
+
+    .main-feature {
+        height: 352px !important;
+    }
+
+    #single-section-bg {
+        padding: 25px 15px;
+    }
+}
+
+/* Color overrides */
+.page-background, #single-section-bg {
+    background-color: #e7e7e7;
+}
+
+h5, p {
+    color: #e7e7e7;
+}
+
+/* Feature section */
+#zone-feature {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+.main-feature {
+    padding-top: unset;
+    height: 390px;
+}
+
+.title-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 34px;
+}
+
+.header-left {
+    margin-left: 5%;
+}
+
+.header-left img {
+    width: 406px;
+    height: 40px;
+}
+
+@media screen and (max-width: 900px) {
+    .title-header {
+        padding-top: 25px;
+    }
+    
+    .header-left {
+        margin-left: unset;
+        margin: 0 auto;
+    }
+    
+    .header-left img {
+        height: 30px;
+        width: 300px;
+    }
+}
+
+/* Alexa in Header */
+.alexa {
+    display: flex;
+    align-items: center;
+    background-color: #103c53;
+    border-radius: 20px;
+    padding: 15px 20px;
+    width: 370px;
+    height: 120px;
+}
+
+.alexa img {
+    width: 100px;
+    height: 80px;
+}
+
+.alexa-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.alexa-content h5 {
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 18.3px;
+    color: #FFFFFF;
+    line-height: 20.34px;
+}
+
+.alexa-content-strong {
+    font-weight: 700;
+}
+
+.alexa-content a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16.27px;
+    line-height: 20.34px;
+    color: #00efe3;
+    text-transform: uppercase;
+    text-decoration: underline;
+    padding-top: 2px;
+}
+
+#alexaLink {
+    display: none;
+}
+/* Hide Alexa in Header and Show link ot alexa after title content */
+@media screen and (max-width: 900px) {
+    #alexaContainer {
+        display: none;
+    }
+
+    #alexaLink {
+        display: block;
+        margin-top: 25px;
+        margin-bottom: 40px;
+        width: 100%;
+    }
+
+    .alexa-link h5 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        color: #00efe3;
+        text-transform: uppercase !important;
+        padding-top: 2px;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .alexa-link a {
+        color: #00efe3;
+        text-decoration: underline;
+    }
+}
+
+/* End Alexa In Header */
+
+.title-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-line-image {
+    width: 189px;
+    height: 13px;
+    margin-top: 30px;
+    margin-bottom: 38px;
+}
+
+.title-content h5 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    line-height: 22px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: unset;
+    max-width: 90%;
+    padding: 0;
+}
+
+.title-content p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 200;
+    max-width: 85%;
+    text-align: center;
+}
+
+@media screen and (max-width: 900px) {
+    .title-content {
+        text-align: center;
+    }
+
+    .title-line-image {
+        margin: unset;
+        margin-top: 30px;
+        margin-bottom: 25px;
+        width: 90px;
+        height: 7.5px;
+    }
+
+    .title-content h5, .title-content p {
+        font-size: 15px;
+        line-height: 17px;
+        margin: 0 auto;
+    }
+}
+
+/* End Feature Section */
+
+/* Advent Content */
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-icon {
+    font-size: 70px;
+    color: #275b75;
+}
+
+/* Advent Item  */
+.content-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.item-title h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    line-height: 32px;
+    font-weight: 800;
+    color: #275b75;
+    padding: 0;
+}
+
+.title-text {
+    text-transform: unset;
+}
+
+.item-card {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    border-radius: 5px;
+    border: unset;
+    border-width: unset;
+    background-color: #FFFFFF;
+    padding: 40px;
+    max-width: 1250px;
+}
+
+.item-card img {
+    margin: 0 auto 60px auto;
+}
+
+/* Show the destkop image */
+#desktopImage {
+    display: block;
+}
+
+/* Hide the mobile image */
+#mobileImage {
+    display: none;
+}
+
+.item-card h5, .item-card p, .item-card h4, .share-modal-header h4, .calendar-modal-header h4, .advent-calendar-header h4 {
+    color: #275b75;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0;
+    font-size: 20px;
+    line-height: 22px;
+}
+
+.item-story {
+    font-weight: 600;
+    text-transform: unset;
+    margin-bottom: 20px;
+
+}
+
+.item-content {
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.item-take-away {
+    font-weight: 700;
+}
+
+.item-share {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* margin-bottom: -30px; */
+}
+
+.item-share p {
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 19px;
+    line-height: 45px;
+    font-weight: 700;
+    color: #a5a5a5;
+    margin: 0;
+}
+
+.item-share .mdi-launch {
+    font-size: 40px;
+    color: #275b75;
+}
+
+#shareButton {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+    .content-icon {
+        font-size: 62px;
+    }
+
+    .item-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0 15px 0;
+    }
+
+    .item-card {
+        padding: 20px 25px;
+        max-width: 800px;
+    }
+    .item-title h3 {
+        text-align: center;
+        font-size: 22px;
+        line-height: 24px; 
+    }
+
+    .item-card h5, .item-card p {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    /* hide desktop image */
+    #desktopImage {
+        display: none;
+    }
+
+    /* how mobile image */
+    #mobileImage {
+        display: inline-block;
+    }
+
+    .item-card img {
+        margin: 0;
+    }
+
+    .item-story {
+        margin-top: 20px;
+        margin-bottom: 25px;
+    }
+
+    .item-content {
+        margin-bottom: 35px;
+    }
+}
+
+/* End Advent Item Card */
+
+/* End Advent Content */
+
+.previous-stories-button {
+    background-color: #275b75;
+    border-color: #275b75;
+    color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    width: 250px;
+    height: 38px;
+    margin-top: 40px;
+    margin-bottom: 75px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+    .previous-stories {
+        width: 100%;
+    }
+
+    .previous-stories-button {
+        margin-top: 30px;
+        margin-bottom: 135px;
+        width: 100%;
+    }
+}
+
+/* Modals */
+/* The Modal (background) */
+.share-modal, .calendar-modal {
+    display: none; 
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+    -webkit-animation-name: fadeIn; 
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+}
+
+/* Share Modal Content */
+.share-modal-content, .calendar-modal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 100%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+    padding-bottom: 100px;
+}
+
+
+
+.share-modal-header, .calendar-modal-header {
+    padding: 2px 16px;
+    background-color: #FFFFFF;
+    color: white;
+}
+
+.share-modal-body, .calendar-modal-body {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding-top: 30px;
+}
+
+.share-sms, .share-email, .share-facebook, .share-twitter {
+    font-size: 32px;
+    color: #275b75;
+}
+
+/* Calendar modal Content */
+/* .advent-calendar {
+    border: 1px solid grey;
+} */
+
+.advent-calendar-header h4 {
+    text-align: center;
+}
+
+/* Note: width = day width * 7 + border width * 2 */
+.advent-calendar-days {
+    display: flex;
+    flex-wrap: wrap;
+    width: 366px; 
+    margin: 0 auto;
+    border: 1px solid #a5a5a5;
+}
+
+.advent-calendar-days a:hover, .advent-calendar-days a:focus {
+    color: #a5a5a5;
+    text-decoration: none;
+}
+
+.advent-calendar-day {
+    width: 52px;
+    height: 52px;
+    border: 1px solid #a5a5a5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a5a5a5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+}
+
+.active-day {
+    background-color: #275b75;
+    color: #FFFFFF;
+}
+
+.advent-calendar-day-spacer {
+    flex-grow: 1;
+    border: 1px solid #a5a5a5;
+}
+
+@media screen and (max-width: 900px) {
+    .calendar-modal-content {
+        padding-bottom: 20px;
+    }
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}

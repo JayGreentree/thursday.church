@@ -1,0 +1,138 @@
+/* Kids Page */
+.page-background {   
+    background-color: #EBEBEB;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-kids.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-kids.jpg");
+    }
+}
+
+#section-b-bg {
+    
+}
+
+#section-c-bg {
+    background-color: #f9f9f9;
+}
+
+/* #section-d-bg {
+    background-color: #f9f9f9;
+} */
+
+#section-e-bg {
+   display: none;
+}
+
+.title img {
+    max-width: 300px;
+    margin-bottom: 25px;
+}
+
+/* Helps keep the four graphics in a 2x2 layout */
+.img-row {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.kid-image {
+    padding: 5px;
+}
+
+/*Styling for the bottom icon section with kid bullet points*/
+.kid-features {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+@media screen and (min-width: 768px) {
+    .kid-features {
+        margin-top: unset;
+        margin-bottom: unset;
+        flex-direction: row;
+    }
+}
+
+.kid-point {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.kid-point h4 {
+    text-align: center;
+}
+
+.kid-icon {
+    margin-bottom: 25px;
+}
+
+
+
+
+
+
+
+
+/*  */
+
+.kids-service-times .dropdown {
+    background-color: rgb(122, 19, 21);
+    border-radius: 10px;
+    transition: unset;
+    height: 36px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kids-service-times .dropdown a {
+    color: #FFFFFF;
+    padding-top: unset;
+    padding-bottom: unset;
+    display: flex;
+    align-items: center;
+}
+
+.kids-service-times .dropdown .dropdown-menu {
+    width: 100%;
+}
+
+.kids-service-times {
+    display: flex;
+    flex-direction: column;
+}
+
+.kids-service-detail {
+    display: flex;
+    margin: 5px 0;
+}
+
+.kids-service-detail-label {
+    min-width: 100px;
+    color: #838383;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: bold;
+}
+
+.contextsetter-campus .dropdown {
+    margin-bottom: 35px;
+}
+
+@media screen and (min-width: 992px) {
+   .sn-times-header-wrapper {
+      margin-top: 0px;
+   }
+}

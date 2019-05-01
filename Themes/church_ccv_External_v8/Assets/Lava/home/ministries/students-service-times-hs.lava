@@ -1,0 +1,32 @@
+{% capture HighSchoolContact %}{{ Context.Campus | Attribute: 'HighSchoolContact' }}{% endcapture%}
+{% capture HighSchoolLocations %}{{ Context.Campus | Attribute: 'HighSchoolLocations' }}{% endcapture%}
+{% capture HighSchoolTime %}{{ Context.Campus | Attribute: 'HighSchoolTime' }}{% endcapture%}
+
+{% assign comingSoonUntil = Context.Campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
+{% assign today = 'Now' | Date: 'yyyyMMdd' %}
+    
+{% if today < comingSoonUntil %}
+    {% assign isComingSoon = true %}
+{% endif %}
+
+{% unless isComingSoon %}
+    {% if JrHighContact != empty and JrHighLocations != empty and JrHighTime != empty %}
+        <div class="students-service-detail">
+            <p class="students-service-detail-label">Who</p>
+            <p>9-12th grade students</p>
+        </div>
+        <div class="students-service-detail">
+            <p class="students-service-detail-label">When</p>
+            <p>{{ HighSchoolTime }}</p>
+        </div>
+        <div class="students-service-detail">
+            <p class="students-service-detail-label">Contact</p>
+            <p>
+                <i class="fa fa-fw fa-phone"></i>{{ Context.Campus.PhoneNumber }}<br>
+                <i class="fa fa-fw fa-envelope"></i> <a href="mailto:{{ Context.Campus | Attribute: 'StudentsContactEmail' }}?subject=Jr. High"> {{ Context.Campus | Attribute: 'StudentsContactEmail' }}</a>
+            </p>
+        </div>
+    {% endif %}
+{% else %}
+    <h3>Coming Soon!</h3>
+{% endunless %}

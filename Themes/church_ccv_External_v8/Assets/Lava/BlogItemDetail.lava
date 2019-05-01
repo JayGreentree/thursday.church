@@ -1,0 +1,9 @@
+﻿{% for item in Items %}
+    <h2>{{ item.Title}}</h2>
+    <div>
+        {{ item | Attribute:'Image' }}
+    </div>
+    
+    {{ item.Content }}
+
+{% endfor %}

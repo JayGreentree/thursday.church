@@ -1,0 +1,758 @@
+/* Toolbox Card */
+.toolbox-row {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.toolbox-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 20px;
+    color: rgba(0, 0, 0, 0.87);
+    background-color: #ffffff;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    border-radius: 5px;
+}
+
+.toolbox-card p {
+    line-height: 1.5;
+}
+
+.toolbox-card .header h4 {
+    font-size: 26px;
+    line-height: 31px;
+    margin: 14px 30px 20px 30px;
+}
+
+.toolbox-card-content {
+    margin: 20px 30px;
+}
+
+.toolbox-card-content h3 {
+    font-size: 26px;
+    line-height: 31px;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+.current-series-video {
+    padding: 25px;
+}
+
+/* by default, dont show mobile nav */
+.toolbox-subnav-mobile {
+    display: none;
+}
+
+.toolbox-subnav-desktop {
+    display: flex;
+    padding: 0px 30px 18px 15px;
+    flex-wrap: wrap;
+}
+
+.toolbox-subnav-desktop > div {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #707270;
+    padding: 0 15px;
+    font-family: Heebo;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 17px;
+}
+
+.toolbox-subnav-desktop > div:hover {
+    cursor: pointer;
+    color: #7a1315;
+}
+
+.toolbox-subnav-div-selected {
+    color: #7a1315 !important;
+}
+
+.group-info-banner {
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #eeeeee;
+    padding: 14px 5px 10px 5px;
+}
+
+.group-info-banner > div {
+    text-decoration: none;
+
+    padding: 0 25px 0 25px;
+    color: #707270;
+
+    font-family: heebo;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 26px;
+}
+
+.group-info-banner > div > span {
+    padding-left: 10px;
+}
+
+.latest-series-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.latest-series-info-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.latest-series-info-element:last-child {
+    margin-right: 50px;
+}
+
+.latest-series-info-element > div > p {
+    font-size: 12px;
+    line-height: 18px;
+    color: #707270;
+    margin-bottom: 0;
+
+}
+
+.latest-series-info-element > div > h5 {
+    font-family: heebo;
+    font-size: 18px;
+    line-height: 27px;
+    color: #010001;
+    font-weight: normal;
+    margin-top: 6px;
+}
+
+.latest-series-video {
+    margin: 0 -30px;
+}
+
+.latest-series-title {
+    background-color: #EEEEEE;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 0 -30px;
+}
+
+.latest-series-title p {
+    padding: 0;
+    margin: 0;
+    font-family: heebo;
+    font-size: 18px;
+    line-height: 36px;
+    font-weight: normal;
+    color: #707270;
+}
+
+.latest-series-title h5 {
+    padding: 0;
+}
+
+.discussion-guide a {
+    text-decoration: none;
+}
+
+.discussion-guide > div > a > h5 {
+    font-family: akrobat;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 22px;
+    color: #7A1315;
+}
+
+.previous-weeks {
+    margin: 20px 30px 20px 30px;
+}
+
+.toolbox-past-messages {
+    display: flex;
+    justify-content: space-between;
+}
+
+.toolbox-video-card {
+    color: rgba(0, 0, 0, 0.87);
+    background-color: #ffffff;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+    z-index: 1;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbox-video-card img {
+    border-radius: 5px 5px 0 0;
+}
+
+.toolbox-video-card > div > p {
+    margin: 16px;
+    font-family: heebo;
+    font-weight: normal;
+    color: #707270;
+}
+
+.discussion-guide-icon {
+    font-size: 18px; 
+    padding: 0 16px;
+    color: #424242; 
+}
+
+.past-message-info-dash-mobile {
+    display: none;
+}
+
+/* Group Details */
+.group-picture {
+    margin: 0 -30px;
+}
+
+.group-picture img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.group-heading {
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.toolbox-card-content.group-details-panel .group-heading {
+    margin: 0 -30px;
+    padding: 20px 30px;
+}
+
+.group-details {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 -30px;
+    padding: 0 30px;
+}
+
+.group-details-left {
+    flex: .5;
+    margin-right: 20px;
+}
+
+.group-details-right {
+    flex: 1;
+}
+
+.group-leaders {
+    padding: 20px; 
+    background-color: #EEEEEE;
+    margin-bottom: 20px;
+}
+
+.group-map {
+    height: 200px;
+    margin-top: 20px;
+}
+
+.group-schedule .btn {
+    float: right;
+}
+
+/* Mobile Styling */
+/* Small Laptop */
+@media screen and (max-width: 1024px) {
+    .toolbox-row {
+        flex-direction: column;
+    }
+
+    .toolbox-card {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+}
+
+/* Phone */
+@media screen and (max-width: 500px) {    
+    .toolbox-subnav-desktop {
+        display: none;
+    }
+
+    .toolbox-subnav-mobile {
+        display: flex;
+        align-items: center;
+    }
+    
+    .toolbox-subnav-mobile-items {
+        max-width: 100%;
+        margin: 0 auto 10px 0;
+        font-size: 16px;
+        font-family: akrobat;
+        font-weight: bold;
+        line-height: 18px;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #707270;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .toolbox-subnav-mobile-items .subnav-item {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .toolbox-subnav-mobile-items .subnav-item {
+        visibility: hidden;
+    }
+
+    .toolbox-subnav-mobile-items.slick-initialized .subnav-item {
+        visibility: unset;
+    }
+
+    .subnav-item {
+        padding: 0 10px;
+        white-space: nowrap;
+    }
+
+    .subnav-item:focus {
+        outline: none;
+        border: none;
+    }
+
+    .nav-arrow {
+        font-size: 24px;
+        color: #707270;
+    }
+
+    .nav-next {
+        padding-left: 10px;
+    }
+
+    .toolbox-card-content.training-center-panel, .toolbox-card-content.curriculum-panel {
+        margin: 0 0 20px 0;
+    }
+
+    .toolbox-card-content.baptisms-panel, .toolbox-card-content.group-details-panel {
+        margin: 0 20px 20px 20px;
+    }
+
+    .toolbox-card .header h4 {
+        margin: 20px;
+        padding: 0;
+    }
+    
+    .group-info-banner {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .group-info-banner > div {
+        padding: 0;
+        line-height: 14px;
+        font-size: 12px;
+    }
+
+    .group-info-banner > div > span {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .group-info-banner > div:nth-child(2) {
+        padding: 5px 0;
+    }
+
+    .toolbox-card-content {
+        margin: 0;
+    }
+
+    .toolbox-card-content .item-row {
+        margin: 0 20px 20px 20px;
+    }
+
+    .toolbox-card-content h3 {
+        margin: 0;
+    }
+
+    .toolbox-card-content.latest-series-content h3 {
+        margin: 10px 20px;
+    }
+
+    .latest-series-info {
+        flex-direction: column;
+        margin: 0 20px 20px 20px;
+    }
+
+    .latest-series-video {
+        margin: 0;
+    }
+
+    .latest-series-info-element {
+        flex-direction: row;
+    }
+
+    .latest-series-info-element:nth-child(2) {
+        padding: 5px 0;
+    }
+
+    .latest-series-info-element > div > h5 {
+        margin: 0 0 0 10px;
+        padding: 0;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .latest-series-title {
+        padding: 10px 0;
+        margin: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .latest-series-title a {
+        align-self: center;
+        padding-top: 10px;
+    }
+
+    .latest-series-title p {
+        margin: 0 20px;
+        font-size: 16px;
+    }
+
+    .discussion-guide {
+        margin: 10px 20px;
+        text-align: center;
+    }
+
+    .previous-weeks {
+        margin: 0;
+    }
+
+    .previous-weeks h3 {
+        margin: 0 20px;
+    }
+
+    .toolbox-past-messages {
+        flex-direction: column;
+    }
+
+    .toolbox-video-card {
+        width: 100%;
+        box-shadow: unset;
+        border-radius: unset;
+    }
+
+    .toolbox-video-card > div > p {
+        margin: 0;
+    }
+
+    .past-message-video img {
+        border-radius: 0;
+    }
+
+    .past-message-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #EEEEEE;
+    }
+
+    .past-message-info-dash-desktop {
+        display: none;
+    }
+
+    .past-message-info-dash-mobile {
+        display: block;
+        padding: 0 10px;
+    }
+
+    .group-heading {
+        margin: 0 10px;
+    }
+
+    .toolbox-card-content.group-details-panel .group-heading {
+        margin: 20px 0 10px 0;
+        border-bottom: unset;
+        padding: 0;
+    }
+
+    .group-details {
+        flex-direction: column;
+        margin: 0 -20px;
+    }
+
+    .group-details-left, .group-details-right {
+        flex: 1;
+        margin-right: 0;
+    }
+
+    .group-leaders, .group-map {
+        margin: 0 -30px;
+    }
+
+    .group-leaders {
+        padding: 20px 30px;
+    }
+}
+
+
+/* End Toolbox Card */
+
+/* Toolbox Sidebar */
+.toolbox-sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toolbox Sidebar Mobile styling */
+/* Small Laptop */
+@media screen and (max-width: 1024px) {
+    .toolbox-sidebar {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .dashboard-card {
+        width: 370px;
+    }
+}
+/* Tablet */
+@media screen and (max-width: 768px) {
+    .toolbox-sidebar {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .dashboard-card {
+        width: 360px;
+    }
+
+    .dashboard-card.associate-pastor-card {
+        margin-top: 20px;
+    }
+
+}
+
+/* Phone */
+@media screen and (max-width: 500px) {
+    .dashboard-card, .toolbox-group-members-card, .toolbox-associate-pastor-card {
+        width: 100%;
+    }
+
+    .dashboard-card.associate-pastor-card {
+        margin-top: 0;
+    }
+}
+
+/* End Toolbox Sidebar */
+
+/* Toolbox Group Member Card */
+.toolbox-group-members-card {
+    margin: 0;
+    height: 690px;
+    max-height: 690px;
+}
+
+.toolbox-group-members-card .title a {
+    color: #424242;
+}
+
+.toolbox-group-members-card .title a:hover {
+    text-decoration: none;
+}
+
+.toolbox-group-members-card .title .dropdown-toggle {
+    border: 0;
+    background-color: unset;
+    padding-top: 5px;
+    margin-right: 3px;
+}
+
+.toolbox-group-members-title-icon {
+    color: #424242; 
+    font-size: 24px;
+    margin: 0 5px;
+}
+
+.panel-dropdown-menu {
+    top: unset;
+    left: inherit;
+    width: 220px;
+}
+
+.toolbox-group-members-card .content {
+    height: 625px;
+}
+
+.person-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.row-highlight {
+    background-color: #f5f5f5;
+}
+
+.person-row-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 110px;
+}
+
+.person-row-details p {
+    margin: 0;
+    line-height: 26px;
+    font-family: heebo;
+    font-size: 14px;
+    color: #707270;
+}
+
+.person-row-details a {
+    color: #8f3839;
+}
+
+.person-row-details a:hover {
+    text-decoration: none;
+}
+
+.person-details-toggle {
+    background-color: unset;
+    border: unset;
+    padding: unset;
+}
+
+.person-row-details .person-details-additional-child {
+    margin-left: 34px;
+}
+
+.person-row-details .person-details-additional-address {
+    margin-left: 58px;
+}
+
+.btn-link, .btn-link:hover {
+    background-color: #7A1315;
+    color: #FFFFFF;
+    border-radius: 4px;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background-color: #4e0c0d;
+    border-color: #4e0c0d;
+}
+
+
+/* Group Member Badges Styling */
+.person-badges img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 10px;
+}
+
+
+/* Flash class and keyframe animation */
+.nextstep-loading {
+    -webkit-animation: flash linear 1s infinite;
+    animation: flash linear 1s infinite;
+}
+    @-webkit-keyframes flash {
+        0% { opacity: 1; } 
+        50% { opacity: .1; } 
+        100% { opacity: 1; }
+    }
+    @keyframes flash {
+        0% { opacity: 1; } 
+        50% { opacity: .1; } 
+        100% { opacity: 1; }
+    }
+
+/* Fix Blue Box around calling href bug */
+.person-details-toggle:focus {
+    outline:none!important
+}
+
+/* Mobile Styling */
+/* Phone */
+@media screen and (max-width: 500px) {
+    .toolbox-group-members-card {
+        margin-bottom: 20px;
+    }
+
+    .person-row-summary {
+        padding: 0 10px;
+    }
+
+    .person-row-summary img {
+        margin: 10px 0;
+    }
+
+    .person-row-details {
+        margin: 0 auto;
+        width: 60%;
+    }
+
+    .group-picture {
+        margin: 0 -20px;
+    }
+}
+
+/* smaller phones */
+@media screen and (max-width: 400px) {
+    .person-row-details {
+        width: 65%;
+    }
+}
+
+/* smallest phones...dont hate me... */
+@media screen and (max-width: 320px) {
+    .person-row-details {
+        width: 80%;
+    }
+}
+/* End Toolbox Group Member Card */
+
+/* Toolbox Associate Pastor Card */
+
+.associate-pastor-card {
+    background-color: #ffffff;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+    margin: 40px 0 0 0;
+    height: 250px;
+}
+
+.associate-pastor-card .title h3 {
+    font-size: 26px;
+    margin: 14px 0 14px 15px;
+}
+
+.associate-pastor-card .group-header h5 {
+    font-size: 18px;
+}
+
+.associate-pastor-card .person-row-summary img {
+    margin: 25px 10px 25px 10px;
+}
+
+/* Toolbox Sidebar Mobile styling */
+/* Small Laptop */
+@media screen and (max-width: 1024px) {
+    .associate-pastor-card {
+        margin: 0;
+    }
+}
+
+/* End Toolbox Associate Pastor Card */

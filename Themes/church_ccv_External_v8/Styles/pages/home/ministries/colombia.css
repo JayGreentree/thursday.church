@@ -1,0 +1,82 @@
+.page-background {
+    color:#fff;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-missions-colombia.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-missions-colombia.jpg");
+    }
+}
+
+#ternavbar-bg {
+    display: flex;
+}
+
+#section-b-bg {
+    background-color: #FFFFFF;
+}
+
+#section-d-bg {
+    background-color: #FFFFFF;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-colombia-spiritual-needs.jpg");
+}
+
+#section-f-bg {
+    background-color: #FFFFFF;
+}
+
+ul {
+    color: #7c7c7c;
+    list-style: none;
+}
+
+@media only screen and (min-width: 1024px) {    
+    .left-and-right-container .btn-row {
+        justify-content: flex-start;
+    }
+}
+
+.app-icon {
+    width: 150px;
+}
+
+/* Google logo has padding, need to correct until we make a different image */
+.app-icon-google {
+    width: 190px;
+}
+
+
+.campus-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.campus-buttons .btn {
+    margin: 5px 0;
+}
+
+/* Tablet Styling */
+@media screen and (max-width: 768px) {
+    .left-and-right-container .btn-row {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .app-icon-google {
+        width: 170px;
+    }
+
+    .left-and-right-container .btn-row {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+    
+

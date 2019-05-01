@@ -1,0 +1,62 @@
+{% comment %} 
+    {% include '~~/Assets/Lava/MyDashboard/dashboard-profile-account-actions.lava' %}  
+{% endcomment %}
+
+<div class="sidebar-card account-actions">
+    <div class="title">
+        <h3>Account Actions</h3>
+    </div>
+    <div class="header">
+    </div>
+    <div class="links">
+        <a href="/dashboard/profile/change-password">Change Password</a>
+        
+        {% assign baptismPhoto = CurrentPerson | Attribute:'BaptismPhoto' %}
+        {% if baptismPhoto != null and baptismPhoto != '' %}
+            <a href="/dashboard/profile/baptism-dashboard?display=photo&paguid={{CurrentPerson.PrimaryAlias.Guid}}">Baptism Photo</a>
+        {% endif %}
+
+        {% assign ccvBaptized = CurrentPerson | Attribute:'BaptizedHere' %}
+        {% if ccvBaptized == 'Yes' and CurrentPerson | Attribute:'BaptismDate' %}
+            <a href="/dashboard/profile/baptism-dashboard?display=certificate&paguid={{CurrentPerson.PrimaryAlias.Guid}}">Baptism Certificate</a>
+        {% endif %}
+        <a href="/dashboard/profile/disc/{{ CurrentPerson.UrlEncodedKey }}">Take Personality Assessment</a>
+        
+        {% assign sgAttrib = CurrentPerson | Attribute:'SpiritualGifts' %}
+        {% assign sgSize = sgAttrib | Size %}
+    
+        {% if sgSize > 0 %}
+            <a href="/dashboard/profile/spiritual-gifts-review">View Spiritual Gifts</a>
+        {% else %}
+            <a href="/dashboard/profile/spiritual-gifts-test">Take Spiritual Gifts Test</a>
+        {% endif %}
+
+        {% comment %}If the user is on the prayer team, or a Rock Admin, show the prayer team link {% endcomment %}
+        {% assign prayerTeamGroupMembers = CurrentPerson | Group:"35","All" %}
+        {% assign adminGroupMembers = CurrentPerson | Group:"2","All" %}
+
+        {% assign prayerTeamGroupMemberSize = prayerTeamGroupMembers | Size %}
+        {% assign adminGroupMemberSize = adminGroupMembers | Size %}
+
+        {% if prayerTeamGroupMemberSize > 0 or adminGroupMemberSize > 0 %}
+            <a href="/dashboard/profile/prayer-team">Prayer Team</a>
+        {% endif %}
+
+        {% comment %} SQL to check if camp coach {% endcomment %}
+        {% sql %}
+            DECLARE @PersonId int = {{ CurrentPerson.Id }}
+            SELECT *
+            FROM [dbo].[Group] g
+            INNER JOIN [dbo].GroupMember gm ON gm.GroupId = g.Id
+            WHERE (g.GroupTypeId = 93 OR g.GroupTypeId = 55) AND LOWER(g.Name) LIKE '%camp%coach%' AND YEAR(g.CreatedDateTime) = YEAR(GETDATE())
+            AND gm.PersonId = @PersonId
+        {% endsql %}
+
+        {% assign size = results | Size %}
+    
+        {% if size > 0 %}
+            <a href="/camp-decision-tracker?ZoneLayout=Mobile">{{ 'Now' | Date:'yyyy' }} Camp Decision Tracker</a>
+        {% endif %}
+    </div>
+</div>
+

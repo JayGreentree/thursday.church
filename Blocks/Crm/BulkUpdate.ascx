@@ -15,7 +15,7 @@
 
                 <asp:Panel ID="pnlEntry" runat="server">
 
-                    <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Please Correct the Following" CssClass="alert alert-danger" />
+                    <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Please correct the following:" CssClass="alert alert-validation" />
 
                     <div class="panel panel-widget individuals">
                         <div class="panel-heading clearfix">
@@ -51,12 +51,20 @@
                         </div>
                     </div>
 
+                    <Rock:PanelWidget ID="pwWorkFlows" runat="server" Title="Workflows" TitleIconCssClass="fa fa-cogs"  Expanded="false">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <Rock:RockListBox ID="rlbWorkFlowType" runat="server" DisplayDropAsAbsolute="true" Placeholder="Select a workflow..." />
+                            </div>
+                        </div>
+                    </Rock:PanelWidget>
+
                     <Rock:PanelWidget ID="pwIndividualDetails" runat="server" Title="Individual Details" TitleIconCssClass="fa fa-user" Expanded="false" CssClass="fade-inactive">
 
                         <div class="row">
                             <div class="col-sm-6">
                                 <Rock:RockDropDownList ID="ddlTitle" runat="server" />
-                                <Rock:RockDropDownList ID="ddlStatus" runat="server" />
+                                <Rock:RockDropDownList ID="ddlConnectionStatus" runat="server" />
                                 <Rock:RockDropDownList ID="ddlGender" runat="server" >
                                     <asp:ListItem Text="Male" Value="Male" />
                                     <asp:ListItem Text="Female" Value="Female" />
@@ -72,11 +80,15 @@
                                     </div>
                                 </div>
                                 <Rock:CampusPicker ID="cpCampus" runat="server" />
+                                <Rock:RockDropDownList ID="ddlCommunicationPreference" runat="server" Label="Communication Preference">
+                                    <asp:ListItem Text="Email" Value="1" />
+                                    <asp:ListItem Text="SMS" Value="2" />
+                                </Rock:RockDropDownList>
                             </div>
                             <div class="col-sm-6">
                                 <Rock:RockDropDownList ID="ddlSuffix" runat="server" />
-                                <Rock:RockDropDownList ID="ddlRecordStatus" runat="server"  
-                                    AutoPostBack="true" OnSelectedIndexChanged="ddlRecordStatus_SelectedIndexChanged" />
+
+                                <Rock:RockDropDownList ID="ddlRecordStatus" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlRecordStatus_SelectedIndexChanged" />
                                 <Rock:RockDropDownList ID="ddlInactiveReason" runat="server" Visible="false" Label="Inactive Reason"></Rock:RockDropDownList>
                                 <Rock:RockTextBox ID="tbInactiveReasonNote" runat="server" TextMode="MultiLine" Rows="2" Visible="false" Label="Inactive Reason Note"></Rock:RockTextBox>
                             </div>

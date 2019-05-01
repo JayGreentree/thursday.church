@@ -1,0 +1,373 @@
+{% comment %} 
+    {% include '~~/Assets/Lava/dashboard/next-steps-nav.lava' %} 
+{% endcomment %}
+
+{% comment %} Modals for next steps {% endcomment %}
+{% include '~~/Assets/Lava/dashboard/_next-steps-modals.lava' %}
+
+{% comment %} Render nav icons for next steps modals {% endcomment %}
+<div class="next-steps-nav">
+    <div class="outer-circle">
+        <a href="#" class="outer-circle-link hidden deg180" data-toggle="modal" data-target="#modalBaptism"><img id="baptism" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-baptism.png'></a>
+        <a href="#" class="outer-circle-link hidden deg206" data-toggle="modal" data-target="#modalWorship"><img id="worship" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-worship.png'></a>
+        <a href="#" class="outer-circle-link hidden deg237" data-toggle="modal" data-target="#modalConnect"><img id="connect" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-connect.png'></a>
+        <a href="#" class="outer-circle-link hidden deg270-5" data-toggle="modal" data-target="#modalServe"><img id="serve" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-serve.png'></a>
+        <a href="#" class="outer-circle-link hidden deg303-5" data-toggle="modal" data-target="#modalGive"><img id="give" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-give.png'></a>
+        <a href="#" class="outer-circle-link hidden deg334" data-toggle="modal" data-target="#modalShare"><img id="share" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-share.png'></a>
+        <a href="#" class="outer-circle-link hidden deg360" data-toggle="modal" data-target="#modalCoach"><img id="coach" class="nextstep-icon-inactive" src='~~/Assets/Images/home/get-involved/icon-coach.png'></a>
+    </div>
+    <div class="inner-circle">
+        <div class="inner-circle-text">
+            <a href="/dashboard/profile" >
+                {% if CurrentPerson.PhotoId %}
+                    <img class="img img-responsive" src="/GetImage.ashx?id={{ CurrentPerson.PhotoId }}" style="border-radius: 50%;" /> 
+                {% else %}
+                    {% if CurrentPerson.Age < 18 %}
+                        {% if CurrentPerson.Gender == "Female" %}
+                            <img class="img img-responsive" src="/Assets/Images/person-no-photo-child-female.svg" style="border-radius: 50%;" /> 
+                        {% else %}
+                            <img class="img img-responsive" src="/Assets/Images/person-no-photo-child-male.svg" style="border-radius: 50%;" /> 
+                        {% endif %}
+                    {% else %}
+                        {% if CurrentPerson.Gender == "Female" %}
+                            <img class="img img-responsive" src="/Assets/Images/person-no-photo-female.svg" style="border-radius: 50%;" /> 
+                        {% else %}
+                            <img class="img img-responsive" src="/Assets/Images/person-no-photo-male.svg" style="border-radius: 50%;" /> 
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </a>
+            <span class="inner-circle-text-desktop">My Next Steps</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // global varibables
+    var apiStartingPointResponse = '';
+    var apiStepsResponse = '';
+    var nextStepsFAQ = "<br/><a href='/Content/ccv.church/2018/FAQ_Doc.pdf'>Next Steps FAQ</a>";
+
+    $( document ).ready(function() {
+        // hidden is used to prevent steps icons from displaying in front of dashboard cards on load
+        $('.outer-circle-link').toggleClass('hidden');
+    });
+
+    // .5s after page load, trigger the toggleNextStepsMenu animation
+    $( window ).on('load', function() {
+        setTimeout(function() {
+            toggleNextStepsMenu();
+        }, 100);
+    });
+
+    // toggle the next steps menu open / close
+    toggleNextStepsMenu = function() {
+        $('.outer-circle-link').toggleClass('outer-circle-link-open');
+    //  $('#nextStepsNavArrow').toggleClass('mdi-chevron-up mdi-chevron-down') - Leaving in case they change their minds...
+    };
+
+    // setup popover
+    activatePopOver = function(element, content) {
+        // only activate mobile for non-mobile devices
+        if (window.matchMedia("(min-width: 1024px)").matches) {
+            // html template for popover
+            var popOverTemplate = `<div class="popover" role="tooltip">
+                                    <div class="arrow"></div>
+                                    <h3 class="popover-title"></h3>
+                                    <div class="popover-content"></div>
+                                </div>`;
+            // setup popover element
+            $(element).popover({
+                content: content,
+                container: 'body',
+                trigger: 'hover',
+                placement: 'top',
+                template: popOverTemplate,
+                html: true
+            });
+        }
+
+    }
+
+    // Render active baptism icon and update relative popover and modal content
+    renderBaptism = function(data) {
+        switch (data.BaptismStatus) {
+            case 0: {
+                // is not baptised
+                statusValue = 'Declare your faith through baptism.';
+                break;
+            }
+            case 1: {
+                // is baptised
+                statusValue = `Congratulations! You took one of the most important steps in the life of a Christian on ${data.BaptismDateFormatted}.`;
+
+                // Hide button to get baptised since already baptised
+                $('#buttonBaptism').html(htmlContent).hide();
+
+                // Update modal content
+                var htmlContent = "<p>" + statusValue + "</p>";
+                // if baptized by CCV show certificate button, if photo exists show photo button
+                htmlContent += `<div class="nextstep-modal-baptism-buttons">
+                                    {% assign baptizedHere = CurrentPerson | Attribute:'BaptizedHere' %}
+                                    {% if baptizedHere == 'Yes' %}
+                                        <a href="/baptismdashboard?display=certificate&paguid={{ CurrentPerson.PrimaryAlias.Guid }}">
+                                            <i class="mdi mdi-certificate nextstep-modal-baptism-icon"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% assign baptismPhoto = CurrentPerson | Attribute:'BaptismPhoto' %}
+                                    {% if baptismPhoto != null and baptismPhoto != '' %}
+                                        <a href="/baptismdashboard?display=photo&paguid={{ CurrentPerson.PrimaryAlias.Guid }}">
+                                            <i class="fa fa-picture-o nextstep-modal-baptism-icon"></i>
+                                        </a>
+                                    {% endif %}  
+                                </div>`;
+                $('#modalContentBaptism').html(htmlContent);
+
+                // change color of icon
+                toggleActiveIcon('#baptism');
+                break;
+            }
+            case 2: {
+                // regestered to be baptised
+                statusValue = `Registered for baptism on ${moment( new Date(data.BaptismRegistrationDate)).format("M/D/YYYY")}!`;
+                
+                // Update modal content
+                $('#modalContentBaptism').html(statusValue);
+                break;
+            }
+            default: 
+                break;
+        }
+
+        activatePopOver('#baptism', statusValue);
+    }
+
+    // Render active worship icon and update relative popover and modal content
+    renderWorship = function(data) {
+        if (data) {
+            // is worshiping 
+            statusValue = 'It’s good to see you! Thank you for joining us regularly. Invite a friend next week.';
+
+            // Hide button to worship since already worshiping
+            $('#buttonWorship').hide();
+
+            // update modal content
+            $('#modalContentWorship').html(statusValue+nextStepsFAQ);
+
+            // change color of icon 
+            toggleActiveIcon('#worship');
+        } else {
+            // is not worshiping
+            statusValue = 'Join us this weekend for worship!';
+        }
+
+        activatePopOver('#worship', statusValue);
+    }
+
+    // Render active connect icon and update relative popover and modal content
+    renderConnect = function(data) {
+        switch (data.ConnectionStatus) {
+            case 0: {
+                // in a group
+                statusValue = `You’re in a group! It’s time to reach your community and impact it for the better.`; 
+
+                // Hide button to connect since already in group
+                $('#buttonConnect').hide();
+
+                // update modal content
+                $('#modalContentConnect').html(statusValue+nextStepsFAQ);
+
+                // change color of icon
+                toggleActiveIcon('#connect');
+                break;
+            }
+            case 1: {
+                // not in a group
+                statusValue = 'Join a group near you.';
+                break;
+            }
+            case 2: { 
+                // registered for a group
+                statusValue = 'You are registered for a CCV group.'; 
+
+                // update modal content
+                $('#modalContentConnect').html(statusValue);
+                break;
+            }
+            default: 
+                break;
+        }
+
+        activatePopOver('#connect', statusValue);
+    }
+
+    // Render active serve icon and update relative popover and modal content
+    renderServe = function(data) {
+        switch (data.ServingStatus) {
+            case 0: {
+                // Not serving
+                statusValue = 'Sign up to serve.';
+                break;
+            }
+            case 1: {
+                // Registered to serve
+                statusValue = 'You are registered to serve.';
+
+                // update modal content
+                $('#modalContentServe').html(statusValue+nextStepsFAQ);
+                break;
+            }
+            case 2: { 
+                // Is Serving
+                statusValue = `Thank you for the time that you invest into our ministries. We couldn’t do it without you!`; 
+                
+                // Hide button to serve since already serving
+                $('#buttonServe').hide();
+
+                // update modal content
+                $('#modalContentServe').html(statusValue+nextStepsFAQ);
+
+                // change color of icon
+                toggleActiveIcon('#serve');
+                break;
+            }
+            default: 
+                break;
+        }
+
+        activatePopOver('#serve', statusValue);
+    }
+
+    // Render active give icon and update relative popover and modal content
+    renderGive = function(data) {
+        if (data) {
+            // giving
+            statusValue = `Thank you for generously giving to support our mission to reach others for Jesus Christ, both in the Valley and around the world.`; 
+
+            // Hide button to learn more since already gave
+            // $('#buttonGive').hide();
+
+            // update modal content
+            $('#modalContentGive').html(statusValue+nextStepsFAQ);
+
+            // change color of icon
+            toggleActiveIcon('#give');
+        } else {
+            // not giving
+            statusValue = 'Trust God with your finances through giving.';
+        }
+
+        activatePopOver('#give', statusValue);
+    }
+
+    // Render active share icon and update relative popover and modal content
+    renderShare = function(data) {
+        if (data.SharedStory) {
+            // Story shared
+            statusValue = 'You’ve shared with us how God has changed your life; don’t stop there, share your story with others too. It just might be the encouragement that leads someone else to Christ.'; 
+
+            // Hide button to share since already shared
+            $('#buttonShare').hide();
+
+            // update modal content
+            $('#modalContentShare').html(statusValue+nextStepsFAQ);            
+
+            // change color of icon
+            toggleActiveIcon('#share');
+        } else {
+            // Story not shared
+            statusValue = 'Share what God is doing in your life.';
+        }
+
+        activatePopOver('#share', statusValue);
+    }
+
+    // Render active coach icon and update relative popover and modal content
+    renderCoach = function(data) {
+        if (data.IsCoaching) {
+            // is Coach
+            statusValue = `Thank you for leading people through their Next Steps at CCV. Do you know someone that would make a good Coach? Ask them to join you.`; 
+
+            // Hide button to coach since already coaching
+            $('#buttonCoach').hide();
+
+            // update modal content
+            $('#modalContentCoach').html(statusValue+nextStepsFAQ);
+
+            // change color of icon
+            toggleActiveIcon('#coach');
+        } else {
+            // is not Coach
+            statusValue = 'Help others take their Next Steps.';
+        }
+
+        activatePopOver('#coach', statusValue);
+    }
+
+    toggleActiveIcon = function(element) {
+        $(element).toggleClass('nextstep-icon-inactive nextstep-icon-active');
+    }
+
+    // Get Steps data from api
+    Sys.Application.add_load(function(sender, args){
+        // check if post back
+        if (!args.get_isPartialLoad()){
+            // if current person query api for steps taken
+            var currentPersonGuid = '{{ CurrentPerson.Guid }}';
+            if (currentPersonGuid !== '') {
+                $.getJSON('/api/CCV/Badges/StepsBar/'+currentPersonGuid, function(data){
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var keyData = data[key];
+                            // Process response
+                            switch (key) {
+                                case 'BaptismResult': {
+                                    renderBaptism(keyData);
+                                    break;
+                                };
+                                case 'IsWorshipper': {
+                                    renderWorship(keyData);
+                                    break;
+                                };   
+                                case 'ConnectionResult': {
+                                    renderConnect(keyData);
+                                    break;
+                                };
+                                case 'IsTithing': {
+                                    renderGive(keyData);
+                                    break;
+                                };   
+                                case 'ServingResult': {
+                                    renderServe(keyData);
+                                    break;
+                                };  
+                                case 'CoachingResult': {
+                                    renderCoach(keyData);
+                                    break;
+                                };  
+                                case 'SharedStoryResult': {
+                                    renderShare(keyData);
+                                    break;
+                                };                           
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                });
+            }
+
+            // If current person query api for starting point step
+            var currentPersonId = '{{ CurrentPerson.Id }}';
+            if (currentPersonId !== '') {
+
+                    $.getJSON('/api/CCV/Badges/TakenStartingPoint/'+currentPersonId, function(data){
+                        apiStartingPointResponse = data;
+                    });
+                
+                
+
+            }
+        }
+    });
+</script>

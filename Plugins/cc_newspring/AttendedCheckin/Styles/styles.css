@@ -86,6 +86,16 @@
   padding: 0 !important;
 }
 
+.hard-sides {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.hard-ends {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
 .hard-top {
   padding-top: 0 !important;
 }
@@ -193,6 +203,10 @@
 }
 
 /* Layout */
+.form-control {
+    border-radius: 6px;
+}
+
 .container.body-content {
   width: 100%;
 }
@@ -200,6 +214,7 @@
 .checkin-header {
   padding: 15px;
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 .checkin-header h2 {
@@ -256,7 +271,7 @@
 }
 
 .checkin-footer {
-  position: relative;
+  /* position: relative; */
 }
 
 .datepicker, .modal-content {
@@ -318,6 +333,10 @@ button.close {
   letter-spacing: -.5px;
 }
 
+.button-bar .btn {
+    width: inherit;
+}
+
 .btn-checkin-select {
   padding-top: 15px;
   margin-bottom: 12px;
@@ -328,7 +347,7 @@ button.close {
 
 .btn:focus, .btn:active {
   outline: none;
-  box-shadow: none;  
+  box-shadow: none;
 }
 
 .btn-primary .checkin-sub-title {
@@ -418,11 +437,11 @@ table thead {
 }
 
 .table-condensed th {
-  padding: 15px !important;
+  padding: 6px !important;
 }
 
 .table-condensed td {
-  padding: 6px 15px !important;
+  padding: 6px !important;
 }
 
 table td {
@@ -461,10 +480,6 @@ th.datepicker-switch {
 
 td.day {
   width: 14.3%;
-}
-
-tfoot {
-  display: none;
 }
 
 .grid-paging {
@@ -564,6 +579,10 @@ span.month, span.year {
   font-size: 1.5em;
 }
 
+.force-wrap {
+    white-space: normal !important;
+}
+
 .full-width {
   width: 100%;
 }
@@ -591,18 +610,20 @@ span.month, span.year {
   height: auto;
   bottom: auto;
   max-height: 90%;
-  overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .modal-content {
   background-color: #fff !important;
 }
 
+tfoot,
 .modal-header,
 .grid-pagesize,
 .grid-itemcount,
+.grid-actions,
 .modal:not(.bootbox) .modal-footer {
-  display: none;
+    display: none;
 }
 
 .family {

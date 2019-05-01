@@ -19,12 +19,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using NuGet;
 using RestSharp;
 
@@ -44,7 +47,8 @@ namespace RockWeb.Blocks.Core
     public partial class RockUpdate : Rock.Web.UI.RockBlock
     {
         #region Fields
-
+        private bool _isEarlyAccessOrganization = false;
+        private List<Release> _releases = new List<Release>();
         WebProjectManager nuGetService = null;
         private string _rockPackageId = "Rock";
         IEnumerable<IPackage> _availablePackages = null;
@@ -67,7 +71,7 @@ namespace RockWeb.Blocks.Core
             {
                 if ( nuGetService == null )
                 {
-                    var globalAttributesCache = GlobalAttributesCache.Read();
+                    var globalAttributesCache = GlobalAttributesCache.Get();
                     string packageSource = globalAttributesCache.GetValue( "UpdateServerUrl" );
                     if ( packageSource.ToLowerInvariant().Contains( "rockalpha" ) || packageSource.ToLowerInvariant().Contains( "rockbeta" ) )
                     {
@@ -128,26 +132,52 @@ namespace RockWeb.Blocks.Core
                 {
                     pnlNoUpdates.Visible = false;
                     pnlError.Visible = true;
-                    nbErrors.Text = string.Format( "Your UpdateServerUrl is not valid. It is currently set to: {0}", GlobalAttributesCache.Read().GetValue( "UpdateServerUrl" ) );
+                    nbErrors.Text = string.Format( "Your UpdateServerUrl is not valid. It is currently set to: {0}", GlobalAttributesCache.Get().GetValue( "UpdateServerUrl" ) );
                 }
                 else
                 {
                     try
                     {
-                        if ( CheckFrameworkVersion() )
+                        _isEarlyAccessOrganization = CheckEarlyAccess();
+
+                        btnIssues.NavigateUrl = string.Format( "http://www.rockrms.com/earlyaccessissues?RockInstanceId={0}", Rock.Web.SystemSettings.GetRockInstanceId() );
+
+                        if ( _isEarlyAccessOrganization )
+                        {
+                            hlblEarlyAccess.LabelType = Rock.Web.UI.Controls.LabelType.Success;
+                            hlblEarlyAccess.Text = "Early Access: Enabled";
+
+                            pnlEarlyAccessNotEnabled.Visible = false;
+                            pnlEarlyAccessEnabled.Visible = true;
+                        }
+
+                        VersionCheckResult result = CheckFrameworkVersion();
+                        if ( result == VersionCheckResult.Pass )
                         {
                             _isOkToProceed = true;
                         }
+                        else if ( result == VersionCheckResult.Fail )
+                        {
+                            _isOkToProceed = false;
+                            nbVersionIssue.Visible = true;
+                            nbVersionIssue.Text += "<p>You will need to upgrade your hosting server in order to proceed with the next update.</p>";
+                            nbBackupMessage.Visible = false;
+                        }
                         else
                         {
+                            _isOkToProceed = true;
                             nbVersionIssue.Visible = true;
+                            nbVersionIssue.Text += "<p>You may need to upgrade your hosting server in order to proceed with the next update. We were <b>unable to determine which Framework version</b> your server is using.</p>";
+                            nbVersionIssue.Details += "<div class='alert alert-warning'>We were unable to check your server to verify that the .Net 4.5.2 Framework is installed! <b>You MUST verify this manually before you proceed with the update</b> otherwise your Rock application will be broken until you update the server.</div>";
                             nbBackupMessage.Visible = false;
                         }
 
+                        _releases = GetReleasesList();
                         _availablePackages = NuGetService.SourceRepository.FindPackagesById( _rockPackageId ).OrderByDescending( p => p.Version );
                         if ( IsUpdateAvailable() )
                         {
                             pnlUpdatesAvailable.Visible = true;
+                            pnlUpdates.Visible = true;
                             pnlNoUpdates.Visible = false;
                             cbIncludeStats.Visible = true;
                             BindGrid();
@@ -187,6 +217,7 @@ namespace RockWeb.Blocks.Core
             try
             {
                 pnlUpdatesAvailable.Visible = false;
+                pnlUpdates.Visible = false;
 
                 if ( !UpdateRockPackage( version ) )
                 {
@@ -219,18 +250,29 @@ namespace RockWeb.Blocks.Core
         {
             if ( e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem )
             {
-                IPackage package = e.Item.DataItem as IPackage; 
+                IPackage package = e.Item.DataItem as IPackage;
                 if ( package != null )
                 {
                     LinkButton lbInstall = e.Item.FindControl( "lbInstall" ) as LinkButton;
                     var divPanel = e.Item.FindControl( "divPanel" ) as HtmlGenericControl;
-                    
+
                     var requiredVersion = ExtractRequiredVersionFromTags( package );
                     if ( requiredVersion <= _installedVersion )
                     {
-                        lbInstall.Enabled = true;
-                        lbInstall.AddCssClass( "btn-info" );
-                        divPanel.AddCssClass( "panel-info" );
+                        var release = _releases.Where( r => r.SemanticVersion == package.Version.ToString() ).FirstOrDefault();
+                        if ( !_isEarlyAccessOrganization && release != null && release.RequiresEarlyAccess )
+                        {
+                            lbInstall.Enabled = false;
+                            lbInstall.Text = "Available to Early<br/>Access Organizations";
+                            lbInstall.AddCssClass( "btn-warning" );
+                            divPanel.AddCssClass( "panel-block" );
+                        }
+                        else
+                        {
+                            lbInstall.Enabled = true;
+                            lbInstall.AddCssClass( "btn-info" );
+                            divPanel.AddCssClass( "panel-info" );
+                        }
                     }
                     else
                     {
@@ -268,39 +310,116 @@ namespace RockWeb.Blocks.Core
         #region Methods
 
         /// <summary>
-        /// Checks the .NET Framework version and returns false if not at the needed
-        /// level to proceed.
+        /// Checks the early access status of this organization.
         /// </summary>
-        /// <returns>true if ok, false otherwise</returns>
-        private bool CheckFrameworkVersion()
+        /// <returns></returns>
+        private bool CheckEarlyAccess()
         {
-            bool isOk = false;
+            var client = new RestClient( "http://www.rockrms.com/api/RockUpdate/GetEarlyAccessStatus" );
+            var request = new RestRequest( Method.GET );
+            request.RequestFormat = DataFormat.Json;
+
+            request.AddParameter( "rockInstanceId", Rock.Web.SystemSettings.GetRockInstanceId() );
+            IRestResponse response = client.Execute( request );
+            if ( response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Accepted )
+            {
+                return response.Content.AsBoolean();
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the releases list from the rock server.
+        /// </summary>
+        /// <returns></returns>
+        private List<Release> GetReleasesList()
+        {
+            List<Release> releases = new List<Release>();
+
+            var releaseProgram = ReleaseProgram.PRODUCTION;
+            var updateUrl = GlobalAttributesCache.Get().GetValue( "UpdateServerUrl" );
+            if ( updateUrl.Contains( ReleaseProgram.ALPHA ) )
+            {
+                releaseProgram = ReleaseProgram.ALPHA;
+            }
+            else if ( updateUrl.Contains( ReleaseProgram.BETA ) )
+            {
+                releaseProgram = ReleaseProgram.BETA;
+            }
+
+            var client = new RestClient( "http://www.rockrms.com/api/RockUpdate/GetReleasesList" );
+            var request = new RestRequest( Method.GET );
+            request.RequestFormat = DataFormat.Json;
+
+            request.AddParameter( "rockInstanceId", Rock.Web.SystemSettings.GetRockInstanceId() );
+            request.AddParameter( "releaseProgram", releaseProgram );
+            IRestResponse response = client.Execute( request );
+            if ( response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Accepted )
+            {
+                foreach ( var release in JsonConvert.DeserializeObject<List<Release>>( response.Content ) )
+                {
+                    releases.Add( release );
+                }
+            }
+
+            return releases;
+        }
+
+        /// <summary>
+        /// Checks the .NET Framework version and returns Pass, Fail, or Unknown which can be 
+        /// used to determine if it's safe to proceed.
+        /// </summary>
+        /// <returns>One of the values of the VersionCheckResult enum.</returns>
+        private VersionCheckResult CheckFrameworkVersion()
+        {
+            VersionCheckResult result = VersionCheckResult.Fail;
             try
             {
-                // check .net
-                // .NET 4.5.2 as 4.0.30319.34000
-
                 if ( System.Environment.Version.Major > 4 )
                 {
-                    isOk = true;
+                    result = VersionCheckResult.Pass;
                 }
                 else if ( System.Environment.Version.Major == 4 && System.Environment.Version.Build > 30319 )
                 {
-                    isOk = true;
+                    result = VersionCheckResult.Pass;
                 }
-                else if ( System.Environment.Version.Major == 4 && System.Environment.Version.Build == 30319 && System.Environment.Version.Revision >= 34000 )
+                else if ( System.Environment.Version.Major == 4 && System.Environment.Version.Build == 30319 )
                 {
-                    // 34000 is the ".2" in 4.5.2
-                    isOk = true;
+                    // Once we get to 4.5 Microsoft recommends we test via the Registry...
+                    result = Check45PlusFromRegistry();
                 }
             }
             catch
             {
-                // This would be pretty bad, but regardless we'll just
-                // return the isOk (not) and let the caller proceed.
+                // This would be pretty bad, but regardless we'll return
+                // the Unknown result and let the caller proceed with caution.
+                result = VersionCheckResult.Unknown;
             }
 
-            return isOk;
+            return result;
+        }
+
+        /// <summary>
+        /// Suggested approach to check which version of the .Net framework is installed when using version 4.5 or later
+        /// as per https://msdn.microsoft.com/en-us/library/hh925568(v=vs.110).aspx.
+        /// </summary>
+        /// <returns>a string containing the human readable version of the .Net framework</returns>
+        private static VersionCheckResult Check45PlusFromRegistry()
+        {
+            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+            using ( RegistryKey ndpKey = RegistryKey.OpenBaseKey( RegistryHive.LocalMachine, RegistryView.Registry32 ).OpenSubKey( subkey ) )
+            {
+                // Check if Release is >= 379893 (4.5.2)
+                if ( ndpKey != null && ndpKey.GetValue( "Release" ) != null && ( int ) ndpKey.GetValue( "Release" ) >= 379893 )
+                {
+                    return VersionCheckResult.Pass;
+                }
+                else
+                {
+                    return VersionCheckResult.Fail;
+                }
+            }
         }
 
         /// <summary>
@@ -431,16 +550,19 @@ namespace RockWeb.Blocks.Core
                 return "Rock " + RockVersion( semanticVersion );
             }
             else
-
-            return string.Empty;
+            {
+                return string.Empty;
+            }
         }
 
         protected string RockVersion( SemanticVersion version )
         {
             switch ( version.Version.Major )
             {
-                case 1: return string.Format( "McKinley {0}.{1}", version.Version.Minor, version.Version.Build );
-                default: return string.Format( "{0}.{1}.{2}", version.Version.Major, version.Version.Minor, version.Version.Build );
+                case 1:
+                    return string.Format( "McKinley {0}.{1}", version.Version.Minor, version.Version.Build );
+                default:
+                    return string.Format( "{0}.{1}.{2}", version.Version.Major, version.Version.Minor, version.Version.Build );
             }
         }
 
@@ -520,7 +642,7 @@ namespace RockWeb.Blocks.Core
         {
             Regex regex = new Regex( @"requires-([\.\d]+)" );
             if ( package.Tags != null )
-            { 
+            {
                 Match match = regex.Match( package.Tags );
                 if ( match.Success )
                 {
@@ -720,7 +842,7 @@ namespace RockWeb.Blocks.Core
 
                     if ( cbIncludeStats.Checked )
                     {
-                        var globalAttributes = GlobalAttributesCache.Read();
+                        var globalAttributes = GlobalAttributesCache.Get();
                         organizationName = globalAttributes.GetValue( "OrganizationName" );
                         publicUrl = globalAttributes.GetValue( "PublicApplicationRoot" );
 
@@ -802,11 +924,11 @@ namespace RockWeb.Blocks.Core
 
             if ( ex.Message.Contains( "404" ) )
             {
-                nbErrors.Text = string.Format( "It appears that someone configured your <code>UpdateServerUrl</code> setting incorrectly: {0}", GlobalAttributesCache.Read().GetValue( "UpdateServerUrl" ) );
+                nbErrors.Text = string.Format( "It appears that someone configured your <code>UpdateServerUrl</code> setting incorrectly: {0}", GlobalAttributesCache.Get().GetValue( "UpdateServerUrl" ) );
             }
             else if ( ex.Message.Contains( "could not be resolved" ) )
             {
-                nbErrors.Text = string.Format( "I think either the update server is down or your <code>UpdateServerUrl</code> setting is incorrect: {0}", GlobalAttributesCache.Read().GetValue( "UpdateServerUrl" ) );
+                nbErrors.Text = string.Format( "I think either the update server is down or your <code>UpdateServerUrl</code> setting is incorrect: {0}", GlobalAttributesCache.Get().GetValue( "UpdateServerUrl" ) );
             }
             else if ( ex.Message.Contains( "Unable to connect" ) )
             {
@@ -855,4 +977,48 @@ namespace RockWeb.Blocks.Core
         }
     }
 
+    /// <summary>
+    /// Represents the possible results of a version check.
+    /// </summary>
+    public enum VersionCheckResult
+    {
+        /// <summary>
+        /// The version check definitely fails
+        /// </summary>
+        Fail = 0,
+
+        /// <summary>
+        /// This version check definitely passes
+        /// </summary>
+        Pass = 1,
+
+        /// <summary>
+        /// The version check could not determine pass or fail so proceed at own risk.
+        /// </summary>
+        Unknown = 2
+    }
+
+    /// <summary>
+    /// Represents the bits the Rock system stores regarding a particular release.
+    /// </summary>
+    [Serializable]
+    public class Release
+    {
+        public string SemanticVersion { get; set; }
+        public string Version { get; set; }
+        public DateTime? ReleaseDate { get; set; }
+        public string Summary { get; set; }
+        public bool RequiresEarlyAccess { get; set; }
+        public string RequiresVersion { get; set; }
+    }
+
+    /// <summary>
+    /// One of three options that represent which release 'program' one can be on.
+    /// </summary>
+    public static class ReleaseProgram
+    {
+        public static readonly string ALPHA = "alpha";
+        public static readonly string BETA = "beta";
+        public static readonly string PRODUCTION = "production";
+    }
 }

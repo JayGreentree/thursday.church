@@ -1,0 +1,103 @@
+.page-background { 
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/watch/hero-messages.jpg");
+    background-color: white;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/watch/hero-mobile-messages.jpg");
+    }
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.messages-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 15px;
+}
+
+.series {
+    width: 32%;
+}
+
+.series img {
+    width: 100%;
+}
+
+.series p {
+    text-align: center;
+    background-color: #7A1315;
+    color: #FFFFFF;
+    padding: 10px 0;
+}
+
+/* Tablet Styling */
+@media screen and (max-width: 768px) {
+    .messages-list {
+        padding-top: 0;
+    }
+
+    .btn {
+        width: unset;
+    }
+
+    .pager {
+        margin: 0 0 10px 0;
+    }
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .messages-list {
+        flex-direction: column;
+        padding-top: 0;
+    }
+
+    .series {
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .btn-primary {
+        width: 100px;
+        min-width: unset;
+    }
+}
+
+
+/* override bootstrap */
+.pager li>a {
+    background-color: #7A1315;
+    border-width: 0;
+    border: unset;
+    display: flex;
+}
+
+.pager li>a:hover, .pager li>a:focus {
+    background-color: #7A1315;
+}
+
+.btn-primary {
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary i {
+    font-size: 20px;
+}
+
+.watch-previous a {
+    float: left;
+}
+
+.watch-next a {
+    float: right;
+}

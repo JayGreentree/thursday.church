@@ -1,0 +1,39 @@
+.page-background {   
+    background-color: #EBEBEB;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-stars.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-stars.jpg");
+    }
+}
+
+#section-b-bg {
+    display: none;
+}
+
+#section-c-bg {
+    background-color: #FFFFFF;
+}
+
+#section-d-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-stars-soccer.jpg");
+}
+
+#section-e-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-stars-football.jpg");
+}
+
+#section-f-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-stars-basketball.jpg");
+}
+
+/* Override Standard Layout Tablet Styling (fixes graphic section padding issues) */
+@media screen and (max-width: 1024px) {
+    #section-a-bg {
+        padding-top: 25px;
+    }
+}
+ 

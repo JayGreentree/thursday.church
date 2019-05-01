@@ -35,7 +35,7 @@ namespace RockWeb.Blocks.Core
 
     [LinkedPage("Detail Page")]
     [BinaryFileTypeField]
-    public partial class BinaryFileList : RockBlock
+    public partial class BinaryFileList : RockBlock, ICustomGridColumns
     {
         private BinaryFileType binaryFileType = null;
 
@@ -151,8 +151,8 @@ namespace RockWeb.Blocks.Core
 
                 if ( clearDeviceCache )
                 {
-                    Rock.CheckIn.KioskDevice.FlushAll();
-                    Rock.CheckIn.KioskLabel.Flush( guid );
+                    Rock.CheckIn.KioskDevice.Clear();
+                    Rock.CheckIn.KioskLabel.Remove( guid );
                 }
             }
 

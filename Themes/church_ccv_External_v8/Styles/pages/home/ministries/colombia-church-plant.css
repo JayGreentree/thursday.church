@@ -1,0 +1,128 @@
+
+.page-background {   
+    background-color: #EBEBEB;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-church-plant-colombia.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-church-plant-colombia.jpg");
+    }
+}
+
+.main-feature {
+    padding-top: 300px;
+}
+
+#ternavbar-bg {
+    display: flex;
+}
+
+#section-a-bg, #section-b-bg, #section-c-bg {
+    padding: 20px;
+}
+
+#section-b-bg, #section-c-bg {
+    background-color: #FFFFFF;
+}
+
+.church-plant-title {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.title-info {
+    max-width: 45%;
+}
+
+.title-info h1, .title-info h2, .title-info h4 {
+    font-family: akrobat;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.title-info h1 {
+    font-size: 60px;
+}
+
+
+/* Mobile Styling page / title */
+@media screen and (max-width: 500px) {
+    .main-feature {
+        padding-top: 60px;
+    }
+
+    .church-plant-title {
+        flex-direction: column;
+    }
+
+    .title-info {
+        max-width: 100%;
+    }
+
+    .title-info h1 {
+        font-size: 36px;
+    }
+
+}
+
+/* Church info Styling */
+.left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pastor-image-mobile {
+    display: none;
+}
+
+.right h4, h3 {
+    margin: 0;
+}
+
+.right p {
+    margin: 20px 0;
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .pastor-image-desktop {
+        display: none;
+    }
+
+    .pastor-image-mobile {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        padding-bottom: 20px;
+    }
+
+    .left-and-right-container {
+        padding-bottom: 0;
+    }
+
+    .left-and-right-container .right {
+        margin-top: 0;
+    }
+}
+
+/* End Church info */
+
+/* Church Update styling */
+.church-update {
+    padding-bottom: 20px;
+}
+
+.update-info-header {
+    padding: 20px 0;
+}
+
+.previous-updates {
+    padding-bottom: 20px;
+}
+
+/* End Church update */
+

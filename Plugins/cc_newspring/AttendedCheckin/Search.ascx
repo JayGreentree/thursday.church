@@ -3,6 +3,7 @@
 <asp:UpdatePanel ID="pnlContent" runat="server">
     <ContentTemplate>
 
+        <asp:HiddenField ID="hfSearchEntry" runat="server" ClientIDMode="Static" />
         <asp:PlaceHolder ID="phScript" runat="server" />
         <Rock:ModalAlert ID="maWarning" runat="server" />
         <asp:LinkButton ID="lbRefresh" runat="server" OnClick="lbRefresh_Click" />
@@ -18,9 +19,9 @@
 
                 <div class="col-xs-8">
                     <Rock:RockTextBox ID="tbSearchBox" MaxLength="50" CssClass="checkin-phone-entry" runat="server" Placeholder="Enter Last Name, First Name or Phone" Label="" TabIndex="0" />
-                    <asp:LinkButton runat="server" OnClick="lbSearch_Click">
+                    <%--<asp:LinkButton runat="server" OnClick="lbSearch_Click">
                         <span class="search-button fa fa-search" />
-                    </asp:LinkButton>
+                    </asp:LinkButton>--%>
                 </div>
 
                 <div class="col-xs-2 checkin-actions text-right">
@@ -78,22 +79,52 @@
             $name.val('');
         });
 
+        var lastKeyPress = 0;
+        var keyboardBuffer = '';
+        var swipeProcessing = false;
+
         $(document).keydown(function (e) {
+            // Ctrl + M to go back
             if (e.keyCode === 77 && e.ctrlKey) {
                 window.location.href = "/attendedcheckin/admin?back=true";
                 return false;
             }
+
+            var date = new Date();
+            // if the character is a line break stop buffering and call postback
+            if (keyboardBuffer.length > 1 && (e.key == 13 || e.which == 13 )) {
+                if (!swipeProcessing) {
+                    $('#hfSearchEntry').val(keyboardBuffer);
+                    keyboardBuffer = '';
+                    swipeProcessing = true;
+                    window.location = "javascript:__doPostBack('hfSearchEntry', 'Wedge_Entry')";
+                }
+            }
+            else if (!e.ctrlKey) {
+                if ((date.getTime() - lastKeyPress) > 300) {
+                    keyboardBuffer = String.fromCharCode(e.which);
+                } else if ((date.getTime() - lastKeyPress) < 30) {
+                    keyboardBuffer += String.fromCharCode(e.which);
+                }
+            }
+
+            lastKeyPress = date.getTime();
         });
 
         // set focus to the input unless on a touch device
         var isTouchDevice = 'ontouchstart' in document.documentElement;
         if (!isTouchDevice) {
-            $('.checkin-phone-entry').focus();
+            var searchBar = $('.checkin-phone-entry');
+            var currentValue = searchBar.val();
+            searchBar.focus();
+            searchBar.val(currentValue);
+            searchBar[0].setSelectionRange(currentValue.length, currentValue.length);
         }
     };
 
     $(document).ready(function () {
         setClickEvents();
     });
+
     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(setClickEvents);
 </script>

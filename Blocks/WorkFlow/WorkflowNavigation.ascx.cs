@@ -92,7 +92,7 @@ namespace RockWeb.Blocks.WorkFlow
 
         private List<WorkflowNavigationCategory> GetData()
         {
-            int entityTypeId = EntityTypeCache.Read( typeof( Rock.Model.WorkflowType ) ).Id;
+            int entityTypeId = EntityTypeCache.Get( typeof( Rock.Model.WorkflowType ) ).Id;
 
             var selectedCategories = new List<Guid>();
             GetAttributeValue( "Categories" ).SplitDelimitedValues().ToList().ForEach( c => selectedCategories.Add( c.AsGuid() ) );
@@ -173,7 +173,7 @@ namespace RockWeb.Blocks.WorkFlow
 
             if ( !string.IsNullOrWhiteSpace( category.IconCssClass ) )
             {
-                headingTitle.Controls.Add( new LiteralControl( string.Format( "<i class='{0} icon-fw'></i> ", category.IconCssClass ) ) );
+                headingTitle.Controls.Add( new LiteralControl( string.Format( "<i class='{0} fa-fw'></i> ", category.IconCssClass ) ) );
             }
             headingTitle.Controls.Add( new LiteralControl( category.Name ) );
 
@@ -210,7 +210,7 @@ namespace RockWeb.Blocks.WorkFlow
 
                     if ( !string.IsNullOrWhiteSpace( workflowType.IconCssClass ) )
                     {
-                        aNew.Controls.Add( new LiteralControl( string.Format( "<i class='{0} icon-fw'></i> ", workflowType.IconCssClass ) ) );
+                        aNew.Controls.Add( new LiteralControl( string.Format( "<i class='{0} fa-fw'></i> ", workflowType.IconCssClass ) ) );
                     }
 
                     aNew.Controls.Add( new LiteralControl( workflowType.Name ) );
@@ -415,15 +415,7 @@ namespace RockWeb.Blocks.WorkFlow
             CanManage = canManage;
             CanViewList = canViewList;
 
-            if ( workflowType.IsActive.HasValue )
-            {
-                IsActive = workflowType.IsActive.Value;
-            }
-            else
-            {
-                IsActive = true;
-            }
-            
+            IsActive = workflowType.IsActive == true;
         }
     }
 }

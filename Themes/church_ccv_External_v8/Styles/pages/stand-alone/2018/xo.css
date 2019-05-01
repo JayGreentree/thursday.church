@@ -1,0 +1,117 @@
+.page-background {
+   background-image: url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-xo-event.jpg");
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image:  url("/Themes/church_ccv_External_v8/Assets/Images/stand-alone/2018/hero-xo-event.jpg");
+        background-color: black;
+    }
+}
+
+#subnavbar-bg {
+    display: none;
+}
+
+#section-a-bg {
+    background-color: black;
+}
+
+#section-b-bg, #section-d-bg, #section-f-bg {
+    background-color: #FFFFFF;
+}
+
+.tan {
+    background-color: #bd9f74;
+    border-color: #bd9f74;
+}
+
+.tan:hover {
+    background-color: #9b8261;
+    border-color: #9b8261;
+}
+
+.tan:active {
+    background-color: #9b8261;
+    border-color: #9b8261;
+}
+
+.tan:focus {
+    background-color: #9b8261;
+    border-color: #9b8261;
+}
+
+p {
+    color: #535353;
+}
+
+h2 {
+    color: black;
+}
+
+.title {
+    margin-top: -10%;
+}
+
+.title h2 {
+    color: white;
+    padding: 0;
+    text-align: center;
+}
+
+.title img {
+    max-width: 250px;
+}
+
+.title .text {
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.space {
+    margin-left: 1%;
+}
+
+h3 {
+    padding: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+/* Tablet Landscape Styling */
+@media screen and (max-width: 1024px) {
+  
+}
+
+/* Tablet Portrait Styling */
+@media screen and (max-width: 768px) {
+   
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .main-feature {
+        height: 340px;
+        padding-top: 90px;
+    }
+
+    .space {
+        margin-left: 0%;
+    }
+
+    .title img {
+        max-width: 150px;
+    }
+
+    .title {
+        margin-top: -10%;
+    }
+}
+
+
+
+
+

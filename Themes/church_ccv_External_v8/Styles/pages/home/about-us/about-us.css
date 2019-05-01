@@ -1,0 +1,46 @@
+
+h2 {
+    color: #000;
+    font-size: 44px;
+    line-height: 42px;
+}
+
+h3 {
+    color: #000;
+    font-family: akrobat;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 36px;
+}
+
+p {
+    color: #000;
+    font-family: heebo;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 22px;
+    color: #333333;
+    margin-bottom: 30px;
+}
+
+#zone-main, #zone-feature {
+    padding: 1% 10%;
+}
+
+#zone-main {
+    padding-bottom: 50px;
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    #zone-main {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    #zone-feature {
+        padding: 1% 0%;
+    }
+}

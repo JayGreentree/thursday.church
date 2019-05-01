@@ -1,0 +1,63 @@
+{% for campusItem in Campuses %}
+    {% if campusItem.Id == Context.Campus.Id %}
+        {% assign campus = campusItem %}
+    {% endif %}
+{% endfor %}
+
+{% assign comingSoonUntil = campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
+{% assign today = 'Now' | Date: 'yyyyMMdd' %}
+    
+{% if today < comingSoonUntil %}
+    {% assign isComingSoon = true %}
+{% endif %}
+
+{% capture email %}{{ Context.Campus | Attribute: 'Email' }}{% endcapture%}
+
+{% unless isComingSoon %}
+    <div class="special-needs-details">
+        <div class="special-needs-service-times">
+        <br />
+            <h3>SERVICE TIMES</h3>
+            <strong><span style="font-weight: bold;">Saturday</span></strong>
+            <ul class="list-inline">
+                {% for time in campus.ServiceTimes %}
+                    {% if time.Day == 'Saturday' %}
+                        {% if time.Time contains '%' %}
+                            {% assign hasSaturday = true %}
+                            <li>{{ time.Time | Remove: ' ' | Replace: '*', '' | Replace: '%', '' }}</li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% unless hasSaturday %}
+                    <li>None currently scheduled</li>
+                {% endunless %}
+            </ul>
+
+            <strong><span style="font-weight: bold;">Sunday</span></strong>
+            <ul class="list-inline">
+                {% for time in campus.ServiceTimes %}
+                    {% if time.Day == 'Sunday' %}
+                        {% if time.Time contains '%' %}
+                            {% assign hasSunday = true %}
+                            <li>{{ time.Time | Replace: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon }}</li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% unless hasSunday %}
+                    <li>None currently scheduled</li>
+                {% endunless %}
+            </ul>
+        </div>        
+        <div class="special-needs-features">
+            <h3>FEATURES</h3>
+            <ul>
+                <li>Weekend Programs</li>
+                <li>Summer Camps</li>
+                <li>Parent Groups</li>
+                <li>Sports Programs</li>
+            </ul>
+        </div>
+    </div>
+{% else %}
+    <h3>Coming Soon!</h3>
+{% endunless %}

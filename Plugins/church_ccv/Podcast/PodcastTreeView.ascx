@@ -2,35 +2,47 @@
 
 <asp:UpdatePanel ID="upCategoryTree" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
     <ContentTemplate>
+
         <asp:HiddenField ID="hfInitialCategoryParentIds" runat="server" />
         <asp:HiddenField ID="hfSelectedItemId" runat="server" />
         <asp:HiddenField ID="hfPageRouteTemplate" runat="server" />
         <asp:HiddenField ID="hfDetailPageUrl" runat="server" />
 
-        <div class="treeview">
+        <div class="treeview js-categorytreeview">
 
-            <div class="treeview-actions" id="divTreeviewActions" runat="server">
+            <div class="treeview-actions rollover-container" id="divTreeviewActions" runat="server">
 
-                <div class="btn-group">
-                    <button type="button" class="btn btn-action btn-xs dropdown-toggle" data-toggle="dropdown">
+                <div class="pull-left margin-r-sm">
+                    <div class="btn-group ">
+                        <button type="button" class="btn btn-action btn-xs dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-plus-circle"></i>
+                            <asp:Literal ID="ltAddCategory" runat="server" Text=" Add Category" />
+                            <span class="fa fa-caret-down"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <asp:LinkButton ID="lbAddCategoryRoot" OnClick="lbAddCategoryRoot_Click" Text="Add Top-Level" runat="server"></asp:LinkButton></li>
+                            <li>
+                                <asp:LinkButton ID="lbAddCategoryChild" OnClick="lbAddCategoryChild_Click" Text="Add Child To Selected" runat="server"></asp:LinkButton></li>
+                        </ul>
+                    </div>
+
+                    <asp:LinkButton ID="lbAddItem" runat="server" CssClass="add btn btn-xs btn-action" ToolTip="Add Item" CausesValidation="false" OnClick="lbAddItem_Click">
                         <i class="fa fa-plus-circle"></i>
-                        <asp:Literal ID="ltAddCategory" runat="server" Text=" Add Category" />
-                        <span class="fa fa-caret-down"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <asp:LinkButton ID="lbAddCategoryRoot" OnClick="lbAddCategoryRoot_Click" Text="Add Top-Level" runat="server"></asp:LinkButton></li>
-                        <li>
-                            <asp:LinkButton ID="lbAddCategoryChild" OnClick="lbAddCategoryChild_Click" Text="Add Child To Selected" runat="server"></asp:LinkButton></li>
-                    </ul>
+                        <asp:Literal ID="lAddItem" runat="server" Text="Add Item" />
+                    </asp:LinkButton>
                 </div>
 
-                <asp:LinkButton ID="lbAddItem" runat="server" CssClass="add btn btn-xs btn-action" ToolTip="Add Item" CausesValidation="false" OnClick="lbAddItem_Click">
-                    <i class="fa fa-plus-circle"></i>
-                    <asp:Literal ID="lAddItem" runat="server" Text="Add Item" />
-                </asp:LinkButton>
+                <div class="rollover-item" id="pnlRolloverConfig" runat="server">
+                    <i class="fa fa-gear clickable js-show-config" onclick="$(this).closest('.js-categorytreeview').find('.js-config-panel').slideToggle()"></i>
+                </div>
 
             </div>
+
+            <div class="js-config-panel" style="display: none" id="pnlConfigPanel" runat="server">
+                <Rock:Toggle ID="tglHideInactiveItems" runat="server" OnText="Active" OffText="All" Checked="true" ButtonSizeCssClass="btn-xs" OnCheckedChanged="tglHideInactiveItems_CheckedChanged" Label="Show" />
+            </div>
+
             <Rock:NotificationBox ID="nbWarning" runat="server" NotificationBoxType="Warning" />
             <div class="treeview-scroll scroll-container scroll-container-horizontal">
 
@@ -54,9 +66,27 @@
         </div>
 
         <script type="text/javascript">
+            var <%=pnlTreeviewContent.ClientID%>IScroll = null;
 
             var scrollbCategory = $('#<%=pnlTreeviewContent.ClientID%>').closest('.treeview-scroll');
-            scrollbCategory.tinyscrollbar({ axis: 'x', sizethumb: 60, size: 200 });
+            var scrollContainer = scrollbCategory.find('.viewport');
+            var scrollIndicator = scrollbCategory.find('.track');
+                <%=pnlTreeviewContent.ClientID%>IScroll = new IScroll(scrollContainer[0], {
+                    mouseWheel: false,
+                    eventPassthrough: true,
+                    preventDefault: false,
+                    scrollX: true,
+                    scrollY: false,
+                    indicators: {
+                        el: scrollIndicator[0],
+                        interactive: true,
+                        resize: false,
+                        listenX: true,
+                        listenY: false,
+                    },
+                    click: false,
+                    preventDefaultException: { tagName: /.*/ }
+            });
 
             // resize scrollbar when the window resizes
             $(document).ready(function () {
@@ -84,8 +114,7 @@
                 $('#<%=pnlTreeviewContent.ClientID%>').hide();
             }
 
-            $(function ()
-            {
+            $(function () {
                 var $selectedId = $('#<%=hfSelectedItemId.ClientID%>'),
                     $expandedIds = $('#<%=hfInitialCategoryParentIds.ClientID%>'),
                     _mapCategories = function (arr) {
@@ -97,6 +126,7 @@
                                 parentId: item.ParentId,
                                 hasChildren: item.HasChildren,
                                 isCategory: item.IsCategory,
+                                isActive: item.IsActive,
                                 entityId: item.Id
                             };
 
@@ -144,7 +174,7 @@
                             else {
                                 var detailPageUrl = $('#<%=hfDetailPageUrl.ClientID%>').val();
                                 if (detailPageUrl) {
-                                    locationUrl = Rock.settings.get('baseUrl') + detailPageUrl + itemSearch;
+                                    locationUrl = detailPageUrl + itemSearch;
                                 }
                                 else {
                                     locationUrl = window.location.href.split('?')[0] + itemSearch;
@@ -180,7 +210,9 @@
 
                 $(scrollControl).find('.viewport').height(overviewHeight);
 
-                scrollControl.tinyscrollbar_update('relative');
+                if (<%=pnlTreeviewContent.ClientID%>IScroll) {
+                        <%=pnlTreeviewContent.ClientID%>IScroll.refresh();
+                }
             }
 
 

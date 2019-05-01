@@ -51,7 +51,7 @@ namespace RockWeb.Blocks.Administration
     [DefinedValueField( Rock.SystemGuid.DefinedType.CHART_STYLES, "Chart Style", Order = 2 )]
     [BooleanField( "Show Legend", "", true, Order = 3 )]
     [CustomDropdownListField( "Legend Position", "Select the position of the Legend (corner)", "ne,nw,se,sw", false, "ne", Order = 4 )]
-    public partial class ExceptionList : RockBlock
+    public partial class ExceptionList : RockBlock, ICustomGridColumns
     {
         #region Control Methods
 
@@ -94,18 +94,19 @@ namespace RockWeb.Blocks.Administration
                 pnlExceptionGroups.Visible = true;
             }
 
-            lcExceptions.Options.SetChartStyle( this.ChartStyle );
             lcExceptions.Options.legend = lcExceptions.Options.legend ?? new Legend();
             lcExceptions.Options.legend.show = this.GetAttributeValue( "ShowLegend" ).AsBooleanOrNull();
             lcExceptions.Options.legend.position = this.GetAttributeValue( "LegendPosition" );
+            lcExceptions.Options.SetChartStyle( this.ChartStyle );
 
-            bcExceptions.Options.SetChartStyle( this.ChartStyle );
             bcExceptions.Options.legend = bcExceptions.Options.legend ?? new Legend();
             bcExceptions.Options.legend.show = this.GetAttributeValue( "ShowLegend" ).AsBooleanOrNull();
             bcExceptions.Options.legend.position = this.GetAttributeValue( "LegendPosition" );
             bcExceptions.Options.xaxis = new AxisOptions { mode = AxisMode.categories, tickLength = 0 };
             bcExceptions.Options.series.bars.barWidth = 0.6;
             bcExceptions.Options.series.bars.align = "center";
+            // Set chart style after setting options so they are not overwritten.
+            bcExceptions.Options.SetChartStyle( this.ChartStyle );
 
             bcExceptions.TooltipFormatter = @"
 function(item) {
@@ -231,7 +232,7 @@ function(item) {
                     int siteId;
                     if ( int.TryParse( e.Value, out siteId ) )
                     {
-                        var site = SiteCache.Read( siteId );
+                        var site = SiteCache.Get( siteId );
                         if ( site != null )
                         {
                             e.Value = site.Name;
@@ -243,7 +244,7 @@ function(item) {
                     int pageId;
                     if ( int.TryParse( e.Value, out pageId ) )
                     {
-                        var page = PageCache.Read( pageId );
+                        var page = PageCache.Get( pageId );
                         if ( page != null )
                         {
                             e.Value = page.InternalName;
@@ -367,8 +368,12 @@ function(item) {
             //get the summary count attribute
             int summaryCountDays = Convert.ToInt32( GetAttributeValue( "SummaryCountDays" ) );
 
-            //set the header text for the subset/summary field
-            gExceptionList.Columns[3].HeaderText = string.Format( "Last {0} days", summaryCountDays );
+            var subsetCountField = gExceptionList.ColumnsOfType<RockBoundField>().FirstOrDefault( a => a.DataField == "SubsetCount" );
+            if ( subsetCountField != null )
+            {
+                //set the header text for the subset/summary field
+                subsetCountField.HeaderText = string.Format( "Last {0} days", summaryCountDays );
+            }
 
             //get the subset/summary date
             DateTime minSummaryCountDate = RockDateTime.Now.Date.AddDays( -( summaryCountDays ) );

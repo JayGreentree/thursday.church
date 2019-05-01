@@ -1,0 +1,78 @@
+{% comment %}
+
+Service Times - Grid style (like our-campuses page)
+
+{% assign useLightIcon = false %}
+{% include '~~/Assets/Lava/ServiceTimes/Grid.lava' %}
+
+{% endcomment %}
+
+{% capture deafIcon %}
+<i class="csi csi-slt"></i>
+{% endcapture %}
+
+{% capture specialNeedsIcon %}
+<i class="csi csi-special-needs"></i>
+{% endcapture %}
+
+{% capture frenchIcon %}
+<i class="fa fa-flag"></i>
+{% endcapture %}
+
+{% assign hasThursday = false %}
+{% assign hasSunday = false %}
+
+{% comment %}
+Is this campus coming soon?
+{% endcomment %}
+
+{% assign numTimes = campus.ServiceTimes | Size %}
+{% if numTimes == 1 %}
+    {% assign firstItem = campus.ServiceTimes | First %}
+    {% if firstItem.Day == 'Coming Soon' %}
+        {% assign isComingSoon = true %}
+    {% endif %}
+{% endif %}
+
+{% if isComingSoon == true %}
+    <strong>Service times coming soon</strong>
+    <div class="coming-soon-spacer"></div>
+{% else %}
+    {% for time in campus.ServiceTimes %}
+        {% if time.Day == 'Thursday' %}
+            {% assign hasThursday = true %}
+        {% endif %}
+        {% if time.Day == 'Sunday' %}
+            {% assign hasSunday = true %}
+        {% endif %}
+    {% endfor %}
+
+ 
+        {% if hasThursday %}
+           <strong>Thursday</strong>
+            {% for time in campus.ServiceTimes %}
+                {% if time.Day == 'Thursday' %}
+                <ul class="list-inline">
+                    <li>{{ time.Time | Replace: ' ' | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon | Replace: '#', frenchIcon }}</li>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <!--li>None currently scheduled</li-->
+        {% endif %}
+    </ul>
+
+ 				
+        {% if hasSunday %}
+        <strong>Sunday</strong> 
+            {% for time in campus.ServiceTimes %}
+                {% if time.Day == 'Sunday' %}
+				<ul class="list-inline">
+                  <li>{{ time.Time | Replace: '*', deafIcon | Replace: '%', specialNeedsIcon | Replace: '#', frenchIcon }}</li>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <!--li>None currently scheduled</li-->
+        {% endif %}
+    </ul>
+{% endif %} 
+{% assign isComingSoon = false %}

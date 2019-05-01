@@ -1,0 +1,86 @@
+.page-background {   
+    background-color: #EBEBEB;
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-cr.jpg");
+	width:100%;
+}
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-missions.jpg");
+    }
+}
+#section-b-bg {
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/background-missions-colombia.jpg");
+}
+
+#ternavbar-bg {
+    display: flex;
+}
+
+#section-c-bg, #section-e-bg {
+	background-color: #FFFFFF;
+}
+
+
+.mission-stories {
+    margin-bottom: 10px;
+}
+
+.events-row {
+    margin-top: unset;
+}
+
+.event-cards-row {
+    justify-content: space-between;
+}
+
+.event-cards-header {
+    margin-left: 0;
+}
+
+.event-card {
+    height: unset;
+    margin: 10px 10px;
+}
+
+.event-card:first-of-type {
+    margin-left: 0;
+}
+
+.event-card:last-of-type {
+    margin-right: 0;
+}
+
+/* Mobile Styling */
+@media screen and (max-width: 500px) {
+    .events-row {
+        padding: 20px 0;
+    }
+
+    .event-card {
+        margin: 10px 0;
+    }
+
+    .event-cards-header {
+        flex-direction: column;
+    }
+
+    .mission-stories .nav-buttons {
+        width: 100%;
+    }
+
+    .event-cards-row {
+        flex-direction: column;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

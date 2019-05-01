@@ -1,0 +1,155 @@
+
+{% comment %} We assume these messages & series are in chronological order, and that once we find one with a date on or before today, all the ones after should be displayed too. {% endcomment %}
+{% comment %} It's possible the newest podcast entry has a future date. So we'll iterate until we find the first valid one, and start there. {% endcomment %}
+{% assign firstSeriesIndex = 0 %}
+{% assign firstMessageIndex = 0 %}
+{% assign foundValidItem = false %}
+
+{% for series in SeriesList.Children %}
+   
+   {% for message in series.Messages %}
+      {% assign today = 'Now' | DateAdd: 0 %}
+      {% if message.Date <= today  %}
+         {% assign foundValidItem = true %}
+         {% break %}
+      {% endif %}
+
+      {% assign firstMessageIndex = firstMessageIndex | Plus: 1 %}
+
+   {% endfor %}
+
+   {% if foundValidItem == true %}
+      {% break %}
+   {% endif %}
+
+   {% assign firstMessageIndex = 0 %}
+   {% assign firstSeriesIndex = firstSeriesIndex | Plus: 1 %}
+{% endfor %}
+
+{% for series in SeriesList.Children offset:firstSeriesIndex %}
+   {% assign firstSeries = series %}
+   {% break %}
+{% endfor %}
+
+{% for message in firstSeries.Messages offset:firstMessageIndex %}
+   {% assign firstMessage = message %}
+   {% assign firstMessageWeek = firstSeries.Messages | Size | Minus: firstMessageIndex %}
+   {% break %}
+{% endfor %}
+{% comment %} End get first valid message {% endcomment %}
+
+<div class="toolbox-card-content latest-series-content">
+    <h3>STUDY MATERIALS</h3>
+    <div class="latest-series-info">
+        <div class="latest-series-info-element">
+            <div>
+                <p>MATERIALS FOR WEEK OF</p>
+            </div>
+            <div>
+                <h5>
+                    {{ firstMessage.Date | SundayDate }}
+                </h5>
+            </div>
+        </div>
+
+        <div class="latest-series-info-element">
+            <div>
+                <p>SERIES</p>
+            </div>
+            <div>
+                <h5>{{ firstSeries.Name }}</h5>
+            </div>
+        </div>
+
+        <div class="latest-series-info-element">
+            <div>
+                <p>WEEK</p>
+            </div>
+            <div>
+                <h5>{{ firstMessageWeek }}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="latest-series-video">
+        {% if firstMessage.Attributes.WistiaId != '' %}
+            <script src="https://fast.wistia.com/embed/medias/{{firstMessage.Attributes.WistiaId}}.jsonp" async></script>
+            <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+            <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+                <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                    <span class="wistia_embed wistia_async_{{firstMessage.Attributes.WistiaId}} popover=true popoverAnimateThumbnail=true videoFoam=true" style="display:inline-block;height:100%;width:100%">&nbsp;</span>
+                </div>
+            </div>
+        {% else %}
+            <img class="img img-responsive" src="/GetImage.ashx?guid={{ firstSeries.Attributes.Image_16_9 }}"/>
+        {% endif %}
+    </div>
+    <div class="latest-series-title">
+        <p>{{ firstMessage.Name }} - Week {{ firstMessageWeek }}</p>
+        <a href="{{firstMessage.Attributes.DiscussionGuideUrl}}"> <h5><i class="fa fa-file-text discussion-guide-icon"></i> DISCUSSION GUIDE</h5></a>
+    </div>
+</div>
+
+
+{% comment %} Now we'll increment to the next message, and do a check to see if we ran out of messages for this series and need to move to the next. {% endcomment %}
+{% assign numMessagesInSeries = firstSeries.Messages | Size %}
+
+{% assign firstMessageIndex = firstMessageIndex | Plus: 1 %}
+
+{% if firstMessageIndex >= numMessagesInSeries %}
+   {% assign firstSeriesIndex = firstSeriesIndex | Plus: 1 %}
+   {% assign firstMessageIndex = 0 %}
+{% endif %}
+
+{% comment %} Now render three more items {% endcomment %}
+
+{% assign numToRender = 3 %}
+
+<div class="previous-weeks">
+    <h3>PREVIOUS WEEKS</h3>
+    <div class="toolbox-past-messages">
+        {% for series in SeriesList.Children offset:firstSeriesIndex %}
+
+            {% for message in series.Messages offset:firstMessageIndex %}
+                
+                <div class="toolbox-video-card">
+                    <div class="past-message-video">
+                        {% if message.Attributes.WistiaId != '' %}
+                            <script src="https://fast.wistia.com/embed/medias/{{message.Attributes.WistiaId}}.jsonp" async></script>
+                            <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+                            <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+                                <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                                    <span class="wistia_embed wistia_async_{{message.Attributes.WistiaId}} popover=true popoverAnimateThumbnail=true videoFoam=true" style="display:inline-block;height:100%;width:100%">&nbsp;</span>
+                                </div>
+                            </div>
+                        {% else %}
+                            <img class="img img-responsive" src="/GetImage.ashx?guid={{ series.Attributes.Image_16_9 }}"/>
+                        {% endif %}
+                    </div>
+                    <div class="past-message-info">
+                        <p>{{ message.Name | Truncate:20,'...'}}</p>
+                        <span class="past-message-info-dash-mobile"> - </span>
+                        <p>Week<span class="past-message-info-dash-desktop"> - </span>{{ forloop.rindex }}</p>
+                    </div>         
+                    <div class="discussion-guide">
+                        <a href="{{message.Attributes.DiscussionGuideUrl}}"><h5><i class="fa fa-file-text discussion-guide-icon"></i> Discussion Guide</h5></a>
+                    </div>
+                </div>
+
+                {% assign numToRender = numToRender | Minus: 1 %}
+                {% if numToRender == 0 %}
+                    {% break %}
+                {% endif %}
+
+            {% endfor %}
+
+            {% comment %} Reset the firstMessageIndex in case it had an offset for the first iteration of this loop {% endcomment %}
+            {% assign firstMessageIndex = 0 %}
+
+            {% if numToRender == 0 %}
+                {% break %}
+            {% endif %}
+
+        {% endfor %}
+    </div>
+</div>

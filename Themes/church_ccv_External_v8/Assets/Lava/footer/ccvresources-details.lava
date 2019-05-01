@@ -1,0 +1,28 @@
+{% for item in Items %}
+    {% capture pageTitle %}{{ item.Title }} | CCV{% endcapture %}
+    {{ pageTitle | SetPageTitle }}
+
+    {% assign leftImage = item | Attribute: 'Image', 'Url' %}
+    {% assign downloadLink = item | Attribute: 'Download', 'RawValue' %}
+
+<div> 
+    <div class="infoSection background-card">
+        <div class="left-and-right-container">
+            <div class="left">
+                <img class="rounded-edge-img img-responsive" src="{{ leftImage }}" alt="{{ item.Title }}"> 
+            </div>
+            <div class="right">
+                <h3>{{ item.Title }} </h3> 
+                <p>{{ item.Content }} </p> 
+
+            {% if downloadLink != '' %}
+                <ol class="messages">
+                    {% comment %} <li><a class="downloadLink" href="{{ downloadLink }}" download="{{ item.Title }}">{{ item.Title }}</a></li> {% endcomment %}
+                </ol>
+                <div style="height:7px;font-size:1px;">&nbsp;</div>
+                <a class="btn btn-primary" href="{{ downloadLink }}" download="{{ item.Title }}">Download</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}

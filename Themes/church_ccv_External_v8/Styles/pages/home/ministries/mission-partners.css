@@ -1,0 +1,71 @@
+.page-background {
+	background-color: #EBEBEB;
+	background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-missions-partners.jpg");
+ }
+ 
+ /* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-missions-partners.jpg");
+    }
+}
+
+ #ternavbar-bg {
+	 display: flex;
+ }
+ 
+ #zone-singlesection {
+	margin: 0 auto;
+}
+
+.event-cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.event-card {
+    height: 500px;
+    z-index: 1;
+	overflow: hidden;
+	padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+.card-content {
+    padding: 0px 16px;
+}
+ 
+.event-card .card-content {
+	height: 115px;
+}
+
+.event-card .card-content p {
+    line-height: unset;
+    margin: unset;
+}
+
+.event-card .link a {
+    display: flex;
+}
+
+ /* Campus Card Responsive Styling */
+@media screen and (max-width: 760px) {
+    .event-cards-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .event-card {
+        height: 500px;
+    }
+
+    .event-card .link {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        min-width: 100%;
+    }
+}

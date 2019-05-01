@@ -19,13 +19,17 @@
                 var $datePickerContainer = $textBox.closest('.js-date-picker-container');
                 var $datePickerInputGroup = $textBox.closest('.input-group.js-date-picker');
 
-                // uses https://github.com/eternicode/bootstrap-datepicker
+                // uses https://github.com/uxsolutions/bootstrap-datepicker
                 $datePickerInputGroup.datepicker({
                     format: dateFormat,
                     autoclose: true,
                     todayBtn: true,
-                    startView: options.startView || 'month',
-                    todayHighlight: options.todayHighlight || true
+                    forceParse: options.forceParse,
+                    startDate: options.startDate,
+                    endDate: options.endDate || new Date(8640000000000000),
+                    startView: options.startView,
+                    showOnFocus: options.showOnFocus,
+                    todayHighlight: options.todayHighlight
                 });
 
                 // if the guest clicks the addon select all the text in the input
@@ -39,15 +43,16 @@
                     if ($(this).is(':checked')) {
                         $dateOffsetlabel.show();
                         $dateOffsetBox.show();
-                        $textBox.val('');
-                        $textBox.prop('disabled', true);
-                        $textBox.addClass('aspNetDisabled');
+
+                        // set textbox val to something instead of empty string so that validation doesn't complain
+                        $textBox.data( "last-value", $textBox.val()).val('Current').prop('disabled', true).addClass('aspNetDisabled');
 
                     } else {
                         $dateOffsetlabel.hide();
                         $dateOffsetBox.hide();
-                        $textBox.prop('disabled', false);
-                        $textBox.removeClass('aspNetDisabled');
+
+                        // set textbox val to last value so that validation will work again (if it is enabled)
+                        $textBox.val($textBox.data('last-value')).prop('disabled', false).removeClass('aspNetDisabled');
                     }
                 });
             }

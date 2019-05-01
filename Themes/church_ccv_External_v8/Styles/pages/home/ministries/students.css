@@ -1,0 +1,50 @@
+.page-background { 
+    background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-students.jpg");
+    background-color: white;
+}
+
+/* Mobile Background Image */
+@media screen and (max-width: 500px) {
+    .page-background {
+        background-image: url("/Themes/church_ccv_External_v8/Assets/Images/home/ministries/hero-mobile-students.jpg");
+    }
+}
+ 
+#ternavbar-bg {
+    display: none;
+}
+
+#section-b-bg {
+    background-color: #FFFFFF;
+}
+
+.students-service-times {
+    display: flex;
+    flex-direction: column;
+}
+
+.students-service-detail {
+    display: flex;
+    margin: 5px 0;
+}
+
+.students-service-detail-label {
+    min-width: 100px;
+    color: #838383;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: bold;
+}
+
+.contextsetter-campus .dropdown {
+    margin-bottom: 35px;
+}
+
+/* override margins so that title is even with campus selector */
+.right-content h2, .right-content p {
+    margin: 0 0 20px 0;
+}
+
+.right-content p {
+    color: #535353;
+}
