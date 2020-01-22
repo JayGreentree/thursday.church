@@ -1,0 +1,113 @@
+{% assign appRoot = 'Global' | Attribute:'PublicApplicationRoot' %}
+{% assign campusesSorted = Campuses | Sort:'Id' %}
+
+<div class="campus-cards-row">
+    {% for campus in campusesSorted %}
+        {% if campus.IsActive == 'True' %}
+            <div class="campus-card">
+                <div class="image">
+                    {% assign imageGuid = campus | Attribute:'FeatureImage', 'RawValue' %}
+                    <img src="/content/{{ campus.Location.City }}_color.jpg"/>
+                </div>
+                <div class="card-content" >
+                    <div class="header">
+                        <h4>{{ campus.Name }}</h4>
+                        <p>Campus Pastor: {{ campus.LeaderPersonAliasId | PersonByAliasId | Property:'FullName' }}</p>
+                    </div>
+                    <div class="content location-contact">
+                        <div class="address">
+                            <p>{{ campus.Location.Street1 }}<br />
+                            {{ campus.Location.City }}, {{ campus.Location.State }} {{ campus.Location.PostalCode }}<br />
+                            <a href="tel:{{ campus.PhoneNumber }}">{{ campus.PhoneNumber }}</a></p>
+                        </div>
+                    </div>
+                    <div class="content service-times mt-25">
+                        <h5>SERVICE TIMES</h5>
+                        {% assign comingSoonUntil = campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
+                        {% assign today = 'Now' | Date: 'yyyyMMdd' %}
+                        {% if today < comingSoonUntil %}
+                            {% assign isComingSoon = true %}
+                        {% endif %}
+                        
+                        {% assign times = campus.ServiceTimes %}
+                        {% include '~~/Assets/Lava/service-times/grid.lava' %}
+                    </div>
+
+                    <!--div class="link">
+                        <a class="btn btn-primary" href="/locations/{{ campus.Name | Downcase | Replace: ' ', '-' }}">Learn More</a>
+                    </div-->
+                </div>    
+            </div>
+        {% endif %}
+  {% endfor %}
+</div>
+
+<div class="campus-cards-row-mobile">
+    <div class="campus-dropdown">
+        <button id="btnCampusSelect" class="dropdown-toggle" type="button" data-toggle="dropdown" style="border: 0px;">Select Campus<b class="fa fa-caret-down"></b></button>
+        <ul class="dropdown-menu">
+            {% for campusItem in Campuses %}
+                {% if campusItem.IsActive == 'True' %}
+                    <li><button type="button" onClick="changeCampus({{ campusItem.Id }});return false;">{{ campusItem.Name }}</button></li>
+                {% endif %}
+            {% endfor %} 
+        </ul>
+    </div> 
+    
+    {% for campus in Campuses %}
+        {% if campus.IsActive == 'True' %}
+            <div class="campus-card hidden" id="{{campus.Name | Replace:' ', '-' | Downcase }}">
+                <div class="image">
+                    {% assign imageGuid = campus | Attribute:'FeatureImage', 'RawValue' %}
+                    <img src="/content/{{ campus.Location.City }}_color.jpg"/>
+                </div>
+                <div class="card-content" >
+                    <div class="header">
+                        <h4>{{ campus.Name }}</h4>
+                        <p>{{ campus.LeaderPersonAliasId | PersonByAliasId | Property:'FullName' }}</p>
+                    </div>
+                    <div class="content location-contact">
+                        <div class="address">
+                            <p>{{ campus.Location.Street1 }}<br />
+                            {{ campus.Location.City }}, {{ campus.Location.State }} {{ campus.Location.PostalCode }}<br />
+                            <a href="tel:{{ campus.PhoneNumber }}">{{ campus.PhoneNumber }}</a>
+                        </div>
+                    </div>
+                    <div class="content service-times mt-25">
+                        <h5>SERVICE TIMES</h5>
+                        {% assign comingSoonUntil = campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
+                        {% assign today = 'Now' | Date: 'yyyyMMdd' %}
+                        {% if today < comingSoonUntil %}
+                            {% assign isComingSoon = true %}
+                        {% endif %}
+                        
+                        {% assign times = campus.ServiceTimes %}
+                        {% include '~~/Assets/Lava/service-times/grid.lava' %}
+                    </div>
+
+                    <!--div class="link">
+                        <a class="btn btn-primary" href="/locations/{{ campus.Name | Downcase | Replace: ' ', '-' }}">Learn More</a>
+                    </div -->
+                </div>    
+            </div>
+        {% endif %}
+    {% endfor %}     
+</div>
+
+
+
+
+<script type="text/javascript">
+    function changeCampus(campusId) {
+        for (var i = 0; i < CCV.locations.length; i++) {
+            var campus = CCV.locations[i].name.replace(' ','-').toLowerCase();
+            if (campusId == CCV.locations[i].id) {
+                $('#btnCampusSelect').text( CCV.locations[i].name + " Campus");
+                $('#'+campus).removeClass("hidden");
+            }  
+            else {
+                $('#'+campus).addClass("hidden");
+            }
+        }
+    } 
+</script>
