@@ -7,9 +7,9 @@
         <!--img src="~~/Assets/Images/logos/logo-ccv-footer.svg" height="35" width="100"-->
         <span class="footer-copyright"><i class="fa fa-copyright"></i>Copyright &copy; 2008-2019 Thursday Church</span>
         <div class="footer-social">
-            <a href="https://facebook.com/thursdaychurch2008" target="_blank"><i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i></a>
-            <a href="https://instagram.com/thursday_church" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
-            <a href="https://twitter.com/thursdaychurch" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
+            <a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i></a>
+            <a href="https://instagram.com/" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
+            <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
         </div>
     </div>
 <!--
@@ -36,7 +36,7 @@
             <div class="footer-links-legal">
                 <a href="/privacy-policy">Privacy Policy</a>
                 <a href="/mobile-apps">Mobile Apps</a>
-            </div>            
+            </div>
         </div>
     </div>
 </div>

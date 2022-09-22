@@ -1,12 +1,12 @@
-{% comment %} 
-    {% include '~~/Assets/Lava/navigation-secondary.lava' %} 
+{% comment %}
+    {% include '~~/Assets/Lava/navigation-secondary.lava' %}
 {% endcomment %}
 
 {% if Page.DisplayChildPages == 'true' and Page.Pages != empty %}
 
     <div class="navigation-secondary-desktop">
         <ul class="navigation-secondary-items">
-            {% for childPage in Page.Pages %}      
+            {% for childPage in Page.Pages %}
                 {% assign activeClass = '' %}
                 {% if childPage.Current == 'true' %}
                     {% assign activeClass = 'active' %}
@@ -39,7 +39,7 @@
             <ul class="dropdown-menu">
                 {% for childPage in Page.Pages %}
                     {% assign activeClass = '' %}
-                    
+
                     {% if childPage.Current == 'true' %}
                         {% assign activeClass = 'active' %}
                     {% endif%}

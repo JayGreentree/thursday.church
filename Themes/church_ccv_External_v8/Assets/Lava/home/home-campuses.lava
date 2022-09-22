@@ -1,5 +1,5 @@
 {% comment %}
-    {% include '~~/Assets/Lava/home-campuses.lava' %}
+    {% include '~~/Assets/Lava/home/home-campuses.lava' %}
 {% endcomment %}
 
 {% comment %} Render Header {% endcomment %}
@@ -27,7 +27,7 @@
                     <h5>Service Times</h5>
                     {% assign comingSoonUntil = campus | Attribute: 'ComingSoonUntil' | Date: 'yyyyMMdd' %}
                     {% assign today = 'Now' | Date: 'yyyyMMdd' %}
-                    
+
                     {% if today < comingSoonUntil %}
                         {% assign isComingSoon = true %}
                     {% endif %}
@@ -42,7 +42,7 @@
             {% endif %}
 
         {% endfor %}
-        
+
     </div>
 </div>
 
