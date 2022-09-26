@@ -1,5 +1,5 @@
-{% comment %} 
-    {% include '~~/Assets/Lava/navigation-mobile.lava' %} 
+{% comment %}
+    {% include '~~/Assets/Lava/navigation-mobile.lava' %}
 {% endcomment %}
 
 <div class="navigation-mobile-title">
@@ -58,7 +58,7 @@
 
 <script>
     function logout() {
-        
+
         var pageId = `{{ 'Global' | Page:'Id' }}`;
 
         $.ajax({

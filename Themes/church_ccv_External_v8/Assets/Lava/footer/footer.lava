@@ -1,5 +1,5 @@
 {% comment %}
-    {% include '~~/Assets/Lava/footer.lava' %}
+    {% include '~~/Assets/Lava/footer/footer.lava' %}
 {% endcomment %}
 
 <div class="footer">
